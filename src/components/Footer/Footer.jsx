@@ -12,11 +12,11 @@ const Footer = () => {
       <p className="footerText">© 2024- Todos los derechos reservados G5</p>
       <ul className="social-icons">
         <li>
-          <FaInstagram />
+          <FaInstagram color="#6743dd"  />
         </li>
-        <li>
-          {" "}
-          <FaFacebookSquare />
+        <li >
+       
+          <FaFacebookSquare color="#6743dd" />
         </li>
       </ul>
     </footer>

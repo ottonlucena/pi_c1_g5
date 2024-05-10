@@ -28,6 +28,8 @@ footer {
   .social-icons{
     padding: 0 0 0 0;
   }
+
+
   
   @media (max-width: 768px) {
     
@@ -62,8 +64,10 @@ footer {
     .social-icons{
         order: 2;
         justify-content: center;
+      
     }
 
+  
     footer p{
         order: 3;
     }
