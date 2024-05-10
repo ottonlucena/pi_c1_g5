@@ -1,4 +1,5 @@
 
+import RandomProductsList from './components/Card/RandomProductsList';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar.jsx';
 
@@ -9,7 +10,7 @@ const App = () => {
   return (
     <>
       <Navbar menuItems={menuItems} logo={LogoFestivall} />
-    
+      <RandomProductsList/>
       <Footer/>
     </>
   );

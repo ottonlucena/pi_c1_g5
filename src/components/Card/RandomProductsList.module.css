@@ -1,0 +1,13 @@
+.randomProductsList {
+    padding: 4rem;
+  }
+  
+  .productGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espacio entre los elementos */
+    justify-content: center;
+  }
+  
+  /* Estilos para los elementos ProductCard */
+  

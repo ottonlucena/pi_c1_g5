@@ -1,0 +1,53 @@
+.productCard {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 30%;
+  height: 250px; /* Cambia este valor según lo necesites */
+}
+
+.productImage {
+  flex: 2;
+}
+
+.productImage img {
+  width: 100%;
+}
+
+.productDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrar verticalmente */
+  padding: 0rem 1.5rem 0rem 1.5rem;
+  text-align: center;
+  background-color: #f5e9fc;
+  height: 100%; /* Asegura que el contenedor ocupe toda la altura */
+}
+
+.productDetails h3 {
+  font-size: 20px;
+  margin-top: 0;
+}
+
+.detailButton {
+  background-color: #795af6;
+  color: white;
+  border: none;
+  padding: 6px 12px; /* Reducir el tamaño del padding */
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none; /* Eliminar el borde al hacer clic */
+  transition: background-color 0.3s; /* Agregar transición para suavizar cambios */
+  font-size: 15px;
+}
+
+.detailButton:hover {
+  background-color: #6743dd;
+  border: none;
+}
+
+.detailButton:focus,
+.detailButton:active {
+  outline: none; /* Eliminar el borde al hacer foco o al estar activo */
+}
