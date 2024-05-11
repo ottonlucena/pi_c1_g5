@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import ProductCard from './ProductCard';
 import styles from "./RandomProductsList.module.css";
 import PaginationProductCard from "./PaginationProductCard";
 
