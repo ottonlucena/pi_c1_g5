@@ -2,14 +2,26 @@ import { useEffect } from 'react';
 import { create } from 'zustand';
 import styled from 'styled-components';
 import listImages from '../../data/listimages.js';
+import { useQuery } from 'react-query';
 
-// Styled components
-const GalleryContainer = styled.div`
+const fetchImages = async () => {
+  const images = await listImages();
+  return images;
+};
+
+const GalleryWrapper = styled.div`
+  max-width: 1600px;
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
   padding: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const MainImageContainer = styled.div`
@@ -23,6 +35,7 @@ const MainImageContainer = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     height: auto;
+    order: -1;
   }
 `;
 
@@ -34,14 +47,19 @@ const MainImage = styled.img`
 `;
 
 const GridContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
   width: 45%;
+  position: relative;
 
   @media (max-width: 768px) {
     width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -50,8 +68,8 @@ const GridItem = styled.div`
   overflow: hidden;
   border-radius: 10px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  width: 352px;
-  height: 236px;
+  width: 100%;
+  padding-bottom: 66.67%; /* Relación de aspecto 3:2 */
 
   &:before {
     content: '';
@@ -63,19 +81,12 @@ const GridItem = styled.div`
     background-color: rgba(255, 255, 255, 0);
     z-index: 1;
   }
-
-  @media (max-width: 768px) {
-    width: calc(50% - 10px);
-    height: auto;
-  }
-
-  @media (max-width: 480px) {
-    width: 100%;
-    height: auto;
-  }
 `;
 
 const GridImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -89,6 +100,17 @@ const MoreButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+
+  @media (min-width: 769px) {
+    position: absolute;
+    bottom: -60px;
+    right: 0;
+  }
+
+  @media (max-width: 768px) {
+    position: static;
+    margin: 20px auto 0;
+  }
 `;
 
 function getNextImages(images, currentIndex) {
@@ -111,29 +133,33 @@ const useGalleryStore = create((set) => ({
 }));
 
 const GalleryImgs = () => {
-  const {
-    loadedImages,
-    setLoadedImages,
-    images,
-    currentIndex,
-    setCurrentIndex,
-  } = useGalleryStore();
+  const { loadedImages, setLoadedImages, currentIndex, setCurrentIndex } =
+    useGalleryStore();
 
+  const { data: images, isLoading } = useQuery('images', fetchImages);
   // Carga las primeras imágenes cuando se monta el componente
   useEffect(() => {
-    const initialImages = getNextImages(images, currentIndex);
-    setLoadedImages(initialImages);
-  }, []);
+    if (images && images.length > 0) {
+      const initialImages = getNextImages(images, currentIndex);
+      setLoadedImages(initialImages);
+    }
+  }, [images, currentIndex]);
 
   // Función para cargar las siguientes imágenes
   const loadNextImages = () => {
-    const nextImages = getNextImages(images, currentIndex);
-    setLoadedImages(nextImages);
-    setCurrentIndex((currentIndex + 5) % images.length);
+    if (images && images.length > 0) {
+      const nextImages = getNextImages(images, currentIndex);
+      setLoadedImages(nextImages);
+      setCurrentIndex((currentIndex + 5) % images.length);
+    }
   };
 
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
+
   return (
-    <GalleryContainer>
+    <GalleryWrapper>
       <MainImageContainer>
         <MainImage src={loadedImages[0]?.url} alt={loadedImages[0]?.alt} />
       </MainImageContainer>
@@ -143,9 +169,9 @@ const GalleryImgs = () => {
             <GridImage src={image.url} alt={image.alt} />
           </GridItem>
         ))}
+        <MoreButton onClick={loadNextImages}>Ver más</MoreButton>
       </GridContainer>
-      <MoreButton onClick={loadNextImages}>Ver más</MoreButton>
-    </GalleryContainer>
+    </GalleryWrapper>
   );
 };
 
