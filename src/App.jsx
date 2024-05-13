@@ -6,7 +6,7 @@ import DetailProduct from './components/DetailProduct/DetailProduct.jsx';
 import Modal from './components/Modal/Modal';
 import GalleryImgs from './components/GalleryImgs/GalleryImgs.jsx';
 
-import LogoFestivall from './assets/FestivallSVG.svg';
+import LogoFestivall from '../public/FestivallSVG.svg';
 import ProductCard from './components/Card/ProductCard.jsx';
 import CategorySection from './components/Categorias/CategorySection.jsx';
 import listimages from './data/listimages.js';
@@ -22,7 +22,6 @@ const App = () => {
       <BrowserRouter>
         <button onClick={openModal}>Abrir Galería</button>
         <Navbar menuItems={menuItems} logo={LogoFestivall} />
-        <RandomProductsList />
         <CategorySection />
         <Routes>
           <Route path='/' element={<RandomProductsList />} />
