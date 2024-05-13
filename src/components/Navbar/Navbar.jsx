@@ -12,6 +12,7 @@ const NavbarContainer = styled.nav`
   background: linear-gradient(180deg, #f5e9fc, rgba(121, 90, 246, 0));
   backdrop-filter: blur(10px);
   padding: 0 20px;
+  z-index: 1000;
 
   @media (max-width: 768px) {
     flex-direction: column;

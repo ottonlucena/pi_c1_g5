@@ -13,6 +13,8 @@
 
 .productImage img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .productDetails {
@@ -50,4 +52,30 @@
 .detailButton:focus,
 .detailButton:active {
   outline: none; /* Eliminar el borde al hacer foco o al estar activo */
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 767px) {
+  .productCard {
+    width: 100%; /* Cambia el ancho a 100% para dispositivos móviles */
+    height: auto; /* Ajusta la altura automáticamente */
+  }
+
+  .productImage img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+  }
+
+  .productDetails {
+    padding: 1rem; /* Reduce el padding para dispositivos móviles */
+    background-color: #f5e9fc;
+  }
+}
+
+/* Estilos para tabletas */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .productCard {
+    width: 45%; /* Cambia el ancho a 45% para tabletas */
+  }
 }
