@@ -17,8 +17,8 @@ const TooltipText = styled.span`
   border: 1px solid #795af6; // Bordes redondeados de color #795AF6
   font-size: 10px; // Tamaño de la fuente ajustado a 10px
   position: absolute;
-  z-index: 1;
-  bottom: 200%; // Ajusta este valor para mover el tooltip hacia arriba
+  z-index: 100;
+  top: 200%; // Ajusta este valor para mover el tooltip hacia arriba
   left: 50%;
   transform: translateX(-50%);
   white-space: pre-wrap; // Permite que el texto se ajuste al ancho del tooltip
