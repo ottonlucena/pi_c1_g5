@@ -1,0 +1,54 @@
+/* CategoryCard.module.css */
+
+.categoryCard {
+    width: 18%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    position: relative;
+    background-color: #f5e9fc;
+    text-align: center;
+  }
+  
+  .categoryTitle {
+    font-size: 18px;
+    color: #6743dd;
+  }
+  
+  .categoryDescription {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    width: 80%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+     z-index: 999;
+    display: none;
+    background-color: #f5e9fc;
+    color: #6743dd;
+  }
+  
+  .categoryCard:hover .categoryDescription {
+    display: block;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .categoryCard {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+  
+  @media only screen and (max-width: 480px) {
+    .categoryCard {
+      width: 100%; /* Establecemos el ancho al 100% para ocupar todo el ancho disponible */
+      flex-direction: column; /* Cambiamos a una disposición de columna en dispositivos móviles */
+    }
+  }
+  
+  

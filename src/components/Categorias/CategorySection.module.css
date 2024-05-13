@@ -1,0 +1,19 @@
+.categorySection {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .categorySection {
+      flex-wrap: wrap; /* Permite que las tarjetas se envuelvan en dispositivos con un ancho máximo de 768px (tablets) */
+    }
+  }
+  
+  @media only screen and (max-width: 480px) {
+    .categorySection {
+      flex-direction: column; /* Cambia a una disposición de columna en dispositivos con un ancho máximo de 480px (móviles) */
+    }
+  }
+  

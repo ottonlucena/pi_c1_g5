@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import ProductCard from './ProductCard';
 import styles from "./RandomProductsList.module.css";
+import PaginationProductCard from "./PaginationProductCard";
 
 
 const RandomProductsList = () => {
@@ -35,14 +35,11 @@ const RandomProductsList = () => {
 
   return (
     <div className={styles.randomProductsList}>
-      <h2>Productos Aleatorios</h2>
-      <div className={styles.productGrid}>
-        {randomProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-    </div>
-  );
+    <h2>Productos Aleatorios</h2>
+   
+    <PaginationProductCard products={randomProducts} itemsPerPage={6} />
+  </div>
+);
 };
 
 export default RandomProductsList;
