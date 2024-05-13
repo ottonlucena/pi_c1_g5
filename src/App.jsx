@@ -24,19 +24,19 @@ const App = () => {
         <button onClick={openModal}>Abrir Galería</button>
         <Navbar menuItems={menuItems} logo={LogoFestivall} />
         <CategorySection />
-    <Routes>
-    <Route
-          path="/"
-          element={(
-            <div>
-              <RandomProductsList />
-              <FeaturedProducts />
-            </div>
-          )}
-        />
-      <Route path="/detalle/:id" element={<DetailProduct/>} />
-      <Route path="/product/:id" element={<ProductCard/>} />
-    </Routes>
+        <Routes>
+        <Route
+              path="/"
+              element={(
+                <div>
+                  <RandomProductsList />
+                  <FeaturedProducts />
+                </div>
+              )}
+            />
+          <Route path="/detalle/:id" element={<DetailProduct/>} />
+          <Route path="/product/:id" element={<ProductCard/>} />
+        </Routes>
         <Modal title='Galería de Imágenes'>
           <GalleryImgs images={images} />
         </Modal>
