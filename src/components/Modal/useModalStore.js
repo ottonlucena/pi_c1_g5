@@ -1,5 +1,5 @@
 // useModalStore.js
-import create from 'zustand';
+import { create } from 'zustand';
 
 const useModalStore = create((set) => ({
   isModalOpen: false,

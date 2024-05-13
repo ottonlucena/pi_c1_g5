@@ -1,6 +1,3 @@
-// Modal.jsx
-import React, { useState } from 'react';
-import styled from 'styled-components';
 import useModalStore from './useModalStore';
 
 import {
