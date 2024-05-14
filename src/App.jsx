@@ -7,6 +7,7 @@ import FeaturedProducts from './components/ProductsFav/FeaturedProducts.jsx';
 import LogoFestivall from '../public/FestivallSVG.svg';
 import ProductCard from './components/Card/ProductCard.jsx';
 import CategorySection from './components/Categorias/CategorySection.jsx';
+import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 
 const menuItems = ['Nosotros', 'Servicios', 'Contacto', 'Galería'];
 
@@ -30,6 +31,7 @@ const App = () => {
           <Route path='/detalle/:id' element={<DetailProduct />} />
           <Route path='/product/:id' element={<ProductCard />} />
         </Routes>
+        <RegistrarProducto/>
         <Footer />
       </BrowserRouter>
     </>

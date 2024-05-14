@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import styles from "./RegistrarProducto.module.css";
+import { agregarProducto } from '../../data/juegos';
+import ListarProductos from './ListarProductos';
 
 const RegistrarProducto = () => {
   const [nombre, setNombre] = useState('');
@@ -12,6 +14,7 @@ const RegistrarProducto = () => {
   const [cantidad, setCantidad] = useState('');
   const [imagenes, setImagenes] = useState([]);
   const [error, setError] = useState('');
+  const [mostrarLista, setMostrarLista] = useState(false);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -21,9 +24,32 @@ const RegistrarProducto = () => {
       return;
     }
 
-    // Aquí podrías enviar los datos al backend para su procesamiento
-    // y manejo de errores.
-    // Por ahora, solo se mostrará un mensaje de éxito.
+    // Agregar nuevo producto al arreglo de productos
+    const nuevoProducto = {
+      nombre,
+      descripcion,
+      largo: parseFloat(largo),
+      ancho: parseFloat(ancho),
+      altura: parseFloat(altura),
+      capacidad: parseInt(capacidad),
+      valorArriendo: parseInt(valorArriendo),
+      cantidad: parseInt(cantidad),
+      img_url: imagenes[0] ? URL.createObjectURL(imagenes[0]) : '' // Se usa solo la primera imagen como URL de ejemplo
+    };
+    agregarProducto(nuevoProducto);
+
+    // Limpiar campos después de agregar el producto
+    setNombre('');
+    setDescripcion('');
+    setLargo('');
+    setAncho('');
+    setAltura('');
+    setCapacidad('');
+    setValorArriendo('');
+    setCantidad('');
+    setImagenes([]);
+
+    // Mensaje de éxito
     alert('Producto registrado exitosamente!');
   };
 
@@ -31,6 +57,10 @@ const RegistrarProducto = () => {
     if (value >= 0) {
       setter(value);
     }
+  };
+
+  const handleMostrarListaClick = () => {
+    setMostrarLista(!mostrarLista);
   };
 
   return (
@@ -139,11 +169,14 @@ const RegistrarProducto = () => {
         </div>
         <button type="submit" className={`${styles.button} ${styles.submitButton}`}>Guardar Juego</button>
       </form>
+      <button onClick={handleMostrarListaClick} className={styles.button}>Listar Productos</button>
+      {mostrarLista && <ListarProductos/>}
     </div>
   );
 };
 
 export default RegistrarProducto;
+
 
 
 
