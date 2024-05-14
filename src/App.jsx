@@ -8,7 +8,8 @@ import FeaturedProducts from './components/ProductsFav/FeaturedProducts.jsx';
 import LogoFestivall from '../public/FestivallSVG.svg';
 import ProductCard from './components/Card/ProductCard.jsx';
 import CategorySection from './components/Categorias/CategorySection.jsx';
-import { MdAdminPanelSettings } from 'react-icons/md';
+import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
+
 import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 
 const menuItems = ['Nosotros', 'Servicios', 'Contacto', 'Galería'];
@@ -35,6 +36,7 @@ const App = () => {
           <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
           <Route path='/admin' element={<Admin />} />
         </Routes>
+        <RegistrarProducto/>
         <Footer />
       </BrowserRouter>
     </>
@@ -42,3 +44,4 @@ const App = () => {
 };
 
 export default App;
+
