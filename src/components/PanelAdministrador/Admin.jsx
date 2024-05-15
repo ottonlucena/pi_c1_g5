@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+/* import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BsSearch } from "react-icons/bs";
 import { FaTrashAlt } from 'react-icons/fa';
@@ -138,4 +138,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default Admin; */

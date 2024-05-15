@@ -15,8 +15,7 @@ const Modal = ({ title, children }) => {
 
   return (
     <>
-      {/* Aquí puedes agregar un botón o elemento que abra el modal */}
-      <button onClick={openModal}>Abrir Modal</button>
+      
 
       {isModalOpen && (
         <ModalOverlay onClick={closeModal}>
