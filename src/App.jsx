@@ -8,10 +8,14 @@ import FeaturedProducts from './components/ProductsFav/FeaturedProducts.jsx';
 import LogoFestivall from '../public/FestivallSVG.svg';
 import ProductCard from './components/Card/ProductCard.jsx';
 import CategorySection from './components/Categorias/CategorySection.jsx';
+<<<<<<< Updated upstream
 import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
 import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 
+=======
+// import AdminListProd from './components/AdminListProd/AdminListProd.jsx'; // esta importacion iria en el panel de administracion
+>>>>>>> Stashed changes
 const menuItems = ['Nosotros', 'Servicios', 'Contacto', 'Galería'];
 
 /* import RegistrarProducto from "./components/PanelAdministrador/RegistrarProducto.jsx"; */
@@ -39,6 +43,8 @@ const App = () => {
         <RegistrarProducto/>
         <Footer />
       </BrowserRouter>
+      {/* <AdminListProd /> // este componente es el que iria en el panel de
+      Administracion */}
     </>
   );
 };
