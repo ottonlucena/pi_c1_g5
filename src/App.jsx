@@ -9,6 +9,7 @@ import LogoFestivall from '../public/FestivallSVG.svg';
 import ProductCard from './components/Card/ProductCard.jsx';
 import CategorySection from './components/Categorias/CategorySection.jsx';
 import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
+
 import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx';
 
@@ -36,6 +37,7 @@ const App = () => {
           <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
           <Route path='/admin' element={<ListarProductos />} />
         </Routes>
+        <RegistrarProducto />
         <Footer />
       </BrowserRouter>
       {/* <AdminListProd /> // este componente es el que iria en el panel de
@@ -45,4 +47,3 @@ const App = () => {
 };
 
 export default App;
-

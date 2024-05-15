@@ -1,4 +1,4 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const NavbarContainer = styled.nav`
@@ -75,6 +75,12 @@ const Avatar = styled.div`
 `;
 
 const Navbar = ({ menuItems, logo }) => {
+  const navigate = useNavigate();
+
+  const redirectToHome = () => {
+    navigate('/');
+  };
+
   return (
     <NavbarContainer>
       <LeftSection>
@@ -82,6 +88,7 @@ const Navbar = ({ menuItems, logo }) => {
           src={logo}
           alt='Logo'
           style={{ maxWidth: '100%', width: '200px' }}
+          onClick={redirectToHome}
         />
       </LeftSection>
       <CenterSection>
