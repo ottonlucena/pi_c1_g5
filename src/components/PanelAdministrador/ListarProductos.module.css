@@ -1,0 +1,69 @@
+/* ListarProductos.module.css */
+
+/* ListarProductos.module.css */
+
+.container {
+    margin-top: 20px;
+    overflow-x: auto; /* Agregar desplazamiento horizontal cuando sea necesario */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5rem; /* Centrar verticalmente el contenido */
+  }
+  
+  .table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+  }
+  
+  .table td, .table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    white-space: nowrap; /* Evitar que el contenido de las celdas se divida */
+    text-align: center; /* Centrar el texto horizontalmente */
+  }
+  
+  .table th {
+    background-color: #f5e9fc;
+  }
+  
+  .table tr:nth-child(odd) {
+    background-color: #f5e9fc;
+  }
+  
+  .container h2 {
+    margin-bottom: 10px;
+    align-self: center; /* Centrar el título horizontalmente */
+  }
+
+  .btnAgregar{
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #f5e9fc;
+  text-align: center;
+  color: #6743dd;
+  font-size: 18px;
+  margin-top: 15px;
+  }
+
+  .contBtn {
+    display: flex;
+    gap: 30px;
+  }
+
+  .msj {
+    color: #6743dd;
+  }
+
+  .titleL {
+    font-size: 25px;
+    color: #6743dd;
+  }
+  
+  
+  

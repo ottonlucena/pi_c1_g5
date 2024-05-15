@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import styles from "./RegistrarProducto.module.css";
 import { agregarProducto } from '../../data/juegos';
-import ListarProductos from './ListarProductos';
+import { IoIosArrowBack } from "react-icons/io";
+import { Link } from 'react-router-dom';
+
 
 const RegistrarProducto = () => {
   const [nombre, setNombre] = useState('');
@@ -14,7 +16,7 @@ const RegistrarProducto = () => {
   const [cantidad, setCantidad] = useState('');
   const [imagenes, setImagenes] = useState([]);
   const [error, setError] = useState('');
-  const [mostrarLista, setMostrarLista] = useState(false);
+  
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -59,11 +61,9 @@ const RegistrarProducto = () => {
     }
   };
 
-  const handleMostrarListaClick = () => {
-    setMostrarLista(!mostrarLista);
-  };
-
+  
   return (
+    <>
     <div className={styles.formContainer}>
       <h2 className={styles.titleForm}>Agregar Juego</h2>
       {error && <p className={styles.error}>{error}</p>}
@@ -169,9 +169,14 @@ const RegistrarProducto = () => {
         </div>
         <button type="submit" className={`${styles.button} ${styles.submitButton}`}>Guardar Juego</button>
       </form>
-      <button onClick={handleMostrarListaClick} className={styles.button}>Listar Productos</button>
-      {mostrarLista && <ListarProductos/>}
     </div>
+      <div className={styles.productBack}>
+        <Link to="/admin" className={styles.goBack}>
+          <IoIosArrowBack color="white" size={40} />
+        </Link>
+      </div>
+
+    </>
   );
 };
 
