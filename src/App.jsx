@@ -8,7 +8,9 @@ import FeaturedProducts from './components/ProductsFav/FeaturedProducts.jsx';
 import LogoFestivall from '../public/FestivallSVG.svg';
 import ProductCard from './components/Card/ProductCard.jsx';
 import CategorySection from './components/Categorias/CategorySection.jsx';
-import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
+import AdminListPropd from './components/AdminListProd/AdminListProd.jsx';
+
+// import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
 import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx';
@@ -36,8 +38,9 @@ const App = () => {
           <Route path='/product/:id' element={<ProductCard />} />
           <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
           <Route path='/admin' element={<ListarProductos />} />
+          <Route path='/listaPro' element={<AdminListPropd />} />
         </Routes>
-        <RegistrarProducto />
+
         <Footer />
       </BrowserRouter>
       {/* <AdminListProd /> // este componente es el que iria en el panel de
