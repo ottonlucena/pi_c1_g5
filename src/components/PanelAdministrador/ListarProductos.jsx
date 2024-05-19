@@ -1,98 +1,122 @@
-
-
-import { useState, useEffect } from 'react';
-import { productos as productosData } from '../../data/juegos';
-import styles from './ListarProductos.module.css';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import RegistrarProducto from "./RegistrarProducto";
+import AdminListPropd from "../AdminListProd/AdminListProd";
+import RegistrarCategoria from "./RegistrarCategoria";
+import styles from "./ListarProductos.module.css";
 
 const ListarProductos = () => {
-  const [productos, setProductos] = useState(productosData);
-  const [mostrarLista, setMostrarLista] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
-  const eliminarProducto = (index) => {
-    const nuevosProductos = [...productos];
-    nuevosProductos.splice(index, 1);
-    setProductos(nuevosProductos);
-  };
-
-  const handleMostrarListaClick = () => {
-    setMostrarLista(!mostrarLista);
-  };
+  const [selectedComponent, setSelectedComponent] = useState(null);
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 768); // Cambia el valor 768 según lo que consideres como dimensión móvil
+      setIsMobile(window.innerWidth <= 768);
     };
 
-    checkIsMobile(); // Llamada inicial para configurar el estado basado en la dimensión de la ventana al cargar la página
+    checkIsMobile();
 
-    window.addEventListener('resize', checkIsMobile); // Agregar listener para cambios de tamaño de ventana
+    window.addEventListener("resize", checkIsMobile);
 
     return () => {
-      window.removeEventListener('resize', checkIsMobile); // Remover listener en la limpieza del efecto
+      window.removeEventListener("resize", checkIsMobile);
     };
   }, []);
 
+  const handleComponentChange = (componentName) => {
+    setSelectedComponent(componentName);
+  };
+
+  const handlePanelClick = () => {
+    // Lógica para manejar el click en el panel
+  };
+
   return (
-    <div className={styles.container}>
-      <h2 className={styles.titleL}>Panel De Administrador</h2>
-      <div className={styles.contBtn}>
-      {!isMobile && ( // Solo renderiza el botón si no es un dispositivo móvil
-          <Link to="/RegistrarProducto">
-            <button className={styles.btnAgregar}>
-              Agregar Producto
-            </button>
-          </Link>
-        )}
-        {isMobile ? (
-          <p className= {styles.msj}>Esta función no está disponible en dispositivos móviles.</p>
-        ) : (
-          <button onClick={handleMostrarListaClick} className={styles.btnAgregar}>
-            {mostrarLista ? 'Ocultar Lista' : 'Listar Producto'}
-          </button>
+    <div className={styles.contMain}>
+      {isMobile && (
+        <div className={styles.mobileOverlay}>
+          <p className={styles.msj}>
+            Esta función no está disponible en dispositivos móviles.
+          </p>
+        </div>
+      )}
+      <div className={styles.container}>
+        <div className={styles.contBtn}>
+          <img
+            src="/iconoftransparent.svg"
+            alt="Logo de tu empresa"
+            className={styles.logo}
+          />
+          {!isMobile && (
+            <>
+              <button
+                className={`${styles.btnAgregar} ${
+                  selectedComponent === null && styles.selected
+                }`}
+                onClick={() => handleComponentChange(null)}
+              >
+                Panel
+              </button>
+              <button
+                className={`${styles.btnAgregar} ${
+                  selectedComponent === "RegistrarProducto" && styles.selected
+                }`}
+                onClick={() => handleComponentChange("RegistrarProducto")}
+              >
+                Agregar Producto
+              </button>
+              <button
+                className={`${styles.btnAgregar} ${
+                  selectedComponent === "AdminListProd" && styles.selected
+                }`}
+                onClick={() => handleComponentChange("AdminListProd")}
+              >
+                Listar productos
+              </button>
+              <button
+                className={`${styles.btnAgregar} ${
+                  selectedComponent === "RegistrarCategoria" && styles.selected
+                }`}
+                onClick={() => handleComponentChange("RegistrarCategoria")}
+              >
+                Agregar Categoria
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      <div className={styles.content2}>
+        {!isMobile && (
+          <>
+            {selectedComponent === null && ( // Renderizar el panel si no se ha seleccionado ningún componente
+              <div className={styles.panelContainer} onClick={handlePanelClick}>
+             {/*    <div className={styles.panel}>
+                  <div className={styles.cuadrante}>Cuadrante 1</div>
+                  <div className={styles.cuadrante}>Cuadrante 2</div>
+                </div> */}
+               {/*  <div className={styles.panel}>
+                  <div className={styles.cuadrante}>Cuadrante 3</div>
+                  <div className={styles.cuadrante}>Cuadrante 4</div>
+                </div> */}
+              </div>
+            )}
+            <div className={styles.componentContainer}>
+              {selectedComponent === "RegistrarProducto" && (
+                <RegistrarProducto />
+              )}
+            </div>
+            <div className={styles.componentContainer}>
+              {selectedComponent === "AdminListProd" && <AdminListPropd />}
+            </div>
+            <div className={styles.componentContainer}>
+              {selectedComponent === "RegistrarCategoria" && (
+                <RegistrarCategoria />
+              )}
+            </div>
+          </>
         )}
       </div>
-      {mostrarLista && !isMobile && (
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Descripción</th>
-              <th>Largo</th>
-              <th>Ancho</th>
-              <th>Altura</th>
-              <th>Capacidad</th>
-              <th>Valor de Arriendo</th>
-              <th>Cantidad</th>
-              <th>Acciones</th> {/* Nuevo encabezado para el botón de eliminar */}
-            </tr>
-          </thead>
-          <tbody>
-            {productos.map((producto, index) => (
-              <tr key={index}>
-                <td>{producto.nombre}</td>
-                <td>{producto.descripcion}</td>
-                <td>{producto.largo}</td>
-                <td>{producto.ancho}</td>
-                <td>{producto.altura}</td>
-                <td>{producto.capacidad}</td>
-                <td>{producto.valorArriendo}</td>
-                <td>{producto.cantidad}</td>
-                <td>
-                  <button onClick={() => eliminarProducto(index)}>Eliminar</button> {/* Botón de eliminar */}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
     </div>
   );
 };
 
 export default ListarProductos;
-
-
-
-
