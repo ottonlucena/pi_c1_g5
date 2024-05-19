@@ -1,28 +1,26 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 import RandomProductsList from './components/Card/RandomProductsList';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar.jsx';
-/* import Admin from './components/PanelAdministrador/Admin.jsx' */
 import DetailProduct from './components/DetailProduct/DetailProduct.jsx';
 import FeaturedProducts from './components/ProductsFav/FeaturedProducts.jsx';
 import LogoFestivall from '../public/FestivallSVG.svg';
 import ProductCard from './components/Card/ProductCard.jsx';
 import CategorySection from './components/Categorias/CategorySection.jsx';
 import AdminListPropd from './components/AdminListProd/AdminListProd.jsx';
-
-// import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
-
 import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx';
 
 const menuItems = ['Nosotros', 'Servicios', 'Contacto', 'Galería'];
 
-/* import RegistrarProducto from "./components/PanelAdministrador/RegistrarProducto.jsx"; */
 const App = () => {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <>
       <BrowserRouter>
-        <Navbar menuItems={menuItems} logo={LogoFestivall} />
+        <Navbar menuItems={menuItems} logo={LogoFestivall} showModal={showModal} setShowModal={setShowModal} />
         <CategorySection />
         <Routes>
           <Route
@@ -40,11 +38,8 @@ const App = () => {
           <Route path='/admin' element={<ListarProductos />} />
           <Route path='/listaPro' element={<AdminListPropd />} />
         </Routes>
-
         <Footer />
       </BrowserRouter>
-      {/* <AdminListProd /> // este componente es el que iria en el panel de
-      Administracion */}
     </>
   );
 };
