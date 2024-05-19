@@ -1,0 +1,28 @@
+[
+    {
+      "titulo": "Inflables",
+      "descripcion": "Juegos inflables de diferentes tamaños.",
+      "imagen": "url_a_la_imagen_inflables"
+    },
+    {
+      "titulo": "Agua",
+      "descripcion": "Juegos acuáticos para refrescarte.",
+      "imagen": "url_a_la_imagen_agua"
+    },
+    {
+      "titulo": "Mecánicos",
+      "descripcion": "Juegos mecánicos emocionantes.",
+      "imagen": "url_a_la_imagen_mecanicos"
+    },
+    {
+      "titulo": "Destreza",
+      "descripcion": "Juegos que desafían tu habilidad.",
+      "imagen": "url_a_la_imagen_destreza"
+    },
+    {
+      "titulo": "Niños",
+      "descripcion": "Juegos especialmente diseñados para niños.",
+      "imagen": "url_a_la_imagen_ninos"
+    }
+  ]
+  
