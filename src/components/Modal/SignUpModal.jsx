@@ -32,7 +32,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
     setTimeout(() => {
       setShowSuccessMessage(false);
       setShowModal(false);
-      window.location.reload(); // Recargar la página después de 2 segundos
+      window.location.reload(); 
     }, 2000);
   };
 
@@ -59,40 +59,72 @@ const SignUpModal = ({ showModal, setShowModal }) => {
             <span className={styles.close} onClick={() => setShowModal(false)}>&times;</span>
             <h2 className={styles.titulo}>Crear una cuenta</h2>
             <form className={styles.inputContainer} onSubmit={handleSubmit}>
-              <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Nombre" required />
-              <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Apellido" required />
-              <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Correo electrónico" required />
-              <div className="passwordContainer">
-                <input 
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Contraseña"
-                  required
-                />
-                <span className="togglePassword" onClick={toggleShowPassword}>  
-                 {showPassword ? <TbEyeClosed /> : <RxEyeOpen />}
-                
-                </span>
-              </div>
+              <label htmlFor="firstName">Nombre:</label>
               <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
+              className={styles.input}
+                type="text"
+                id="firstName"
+                name="firstName"
+                value={formData.firstName}
                 onChange={handleChange}
-                placeholder="Confirmar Contraseña"
                 required
               />
 
-            <br></br>
+              <label htmlFor="lastName">Apellidos:</label>
+              <input
+              className={styles.input}
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+              />
+
+              <label htmlFor="email">Correo electrónico:</label>
+              <input
+              className={styles.input}
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+
+              <label htmlFor="password">Contraseña:</label>
+              <div className={styles.passwordContainer}>
+                <input
+                className={styles.input}
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                <span className={styles.togglePassword} onClick={toggleShowPassword}>
+                  {showPassword ?  <TbEyeClosed /> : <RxEyeOpen />}
+                </span>
+              </div>
+
+              <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
+              <input
+              className={styles.input}
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+
               <button className={styles.submit} type="submit">Registrarse</button>
             </form>
             {showSuccessMessage && <p>La cuenta se ha creado correctamente.</p>}
           </div>
         </div>
       )}
-      
     </>
   );
 };

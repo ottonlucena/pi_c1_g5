@@ -21,7 +21,7 @@ const App = () => {
     <>
       <BrowserRouter>
         <Navbar menuItems={menuItems} logo={LogoFestivall} showModal={showModal} setShowModal={setShowModal} />
-        <CategorySection />
+        {/* <CategorySection /> */}
         <Routes>
           <Route
             path='/'
