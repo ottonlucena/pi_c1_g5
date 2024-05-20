@@ -58,7 +58,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
           <div className={styles.modalContent}>
             <span className={styles.close} onClick={() => setShowModal(false)}>&times;</span>
             <h2 className={styles.titulo}>Crear una cuenta</h2>
-            <form onSubmit={handleSubmit}>
+            <form className={styles.inputContainer} onSubmit={handleSubmit}>
               <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Nombre" required />
               <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Apellido" required />
               <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Correo electrónico" required />
