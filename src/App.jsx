@@ -26,8 +26,7 @@ const App = () => {
           <Route
             path='/'
             element={
-              <div>
-        <CategorySection />
+              <div>     
                 <RandomProductsList />
                 <FeaturedProducts />
               </div>
