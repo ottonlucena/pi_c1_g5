@@ -24,7 +24,7 @@ const RegistrarProducto = () => {
     inicializarCategorias();
     const categorias = leerCategorias();
     setCategorias(categorias);
-    localStorage.clear();
+    /* localStorage.clear(); */
   }, []);
 
   const handleFormSubmit = (event) => {
