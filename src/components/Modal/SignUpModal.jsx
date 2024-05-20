@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../Modal/SignUpModal.module.css';
+import { TbEyeClosed } from "react-icons/tb";
+import { RxEyeOpen } from "react-icons/rx";
 
 const SignUpModal = ({ showModal, setShowModal }) => {
   const [formData, setFormData] = useState({
@@ -55,13 +57,13 @@ const SignUpModal = ({ showModal, setShowModal }) => {
         <div className={styles.modal}>
           <div className={styles.modalContent}>
             <span className={styles.close} onClick={() => setShowModal(false)}>&times;</span>
-            <h2 className={styles.titulo}>Crea una cuenta</h2>
+            <h2 className={styles.titulo}>Crear una cuenta</h2>
             <form onSubmit={handleSubmit}>
               <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Nombre" required />
               <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Apellido" required />
               <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Correo electrónico" required />
-              <div className="password-container">
-                <input
+              <div className="passwordContainer">
+                <input 
                   type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
@@ -69,8 +71,9 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                   placeholder="Contraseña"
                   required
                 />
-                <span className="toggle-password" onClick={toggleShowPassword}>
-                  {showPassword ? '🙈' : '👁️'}
+                <span className="togglePassword" onClick={toggleShowPassword}>  
+                 {showPassword ? <TbEyeClosed /> : <RxEyeOpen />}
+                
                 </span>
               </div>
               <input
