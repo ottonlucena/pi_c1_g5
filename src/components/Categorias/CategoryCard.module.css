@@ -1,54 +1,55 @@
-/* CategoryCard.module.css */
+.categorySection {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
 
 .categoryCard {
-    width: 18%;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    cursor: pointer;
-    position: relative;
-    background-color: #f5e9fc;
-    text-align: center;
+  width: 18%;
+  border: none;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  position: relative;
+  background-color: #f5e9fc;
+  text-align: center;
+  margin: 10px;
+}
+
+.categoryCard:hover .categoryDescription {
+  display: block;
+}
+
+.categoryTitle {
+  font-size: 16px;
+  color: black;
+}
+
+.categoryDescription {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  font-size: 9px;
+  transform: translateX(-50%);
+  width: 80%;
+  display: none;
+}
+
+.categoryCard.selected {
+  background-color: rgba(124, 185, 75, 0.3);;
+
+}
+
+@media only screen and (max-width: 768px) {
+  .categoryCard {
+    width: 100%;
+    margin-bottom: 20px;
   }
-  
-  .categoryTitle {
-    font-size: 18px;
-    color: #6743dd;
+}
+
+@media only screen and (max-width: 480px) {
+  .categoryCard {
+    width: 100%;
+    flex-direction: column;
   }
-  
-  .categoryDescription {
-    position: absolute;
-    bottom: -60px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 8px;
-    width: 80%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-     z-index: 999;
-    display: none;
-    background-color: #f5e9fc;
-    color: #6743dd;
-  }
-  
-  .categoryCard:hover .categoryDescription {
-    display: block;
-  }
-  
-  @media only screen and (max-width: 768px) {
-    .categoryCard {
-      width: 100%;
-      margin-bottom: 20px;
-    }
-  }
-  
-  @media only screen and (max-width: 480px) {
-    .categoryCard {
-      width: 100%; /* Establecemos el ancho al 100% para ocupar todo el ancho disponible */
-      flex-direction: column; /* Cambiamos a una disposición de columna en dispositivos móviles */
-    }
-  }
-  
-  
+}
