@@ -23,15 +23,14 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-        <Navbar menuItems={menuItems} logo={LogoFestivall} />
+     
         <Navbar menuItems={menuItems} logo={LogoFestivall} showModal={showModal} setShowModal={setShowModal} />
-        {/* <CategorySection /> */}
+    
         <Routes>
           <Route
             path='/'
             element={
-              <div>
-        <CategorySection />
+              <div>      
                 <RandomProductsList />
                 <FeaturedProducts />
               </div>
