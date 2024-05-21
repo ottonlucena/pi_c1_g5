@@ -6,9 +6,9 @@ import CategorySection from '../Categorias/CategorySection';
 const RandomProductsList = () => {
   const [randomProducts, setRandomProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   useEffect(() => {
-    // Datos de ejemplo con categorías
     const exampleProducts = [
       { id: 1, name: "Producto 1", image: "../../Documents/assets/celebrations.jpeg", category: "Celebraciones" },
       { id: 2, name: "Producto 2", image: "../../Documents/assets/castilloinflable2.jpeg", category: "Inflables y Castillos" },
@@ -21,32 +21,28 @@ const RandomProductsList = () => {
       { id: 9, name: "Producto 9", image: "../../Documents/assets/paintball.jpeg", category: "Juegos Mecánicos" },
       { id: 10, name: "Producto 10", image: "../../Documents/assets/soccertable.jpeg", category: "Juegos Mecánicos" },
       { id: 11, name: "Producto 11", image: "../../Documents/assets/poolgames.jpeg", category: "Juegos de Agua" },
-      // Más productos...
-  ];
+    ];
 
-    // Obtener 10 productos aleatorios sin repetir
-    const getRandomProducts = (products, count) => {
-      const shuffledProducts = products.sort(() => 0.5 - Math.random());
-      return shuffledProducts.slice(0, count);
-    };
-
-    const randomSelection = getRandomProducts(exampleProducts, 10);
-    setRandomProducts(randomSelection);
-    setFilteredProducts(randomSelection); // Inicialmente, todos los productos
+    setRandomProducts(exampleProducts);
+    setFilteredProducts(exampleProducts);
   }, []);
 
-  const filterProducts = (category) => {
-    if (category === "Todos") {
+  useEffect(() => {
+    if (selectedCategories.length === 0) {
       setFilteredProducts(randomProducts);
     } else {
-      const filtered = randomProducts.filter(product => product.category === category);
+      const filtered = randomProducts.filter(product => selectedCategories.includes(product.category));
       setFilteredProducts(filtered);
     }
+  }, [selectedCategories, randomProducts]);
+
+  const handleCategorySelect = (categories) => {
+    setSelectedCategories(categories);
   };
 
   return (
     <div>
-      <CategorySection onCategoryClick={filterProducts} />
+      <CategorySection onCategoryClick={handleCategorySelect} />
       <div className={styles.randomProductsList}>
         <PaginationProductCard products={filteredProducts} itemsPerPage={6} />
       </div>

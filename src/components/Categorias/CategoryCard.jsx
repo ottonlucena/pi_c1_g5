@@ -1,14 +1,15 @@
+import React from 'react';
 import styles from './CategoryCard.module.css';
-import Tooltip from '../ToolTip/ToolTip';
 
-const CategoryCard = ({ categoryName, categoryDescription, categoryEmoji, onCategoryClick }) => {
+const CategoryCard = ({ categoryName, categoryDescription, categoryEmoji, isSelected, onClick }) => {
   return (
-    <div className={styles.categoryCard} onClick={() => onCategoryClick(categoryName)}>
-      <Tooltip text={categoryDescription}>
-        <div className={styles.categoryTitle}>
-          {categoryName} {categoryEmoji}
-        </div>
-      </Tooltip>
+    <div className={`${styles.categoryCard} ${isSelected ? styles.selected : ''}`} onClick={onClick}>
+      <div className={styles.categoryTitle}>
+        {categoryEmoji} {categoryName}
+      </div>
+      <div className={styles.categoryDescription}>
+        {categoryDescription}
+      </div>
     </div>
   );
 };
