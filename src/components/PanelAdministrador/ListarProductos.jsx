@@ -3,6 +3,7 @@ import RegistrarProducto from "./RegistrarProducto";
 import AdminListPropd from "../AdminListProd/AdminListProd";
 import RegistrarCategoria from "./RegistrarCategoria";
 import styles from "./ListarProductos.module.css";
+import AdminListCategorias from "../AdminListCategorias/AdminListCategorias";
 
 const ListarProductos = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -80,6 +81,14 @@ const ListarProductos = () => {
               >
                 Agregar Categoria
               </button>
+              <button
+                className={`${styles.btnAgregar} ${
+                  selectedComponent === "AdminListCategorias" && styles.selected
+                }`}
+                onClick={() => handleComponentChange("AdminListCategorias")}
+              >
+                Listar Categorías
+              </button>
             </>
           )}
         </div>
@@ -110,6 +119,11 @@ const ListarProductos = () => {
             <div className={styles.componentContainer}>
               {selectedComponent === "RegistrarCategoria" && (
                 <RegistrarCategoria />
+              )}
+            </div>
+            <div className={styles.componentContainer}>
+              {selectedComponent === "AdminListCategorias" && (
+                <AdminListCategorias />
               )}
             </div>
           </>
