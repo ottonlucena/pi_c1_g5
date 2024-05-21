@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from "./RegistrarProducto.module.css";
 import { agregarProducto } from '../../data/juegos';
-import { IoIosArrowBack } from "react-icons/io";
-import { Link } from 'react-router-dom';
+import { leerCategorias, inicializarCategorias } from '../../data/dataService';
+
+// Simulación de las categorías obtenidas desde la base de datos
 
 
 const RegistrarProducto = () => {
@@ -15,18 +16,24 @@ const RegistrarProducto = () => {
   const [valorArriendo, setValorArriendo] = useState('');
   const [cantidad, setCantidad] = useState('');
   const [imagenes, setImagenes] = useState([]);
+  const [categoria, setCategoria] = useState('');
+  const [categorias, setCategorias] = useState([]);
   const [error, setError] = useState('');
-  
+
+  useEffect(() => {
+    inicializarCategorias();
+    const categorias = leerCategorias();
+    setCategorias(categorias);
+    localStorage.clear();
+  }, []);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    // Validaciones
-    if (!nombre || !descripcion || !largo || !ancho || !altura || !capacidad || !valorArriendo || !cantidad || imagenes.length === 0) {
+    if (!nombre || !descripcion || !largo || !ancho || !altura || !capacidad || !valorArriendo || !cantidad || imagenes.length === 0 || !categoria) {
       setError('Por favor complete todos los campos.');
       return;
     }
 
-    // Agregar nuevo producto al arreglo de productos
     const nuevoProducto = {
       nombre,
       descripcion,
@@ -36,11 +43,11 @@ const RegistrarProducto = () => {
       capacidad: parseInt(capacidad),
       valorArriendo: parseInt(valorArriendo),
       cantidad: parseInt(cantidad),
-      img_url: imagenes[0] ? URL.createObjectURL(imagenes[0]) : '' // Se usa solo la primera imagen como URL de ejemplo
+      categoria,
+      img_url: imagenes[0] ? URL.createObjectURL(imagenes[0]) : ''
     };
     agregarProducto(nuevoProducto);
 
-    // Limpiar campos después de agregar el producto
     setNombre('');
     setDescripcion('');
     setLargo('');
@@ -49,9 +56,8 @@ const RegistrarProducto = () => {
     setCapacidad('');
     setValorArriendo('');
     setCantidad('');
+    setCategoria('');
     setImagenes([]);
-
-    // Mensaje de éxito
     alert('Producto registrado exitosamente!');
   };
 
@@ -61,126 +67,146 @@ const RegistrarProducto = () => {
     }
   };
 
-  
   return (
     <>
-    <div className={styles.formContainer}>
-      <h2 className={styles.titleForm}>Agregar Juego</h2>
-      {error && <p className={styles.error}>{error}</p>}
-      <form onSubmit={handleFormSubmit} className={styles.form}>
-        <div className={styles.inputContainer}>
-          <label htmlFor="nombre" className={styles.label}>Nombre:</label>
-          <input
-            type="text"
-            id="nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            className={`${styles.input} ${styles.textInput}`}
-            required
-          />
+      <div className={styles.containerPrincipal}>
+        <div className={styles.formContainer}>
+          <h2 className={styles.titleForm}>Agregar Juego</h2>
+          {error && <p className={styles.error}>{error}</p>}
+          <form onSubmit={handleFormSubmit} className={styles.form}>
+            <div className={styles.formSection}>
+              <div className={styles.generalInfo}>
+                <div className={styles.inputContainer}>
+                  <label htmlFor="nombre" className={styles.label}>Nombre:</label>
+                  <input
+                    type="text"
+                    id="nombre"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    className={`${styles.input} ${styles.textInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor="cantidad" className={styles.label}>Cantidad:</label>
+                  <input
+                    type="number"
+                    id="cantidad"
+                    value={cantidad}
+                    onChange={(e) => handleChangeNumericInput(setCantidad, e.target.value)}
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor="valorArriendo" className={styles.label}>Valor de Arriendo:</label>
+                  <input
+                    type="number"
+                    id="valorArriendo"
+                    value={valorArriendo}
+                    onChange={(e) => handleChangeNumericInput(setValorArriendo, e.target.value)}
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor="ancho" className={styles.label}>Ancho (metros):</label>
+                  <input
+                    type="number"
+                    id="ancho"
+                    value={ancho}
+                    onChange={(e) => handleChangeNumericInput(setAncho, e.target.value)}
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor="categoria" className={styles.label}>Categoría:</label>
+                  <select
+                    id="categoria"
+                    value={categoria}
+                    onChange={(e) => setCategoria(e.target.value)}
+                    className={`${styles.input} ${styles.selectInput}`}
+                    required
+                  >
+                    <option value="">Seleccione una categoría</option>
+                    {categorias.map((cat, index) => (
+                      <option key={index} value={cat.titulo}>{cat.titulo}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className={styles.metaData}>
+                <div className={styles.inputContainer}>
+                  <label htmlFor="altura" className={styles.label}>Altura (metros):</label>
+                  <input
+                    type="number"
+                    id="altura"
+                    value={altura}
+                    onChange={(e) => handleChangeNumericInput(setAltura, e.target.value)}
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor="largo" className={styles.label}>Largo (metros):</label>
+                  <input
+                    type="number"
+                    id="largo"
+                    value={largo}
+                    onChange={(e) => handleChangeNumericInput(setLargo, e.target.value)}
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor="capacidad" className={styles.label}>Capacidad:</label>
+                  <input
+                    type="number"
+                    id="capacidad"
+                    value={capacidad}
+                    onChange={(e) => handleChangeNumericInput(setCapacidad, e.target.value)}
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor="descripcion" className={styles.label}>Descripción:</label>
+                  <textarea
+                    id="descripcion"
+                    value={descripcion}
+                    onChange={(e) => setDescripcion(e.target.value)}
+                    className={`${styles.input} ${styles.textAreaInput}`}
+                    required
+                  />
+                </div>            
+              </div>
+            </div>
+            <div className={styles.imageContainer}>
+              <label htmlFor="imagenes" className={styles.label}>Imágenes:</label>
+              <input
+                type="file"
+                id="imagenes"
+                accept="image/*"
+                onChange={(e) => setImagenes([...e.target.files])}
+                className={`${styles.input} ${styles.fileInput}`}
+                multiple
+                required
+              />
+            </div>
+            <div className={styles.formButtons}>
+              <button type="submit" className={styles.submitButton}>Guardar Juego</button>
+            </div>
+          </form>
         </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="descripcion" className={styles.label}>Descripción:</label>
-          <textarea
-            id="descripcion"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-            className={`${styles.input} ${styles.textAreaInput}`}
-            required
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="largo" className={styles.label}>Largo (metros):</label>
-          <input
-            type="number"
-            id="largo"
-            value={largo}
-            onChange={(e) => handleChangeNumericInput(setLargo, e.target.value)}
-            className={`${styles.input} ${styles.numberInput}`}
-            required
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="ancho" className={styles.label}>Ancho (metros):</label>
-          <input
-            type="number"
-            id="ancho"
-            value={ancho}
-            onChange={(e) => handleChangeNumericInput(setAncho, e.target.value)}
-            className={`${styles.input} ${styles.numberInput}`}
-            required
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="altura" className={styles.label}>Altura (metros):</label>
-          <input
-            type="number"
-            id="altura"
-            value={altura}
-            onChange={(e) => handleChangeNumericInput(setAltura, e.target.value)}
-            className={`${styles.input} ${styles.numberInput}`}
-            required
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="capacidad" className={styles.label}>Capacidad:</label>
-          <input
-            type="number"
-            id="capacidad"
-            value={capacidad}
-            onChange={(e) => handleChangeNumericInput(setCapacidad, e.target.value)}
-            className={`${styles.input} ${styles.numberInput}`}
-            required
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="valorArriendo" className={styles.label}>Valor de Arriendo:</label>
-          <input
-            type="number"
-            id="valorArriendo"
-            value={valorArriendo}
-            onChange={(e) => handleChangeNumericInput(setValorArriendo, e.target.value)}
-            className={`${styles.input} ${styles.numberInput}`}
-            required
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="cantidad" className={styles.label}>Cantidad:</label>
-          <input
-            type="number"
-            id="cantidad"
-            value={cantidad}
-            onChange={(e) => handleChangeNumericInput(setCantidad, e.target.value)}
-            className={`${styles.input} ${styles.numberInput}`}
-            required
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="imagenes" className={styles.label}>Imágenes:</label>
-          <input
-            type="file"
-            id="imagenes"
-            accept="image/*"
-            onChange={(e) => setImagenes([...e.target.files])}
-            className={`${styles.input} ${styles.fileInput}`}
-            multiple
-            required
-          />
-        </div>
-        <button type="submit" className={`${styles.button} ${styles.submitButton}`}>Guardar Juego</button>
-      </form>
-    </div>
-      <div className={styles.productBack}>
-        <Link to="/admin" className={styles.goBack}>
-          <IoIosArrowBack color="white" size={40} />
-        </Link>
       </div>
-
     </>
   );
 };
 
 export default RegistrarProducto;
+
+
 
 
 
