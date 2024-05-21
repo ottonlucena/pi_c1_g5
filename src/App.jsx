@@ -31,6 +31,7 @@ const App = () => {
             path='/'
             element={
               <div>      
+              <div>     
                 <RandomProductsList />
                 <FeaturedProducts />
               </div>
