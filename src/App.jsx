@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 import RandomProductsList from './components/Card/RandomProductsList';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar.jsx';
-/* import Admin from './components/PanelAdministrador/Admin.jsx' */
 import DetailProduct from './components/DetailProduct/DetailProduct.jsx';
 import FeaturedProducts from './components/ProductsFav/FeaturedProducts.jsx';
 import LogoFestivall from '../public/FestivallSVG.svg';
@@ -11,23 +11,26 @@ import CategorySection from './components/Categorias/CategorySection.jsx';
 
 // import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
+import AdminListPropd from './components/AdminListProd/AdminListProd.jsx';
 import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx';
 
 const menuItems = ['Nosotros', 'Servicios', 'Contacto', 'Galería'];
 
-/* import RegistrarProducto from "./components/PanelAdministrador/RegistrarProducto.jsx"; */
 const App = () => {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <>
       <BrowserRouter>
-        <Navbar menuItems={menuItems} logo={LogoFestivall} />
+     
+        <Navbar menuItems={menuItems} logo={LogoFestivall} showModal={showModal} setShowModal={setShowModal} />
+    
         <Routes>
           <Route
             path='/'
             element={
-              <div>
-        <CategorySection />
+              <div>      
                 <RandomProductsList />
                 <FeaturedProducts />
               </div>
@@ -38,11 +41,8 @@ const App = () => {
           <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
           <Route path='/admin' element={<ListarProductos />} />
         </Routes>
-
         <Footer />
       </BrowserRouter>
-      {/* <AdminListProd /> // este componente es el que iria en el panel de
-      Administracion */}
     </>
   );
 };
