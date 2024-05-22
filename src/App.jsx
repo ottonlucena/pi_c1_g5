@@ -8,6 +8,7 @@ import FeaturedProducts from './components/ProductsFav/FeaturedProducts.jsx';
 import LogoFestivall from '../public/FestivallSVG.svg';
 import ProductCard from './components/Card/ProductCard.jsx';
 import CategorySection from './components/Categorias/CategorySection.jsx';
+import EmailForm from './components/SendEmail/EmailForm.jsx';
 
 // import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
@@ -44,6 +45,7 @@ const App = () => {
           <Route path='/product/:id' element={<ProductCard />} />
           <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
           <Route path='/admin' element={<ListarProductos />} />
+          <Route path='/emailTest' element={<EmailForm />} />
         </Routes>
         <Footer />
       </BrowserRouter>
