@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import data from '../../data/productos.json';
+import data from '../../data/juegos.json';
 
 const useProductosStore = create((set) => ({
   productos: data,

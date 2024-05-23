@@ -7,11 +7,11 @@ import DetailProduct from './components/DetailProduct/DetailProduct.jsx';
 import FeaturedProducts from './components/ProductsFav/FeaturedProducts.jsx';
 import LogoFestivall from '../public/FestivallSVG.svg';
 import ProductCard from './components/Card/ProductCard.jsx';
-import CategorySection from './components/Categorias/CategorySection.jsx';
+/* import CategorySection from './components/Categorias/CategorySection.jsx'; */
 
 // import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
-import AdminListPropd from './components/AdminListProd/AdminListProd.jsx';
+/* import AdminListPropd from './components/AdminListProd/AdminListProd.jsx'; */
 import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx';
 
@@ -30,7 +30,7 @@ const App = () => {
           <Route
             path='/'
             element={
-              <div>      
+              <div> 
                 <RandomProductsList />
                 <FeaturedProducts />
               </div>
@@ -48,3 +48,9 @@ const App = () => {
 };
 
 export default App;
+
+
+
+  // ...
+
+ 
