@@ -12,7 +12,7 @@ import EmailForm from './components/SendEmail/EmailForm.jsx';
 
 // import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
-import AdminListPropd from './components/AdminListProd/AdminListProd.jsx';
+/* import AdminListPropd from './components/AdminListProd/AdminListProd.jsx'; */
 import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx';
 
@@ -54,3 +54,10 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
+
+

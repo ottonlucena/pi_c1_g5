@@ -29,7 +29,7 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/castilloinflable2.jpeg",
+        "img_url": "../public/assets/castilloinflable2.jpeg",
         "tipo": "INFLABLES",
         "caracteristicas": [
             "Colores vivos",
@@ -49,7 +49,7 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/castilloinflable3.jpeg",
+        "img_url": "../public/assets/castilloinflable3.jpeg",
         "tipo": "INFLABLES",
         "caracteristicas": [
             "Área de salto amplia",
@@ -69,7 +69,7 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/castilloinflable4.jpeg",
+        "img_url": "../public/assets/castilloinflable4.jpeg",
         "tipo": "INFLABLES",
         "caracteristicas": [
             "Colores vibrantes",
@@ -89,8 +89,11 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/castilloinflable1.jpeg",
-        "tipo": "INFLABLES",
+        "img_url": "../public/assets/castilloinflable1.jpeg",
+        "tipo": {
+            "id": 1,
+            "nombre": "INFLABLES"
+        },
         "caracteristicas": [
             "Superficie amplia",
             "Paredes acolchadas",
@@ -109,8 +112,11 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/centrodejuegos.jpeg",
-        "tipo": "INFLABLES",
+        "img_url": "../public/assets/centrodejuegos.jpeg",
+        "tipo": {
+            "id": 1,
+            "nombre": "INFLABLES"
+        },
         "caracteristicas": [
             "Actividades variadas",
             "Zonas de escalada",
@@ -129,8 +135,11 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/jengaGiant.jpeg",
-        "tipo": "DESTREZA",
+        "img_url": "../public/assets/jengaGiant.jpeg",
+        "tipo": {
+            "id": 5,
+            "nombre": "DESTREZA"
+        },
         "caracteristicas": [
             "Versión gigante",
             "Ideal para exteriores e interiores",
@@ -149,8 +158,11 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/juegoinfantil1.jpeg",
-        "tipo": "DESTREZA",
+        "img_url": "../public/assets/juegoinfantil1.jpeg",
+        "tipo": {
+            "id": 5,
+            "nombre": "DESTREZA"
+        },
         "caracteristicas": [
             "Resistencia y trabajo en equipo",
             "Ideal para exteriores",
@@ -169,8 +181,11 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/paintball.jpeg",
-        "tipo": "DESTREZA",
+        "img_url": "../public/assets/paintball.jpeg",
+        "tipo": {
+            "id": 5,
+            "nombre": "DESTREZA"
+        },
         "caracteristicas": [
             "Alta adrenalina",
             "Equipamiento completo",
@@ -189,8 +204,11 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/soccertable.jpeg",
-        "tipo": "MECANICOS",
+        "img_url": "../public/assets/soccertable.jpeg",
+        "tipo": {
+            "id": 3,
+            "nombre": "ACCION"
+        },
         "caracteristicas": [
             "Diseño robusto",
             "Materiales duraderos",
@@ -209,8 +227,11 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/poolgames.jpeg",
-        "tipo": "INFLABLES",
+        "img_url": "../public/assets/poolgames.jpeg",
+        "tipo": {
+            "id": 1,
+            "nombre": "INFLABLES"
+        },
         "caracteristicas": [
             "Fácil de montar",
             "Materiales resistentes",
