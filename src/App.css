@@ -3,6 +3,15 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  font-family: "Playfair Display";
+}
+
+body {
+  font-family: "Playfair Display";
+  font-size: 16px;
+  font-family: 'Playfair Display', serif;
+  margin: 0;
+  padding: 0;
 }
 
 .logo {

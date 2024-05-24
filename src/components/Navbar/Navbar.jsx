@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import SignUpModal from '../Modal/SignUpModal';
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -84,35 +83,28 @@ const Navbar = ({ menuItems, logo }) => {
     navigate('/');
   };
 
-  const handleSignUpClick = () => {
-    setShowModal(true);
-  };
-
   return (
-    <>
-      <NavbarContainer>
-        <LeftSection>
-          <img
-            src={logo}
-            alt='Logo'
-            style={{ maxWidth: '100%', width: '200px' }}
-            onClick={redirectToHome}
-          />
-        </LeftSection>
-        <CenterSection>
-          {menuItems.map((item) => (
-            <NavButton key={item}>{item}</NavButton>
-          ))}
-        </CenterSection>
-        <RightSection>
-          <SearchInput type='text' placeholder='Buscar' />
-          <Avatar />
-          <NavButton>Login</NavButton>
-          <NavButton onClick={handleSignUpClick}>Sign Up</NavButton>
-        </RightSection>
-      </NavbarContainer>
-      <SignUpModal showModal={showModal} setShowModal={setShowModal} />
-    </>
+    <NavbarContainer>
+      <LeftSection>
+        <img
+          src={logo}
+          alt='Logo'
+          style={{ maxWidth: '100%', width: '200px' }}
+          onClick={redirectToHome}
+        />
+      </LeftSection>
+      <CenterSection>
+        {menuItems.map((item) => (
+          <NavButton key={item}>{item}</NavButton>
+        ))}
+      </CenterSection>
+      <RightSection>
+        <SearchInput type='text' placeholder='Buscar' />
+        <Avatar />
+        <NavButton>Login</NavButton>
+        <NavButton>Sign Up</NavButton>
+      </RightSection>
+    </NavbarContainer>
   );
 };
 

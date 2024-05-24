@@ -4,7 +4,8 @@
   border-radius: 8px;
   overflow: hidden;
   width: 30%;
-  height: 250px; /* Cambia este valor según lo necesites */
+  height: 250px; /* Mantén la altura fija */
+  margin-right: 2%; /* Espaciado entre tarjetas */
 }
 
 .productImage {
@@ -12,7 +13,7 @@
 }
 
 .productImage img {
-  width: 190px;
+  width: 100%;
   height: 100%;
   object-fit: cover;
 }
@@ -20,18 +21,18 @@
 .productDetails {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centrar verticalmente */
+  justify-content: center;
   align-items: center;
-  padding: 0rem 1.5rem 0rem 1.5rem;
+  padding: 1.5em; /* Ajusta el padding usando medidas relativas */
   text-align: center;
   background-color: #f5e9fc;
-  height: 100%; /* Asegura que el contenedor ocupe toda la altura */
-  width: 180px;
+  height: 100%;
+  width: 135px;
   gap: 13px;
 }
 
 .productDetails h3 {
-  font-size: 17px;
+  font-size: 1em; /* Ajusta el tamaño de fuente usando medidas relativas */
   margin-top: 0;
 }
 
@@ -39,12 +40,12 @@
   background-color: #795af6;
   color: white;
   border: none;
-  padding: 6px 12px; /* Reducir el tamaño del padding */
+  padding: 0.3em 0.3em; /* Ajusta el padding usando medidas relativas */
   border-radius: 4px;
   cursor: pointer;
-  outline: none; /* Eliminar el borde al hacer clic */
-  transition: background-color 0.3s; /* Agregar transición para suavizar cambios */
-  font-size: 14px;
+  outline: none;
+  transition: background-color 0.3s;
+  font-size: 1em; /* Ajusta el tamaño de fuente usando medidas relativas */
   width: 100px;
 }
 
@@ -55,31 +56,27 @@
 
 .detailButton:focus,
 .detailButton:active {
-  outline: none; /* Eliminar el borde al hacer foco o al estar activo */
+  outline: none;
 }
 
 /* Estilos para dispositivos móviles */
 @media (max-width: 767px) {
   .productCard {
-    width: 100%; /* Cambia el ancho a 100% para dispositivos móviles */
-    height: auto; /* Ajusta la altura automáticamente */
-  }
-
-  .productImage img {
     width: 100%;
-    height: 220px;
-    object-fit: cover;
+    height: auto;
+    margin-right: 0; /* Elimina el margen entre tarjetas en dispositivos móviles */
+    margin-bottom: 20px; /* Añade margen inferior para separar las tarjetas */
   }
 
   .productDetails {
-    padding: 1rem; /* Reduce el padding para dispositivos móviles */
-    background-color: #f5e9fc;
+    padding: 1em; /* Ajusta el padding usando medidas relativas */
   }
 }
 
 /* Estilos para tabletas */
 @media (min-width: 768px) and (max-width: 1023px) {
   .productCard {
-    width: 45%; /* Cambia el ancho a 45% para tabletas */
+    width: 45%;
   }
 }
+
