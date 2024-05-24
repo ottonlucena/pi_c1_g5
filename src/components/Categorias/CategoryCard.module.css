@@ -2,6 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  z-index: 999;
 }
 
 .categoryCard {
@@ -21,7 +22,7 @@
 }
 
 .categoryTitle {
-  font-size: 16px;
+  font-size: 15px;
   color: black;
 }
 

@@ -9,15 +9,15 @@ const ProductCard = ({ product }) => {
   }
 
   // Acceder a las propiedades del producto
-  const { id, name, image } = product;
+  const { id, nombre, img_url } = product;
 
   return (
     <div className={styles.productCard}>
       <div className={styles.productImage}>
-        <img src={image} alt={name} />
+        <img src={img_url} alt={nombre} />
       </div>
       <div className={styles.productDetails}>
-        <h3>{name}</h3>
+        <h3>{nombre}</h3>
         <Link to={`/detalle/${id}`} className={styles.detailButton}>Ver Detalle</Link>
       </div>
     </div>
