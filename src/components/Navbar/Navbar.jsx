@@ -84,6 +84,10 @@ const Navbar = ({ menuItems, logo }) => {
     navigate('/');
   };
 
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
   const handleSignUpClick = () => {
     setShowModal(true);
   };
@@ -107,7 +111,7 @@ const Navbar = ({ menuItems, logo }) => {
         <RightSection>
           <SearchInput type='text' placeholder='Buscar' />
           <Avatar />
-          <NavButton>Login</NavButton>
+          <NavButton onClick={handleLoginClick}>Login</NavButton>
           <NavButton onClick={handleSignUpClick}>Sign Up</NavButton>
         </RightSection>
       </NavbarContainer>

@@ -5,11 +5,11 @@ import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar.jsx';
 import DetailProduct from './components/DetailProduct/DetailProduct.jsx';
 import FeaturedProducts from './components/ProductsFav/FeaturedProducts.jsx';
-import LogoFestivall from '../public/FestivallSVG.svg';
+import LogoFestivall from '/FestivallSVG.svg';
 import ProductCard from './components/Card/ProductCard.jsx';
 import CategorySection from './components/Categorias/CategorySection.jsx';
 import EmailForm from './components/SendEmail/EmailForm.jsx';
-
+import Login from './components/Login/Login.jsx';
 // import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
 /* import AdminListPropd from './components/AdminListProd/AdminListProd.jsx'; */
@@ -46,6 +46,7 @@ const App = () => {
           <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
           <Route path='/admin' element={<ListarProductos />} />
           <Route path='/emailTest' element={<EmailForm />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
         <Footer />
       </BrowserRouter>
