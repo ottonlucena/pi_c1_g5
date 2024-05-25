@@ -1,22 +1,69 @@
 // dataService.js
-import initialCategorias from './categorias.json';
+const API_URL = "http://localhost:8080/api/tipo-juegos";
 
-export const leerCategorias = () => {
-  const categorias = localStorage.getItem('categorias');
-  return categorias ? JSON.parse(categorias) : [];
-};
+export const  LeerCategorias = async () =>  {
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+      throw new Error("error", response.statusText);
+    }
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("error", error);
+    throw error;
+  }
+}
 
-export const inicializarCategorias = () => {
-  if (!localStorage.getItem('categorias')) {
-    localStorage.setItem('categorias', JSON.stringify(initialCategorias));
+export const agregarCategoria = async (nuevaCategoria) => {
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(nuevaCategoria),
+    });
+    if (!response.ok) {
+      throw new Error("Error al agregar la categoría");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };
 
-export const agregarCategoria = (nuevaCategoria) => {
-  const categorias = leerCategorias();
-  categorias.push(nuevaCategoria);
-  localStorage.setItem('categorias', JSON.stringify(categorias));
+
+export const eliminarCategoria = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error("Error al eliminar la categoría");
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
-
-// simulacion usando localStorage. Esto simulará el comportamiento de lectura y escritura en un archivo JSON.
+export const actualizarCategoria = async (id, categoriaActualizada) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(categoriaActualizada),
+    });
+    if (!response.ok) {
+      throw new Error("Error al actualizar la categoría");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
