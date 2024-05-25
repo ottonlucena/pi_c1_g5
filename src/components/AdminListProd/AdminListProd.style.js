@@ -30,7 +30,7 @@ export const ListRow = styled.div`
   background-color: #ffffff;
   border-bottom: 1px solid #e6e6e6;
   margin-bottom: 4px;
-  height: 40px;
+  height: 70px;
   transition: background-color 0.3s ease;
 
   &:hover {
@@ -51,8 +51,7 @@ export const ListCell = styled.div`
   cursor: ${(props) => (props.sortable ? 'pointer' : 'default')};
   display: flex;
   align-items: center;
-  justify-content: ${(props) =>
-    props.isCantidad || props.isAlquiler ? 'center' : 'flex-start'};
+  justify-content: center; /* Centramos el contenido */
 
   &:last-child {
     border-right: none;
