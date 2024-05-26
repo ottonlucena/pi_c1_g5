@@ -1,5 +1,5 @@
 // dataService.js
-const API_URL = "http://localhost:8080/api/tipo-juegos";
+const API_URL = "http://localhost:8080/api/category";
 
 export const  LeerCategorias = async () =>  {
   try {
@@ -35,9 +35,9 @@ export const agregarCategoria = async (nuevaCategoria) => {
 };
 
 
-export const eliminarCategoria = async (id) => {
+export const eliminarCategoriaPorNombre = async (title) => {
   try {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${API_URL}/${title}`, {
       method: "DELETE",
     });
     if (!response.ok) {
@@ -49,9 +49,10 @@ export const eliminarCategoria = async (id) => {
   }
 };
 
-export const actualizarCategoria = async (id, categoriaActualizada) => {
+
+export const actualizarCategoria = async (title, categoriaActualizada) => {
   try {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${API_URL}/${title}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -67,3 +68,8 @@ export const actualizarCategoria = async (id, categoriaActualizada) => {
     throw error;
   }
 };
+
+
+
+
+

@@ -204,7 +204,7 @@ const RegistrarProducto = () => {
                   <option value="">Seleccione una categoría</option>
                   {categorias.map((cat, index) => (
                     <option key={index} value={cat.id}>
-                      {cat.nombre}
+                      {cat.title}
                     </option>
                   ))}
                 </select>

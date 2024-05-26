@@ -8,7 +8,7 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../../Documents/assets/celebrations.jpeg",
+        "img_url": "../../Documents/assets/inflables.jpg",
         "tipo": {
             "id": 2,
             "nombre": "NINOS"
@@ -30,7 +30,7 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../public/assets/castilloinflable2.jpeg",
+        "img_url": "../public/assets/inflables.jpg",
         "tipo": {
             "id": 1,
             "nombre": "INFLABLES"

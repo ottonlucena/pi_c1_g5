@@ -1,6 +1,4 @@
-
-
-const API_URL = 'http://localhost:8080/api/juegos';
+const API_URL = "http://localhost:8080/api/juegos";
 
 // Obtener todos los juegos
 const obtenerProductos = async () => {
@@ -9,28 +7,26 @@ const obtenerProductos = async () => {
     if (!response.ok) {
       throw new Error("error", response.statusText);
     }
-    const data = await response.json()
-    return data
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error("error", error);
     throw error;
   }
-  
 };
-
 
 // Agregar un nuevo juego
 const agregarProducto = async (nuevoProducto) => {
   const response = await fetch(API_URL, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(nuevoProducto),
   });
 
   if (!response.ok) {
-    throw new Error('Error al agregar el producto');
+    throw new Error("Error al agregar el producto");
   }
 
   const data = await response.json();
@@ -48,9 +44,9 @@ const obtenerProductoPorId = async (id) => {
 // Actualizar un juego
 const actualizarProducto = async (id, productoActualizado) => {
   const response = await fetch(`${API_URL}/${id}`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(productoActualizado),
   });
@@ -64,10 +60,11 @@ const actualizarProducto = async (id, productoActualizado) => {
   return data;
 };
 
+
 // Eliminar un juego
 const eliminarProducto = async (id) => {
   const response = await fetch(`${API_URL}/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
   });
 
   if (!response.ok) {
@@ -78,8 +75,10 @@ const eliminarProducto = async (id) => {
   return id;
 };
 
-export { obtenerProductos, agregarProducto, obtenerProductoPorId, actualizarProducto, eliminarProducto };
-
-
-
-  
+export {
+  obtenerProductos,
+  agregarProducto,
+  obtenerProductoPorId,
+  actualizarProducto,
+  eliminarProducto,
+};
