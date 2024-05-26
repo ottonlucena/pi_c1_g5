@@ -1,33 +1,59 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import styles from "./RegistrarProducto.module.css";
-import { agregarProducto } from '../../data/juegos';
-import { leerCategorias, inicializarCategorias } from '../../data/dataService';
+import { agregarProducto } from "../../data/juegos";
+import { LeerCategorias } from "../../data/dataService";
 
 const RegistrarProducto = () => {
-  const [nombre, setNombre] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [largo, setLargo] = useState('');
-  const [ancho, setAncho] = useState('');
-  const [altura, setAltura] = useState('');
-  const [capacidad, setCapacidad] = useState('');
-  const [valorArriendo, setValorArriendo] = useState('');
-  const [cantidad, setCantidad] = useState('');
-  const [imagenes, setImagenes] = useState([]);
-  const [categoria, setCategoria] = useState('');
+  const [nombre, setNombre] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [largo, setLargo] = useState("");
+  const [ancho, setAncho] = useState("");
+  const [altura, setAltura] = useState("");
+  const [capacidad, setCapacidad] = useState("");
+  const [valorArriendo, setValorArriendo] = useState("");
+  const [cantidad, setCantidad] = useState("");
+  const [img_url, setImgUrl] = useState("");
+  const [categoria, setCategoria] = useState("");
   const [categorias, setCategorias] = useState([]);
-  const [caracteristicas, setCaracteristicas] = useState(['', '', '', '', '']);
-  const [error, setError] = useState('');
+  const [caracteristicas, setCaracteristicas] = useState(["", "", "", "", ""]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    inicializarCategorias();
-    const categorias = leerCategorias();
-    setCategorias(categorias);
+    const fetchCategorias = async () => {
+      try {
+        const categoriasData = await LeerCategorias();
+        setCategorias(categoriasData);
+      } catch (error) {
+        console.error("Error al leer las categorías", error);
+      }
+    };
+    fetchCategorias();
   }, []);
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-    if (!nombre || !descripcion || !largo || !ancho || !altura || !capacidad || !valorArriendo || !cantidad || imagenes.length === 0 || !categoria || caracteristicas.some(car => !car)) {
-      setError('Por favor complete todos los campos.');
+    if (
+      !nombre ||
+      !descripcion ||
+      !largo ||
+      !ancho ||
+      !altura ||
+      !capacidad ||
+      !valorArriendo ||
+      !cantidad ||
+      !img_url ||
+      !categoria ||
+      caracteristicas.some((car) => !car)
+    ) {
+      setError("Por favor complete todos los campos.");
+      return;
+    }
+
+    const categoriaSeleccionada = categorias.find(
+      (cat) => cat.id.toString() === categoria
+    );
+    if (!categoriaSeleccionada) {
+      setError("Categoría seleccionada no es válida.");
       return;
     }
 
@@ -40,30 +66,49 @@ const RegistrarProducto = () => {
       capacidad: parseInt(capacidad),
       valorArriendo: parseInt(valorArriendo),
       cantidad: parseInt(cantidad),
-      categoria,
-      img_url: imagenes[0] ? URL.createObjectURL(imagenes[0]) : '',
-      caracteristicas
+      img_url,
+      tipo: {
+        id: categoriaSeleccionada.id,
+        nombre: categoriaSeleccionada.nombre,
+      },
+      caracteristicas,
     };
 
-    agregarProducto(nuevoProducto);
+    try {
+      await agregarProducto(nuevoProducto);
+      alert("Producto registrado exitosamente!");
+      setNombre("");
+      setDescripcion("");
+      setLargo("");
+      setAncho("");
+      setAltura("");
+      setCapacidad("");
+      setValorArriendo("");
+      setCantidad("");
+      setImgUrl("");
+      setCategoria("");
+      setCaracteristicas(["", "", "", "", ""]);
+      setError("");
+    } catch (error) {
+      setError("Error al registrar el producto. Inténtelo de nuevo.");
+      console.error("Error al registrar el producto:", error);
+    }
+  };
 
-    setNombre('');
-    setDescripcion('');
-    setLargo('');
-    setAncho('');
-    setAltura('');
-    setCapacidad('');
-    setValorArriendo('');
-    setCantidad('');
-    setCategoria('');
-    setImagenes([]);
-    setCaracteristicas(['', '', '', '', '']);
-    alert('Producto registrado exitosamente!');
+  const handleImageChange = (event) => {
+    const selectedFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(selectedFile);
+    setImgUrl(imageUrl);
+  };
+
+  const handleRemoveImage = () => {
+    setImgUrl(null);
   };
 
   const handleChangeNumericInput = (setter, value) => {
-    if (value >= 0) {
-      setter(value);
+    const numericValue = parseFloat(value);
+    if (!isNaN(numericValue) && numericValue >= 0) {
+      setter(numericValue);
     }
   };
 
@@ -72,11 +117,13 @@ const RegistrarProducto = () => {
       <div className={styles.formContainer}>
         <h2 className={styles.titleForm}>Agregar Juego</h2>
         {error && <p className={styles.error}>{error}</p>}
-        <form onSubmit={handleFormSubmit} className={styles.form}>
+        <form className={styles.form} onSubmit={handleFormSubmit}>
           <div className={styles.formSection}>
             <div className={styles.generalInfo}>
               <div className={styles.inputContainer}>
-                <label htmlFor="nombre" className={styles.label}>Nombre:</label>
+                <label htmlFor="nombre" className={styles.label}>
+                  Nombre:
+                </label>
                 <input
                   type="text"
                   id="nombre"
@@ -87,90 +134,9 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="cantidad" className={styles.label}>Cantidad:</label>
-                <input
-                  type="number"
-                  id="cantidad"
-                  value={cantidad}
-                  onChange={(e) => handleChangeNumericInput(setCantidad, e.target.value)}
-                  className={`${styles.input} ${styles.numberInput}`}
-                  required
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <label htmlFor="valorArriendo" className={styles.label}>Valor de Arriendo:</label>
-                <input
-                  type="number"
-                  id="valorArriendo"
-                  value={valorArriendo}
-                  onChange={(e) => handleChangeNumericInput(setValorArriendo, e.target.value)}
-                  className={`${styles.input} ${styles.numberInput}`}
-                  required
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <label htmlFor="ancho" className={styles.label}>Ancho (metros):</label>
-                <input
-                  type="number"
-                  id="ancho"
-                  value={ancho}
-                  onChange={(e) => handleChangeNumericInput(setAncho, e.target.value)}
-                  className={`${styles.input} ${styles.numberInput}`}
-                  required
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <label htmlFor="categoria" className={styles.label}>Categoría:</label>
-                <select
-                  id="categoria"
-                  value={categoria}
-                  onChange={(e) => setCategoria(e.target.value)}
-                  className={`${styles.input} ${styles.selectInput}`}
-                  required
-                >
-                  <option value="">Seleccione una categoría</option>
-                  {categorias.map((cat, index) => (
-                    <option key={index} value={cat.titulo}>{cat.titulo}</option>
-                  ))}
-                </select>
-              </div>
-              <div className={styles.inputContainer}>
-                <label htmlFor="altura" className={styles.label}>Altura (metros):</label>
-                <input
-                  type="number"
-                  id="altura"
-                  value={altura}
-                  onChange={(e) => handleChangeNumericInput(setAltura, e.target.value)}
-                  className={`${styles.input} ${styles.numberInput}`}
-                  required
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <label htmlFor="largo" className={styles.label}>Largo (metros):</label>
-                <input
-                  type="number"
-                  id="largo"
-                  value={largo}
-                  onChange={(e) => handleChangeNumericInput(setLargo, e.target.value)}
-                  className={`${styles.input} ${styles.numberInput}`}
-                  required
-                />
-              </div>
-            </div>
-            <div className={styles.metaData}>
-              <div className={styles.inputContainer}>
-                <label htmlFor="capacidad" className={styles.label}>Capacidad:</label>
-                <input
-                  type="number"
-                  id="capacidad"
-                  value={capacidad}
-                  onChange={(e) => handleChangeNumericInput(setCapacidad, e.target.value)}
-                  className={`${styles.input} ${styles.numberInput}`}
-                  required
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <label htmlFor="descripcion" className={styles.label}>Descripción:</label>
+                <label htmlFor="descripcion" className={styles.label}>
+                  Descripción:
+                </label>
                 <textarea
                   id="descripcion"
                   value={descripcion}
@@ -180,74 +146,165 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="caracteristica1" className={styles.label}>Característica 1:</label>
+                <label htmlFor="largo" className={styles.label}>
+                  Largo (metros):
+                </label>
                 <input
-                  type="text"
-                  id="caracteristica1"
-                  value={caracteristicas[0]}
-                  onChange={(e) => setCaracteristicas([e.target.value, ...caracteristicas.slice(1)])}
-                  className={`${styles.input} ${styles.textInput}`}
+                  type="number"
+                  id="largo"
+                  value={largo}
+                  onChange={(e) =>
+                    handleChangeNumericInput(setLargo, e.target.value)
+                  }
+                  className={`${styles.input} ${styles.numberInput}`}
                   required
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="caracteristica2" className={styles.label}>Característica 2:</label>
+                <label htmlFor="ancho" className={styles.label}>
+                  Ancho (metros):
+                </label>
                 <input
-                  type="text"
-                  id="caracteristica2"
-                  value={caracteristicas[1]}
-                  onChange={(e) => setCaracteristicas([caracteristicas[0], e.target.value, ...caracteristicas.slice(2)])}
-                  className={`${styles.input} ${styles.textInput}`}
+                  type="number"
+                  id="ancho"
+                  value={ancho}
+                  onChange={(e) =>
+                    handleChangeNumericInput(setAncho, e.target.value)
+                  }
+                  className={`${styles.input} ${styles.numberInput}`}
                   required
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="caracteristica3" className={styles.label}>Característica 3:</label>
+                <label htmlFor="altura" className={styles.label}>
+                  Altura (metros):
+                </label>
                 <input
-                  type="text"
-                  id="caracteristica3"
-                  value={caracteristicas[2]}
-                  onChange={(e) => setCaracteristicas([caracteristicas[0], caracteristicas[1], e.target.value, ...caracteristicas.slice(3)])}
-                  className={`${styles.input} ${styles.textInput}`}
+                  type="number"
+                  id="altura"
+                  value={altura}
+                  onChange={(e) =>
+                    handleChangeNumericInput(setAltura, e.target.value)
+                  }
+                  className={`${styles.input} ${styles.numberInput}`}
                   required
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="caracteristica4" className={styles.label}>Característica 4:</label>
+                <label htmlFor="categoria" className={styles.label}>
+                  Categoría:
+                </label>
+                <select
+                  id="categoria"
+                  value={categoria}
+                  onChange={(e) => setCategoria(e.target.value)}
+                  className={`${styles.input} ${styles.selectInput}`}
+                  required
+                >
+                  <option value="">Seleccione una categoría</option>
+                  {categorias.map((cat, index) => (
+                    <option key={index} value={cat.id}>
+                      {cat.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.inputContainer}>
+                <label htmlFor="capacidad" className={styles.label}>
+                  Capacidad:
+                </label>
                 <input
-                  type="text"
-                  id="caracteristica4"
-                  value={caracteristicas[3]}
-                  onChange={(e) => setCaracteristicas([caracteristicas[0], caracteristicas[1], caracteristicas[2], e.target.value, caracteristicas[4]])}
-                  className={`${styles.input} ${styles.textInput}`}
+                  type="number"
+                  id="capacidad"
+                  value={capacidad}
+                  onChange={(e) =>
+                    handleChangeNumericInput(setCapacidad, e.target.value)
+                  }
+                  className={`${styles.input} ${styles.numberInput}`}
+                  required
+                />
+              </div>
+            </div>
+            <div className={styles.metaData}>
+              <div className={styles.inputContainer}>
+                <label htmlFor="valorArriendo" className={styles.label}>
+                  Valor de Arriendo:
+                </label>
+                <input
+                  type="number"
+                  id="valorArriendo"
+                  value={valorArriendo}
+                  onChange={(e) =>
+                    handleChangeNumericInput(setValorArriendo, e.target.value)
+                  }
+                  className={`${styles.input} ${styles.numberInput}`}
                   required
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="caracteristica5" className={styles.label}>Característica 5:</label>
+                <label htmlFor="cantidad" className={styles.label}>
+                  Cantidad:
+                </label>
                 <input
-                  type="text"
-                  id="caracteristica5"
-                  value={caracteristicas[4]}
-                  onChange={(e) => setCaracteristicas([caracteristicas[0], caracteristicas[1], caracteristicas[2], caracteristicas[3], e.target.value])}
-                  className={`${styles.input} ${styles.textInput}`}
+                  type="number"
+                  id="cantidad"
+                  value={cantidad}
+                  onChange={(e) =>
+                    handleChangeNumericInput(setCantidad, e.target.value)
+                  }
+                  className={`${styles.input} ${styles.numberInput}`}
                   required
                 />
               </div>
+              {caracteristicas.map((caracteristica, index) => (
+                <div key={index} className={styles.inputContainer}>
+                  <label
+                    htmlFor={`caracteristica${index + 1}`}
+                    className={styles.label}
+                  >{`Característica ${index + 1}:`}</label>
+                  <input
+                    type="text"
+                    id={`caracteristica${index + 1}`}
+                    value={caracteristica}
+                    onChange={(e) =>
+                      setCaracteristicas([
+                        ...caracteristicas.slice(0, index),
+                        e.target.value,
+                        ...caracteristicas.slice(index + 1),
+                      ])
+                    }
+                    className={`${styles.input} ${styles.textInput}`}
+                    required
+                  />
+                </div>
+              ))}
             </div>
           </div>
             <div className={styles.inputContainer}>
-              <label htmlFor="imagenes" className={styles.label}>Imagenes:</label>
+              <label htmlFor="imagen" className={styles.label}>
+                Imagen:
+              </label>
               <input
                 type="file"
-                id="imagenes"
-                onChange={(e) => setImagenes(Array.from(e.target.files))}
+                id="imagen"
+                accept=".jpg, .jpeg, .png"
+                onChange={handleImageChange}
                 className={`${styles.input} ${styles.fileInput}`}
                 required
-                multiple
               />
+              {img_url && (
+                <img
+                  src={img_url}
+                  alt="Imagen seleccionada"
+                  className={styles.imagePreview}
+                />
+                
+              )}
+              <button className={styles.submitButton} onClick={handleRemoveImage}>Eliminar imagen</button>
             </div>
-          <button type="submit" className={styles.submitButton}>Registrar </button>
+          <button type="submit" className={styles.submitButton}>
+            Registrar
+          </button>
         </form>
       </div>
     </div>
@@ -255,15 +312,3 @@ const RegistrarProducto = () => {
 };
 
 export default RegistrarProducto;
-
-
-
-
-
-
-
-
-
-
-
-
