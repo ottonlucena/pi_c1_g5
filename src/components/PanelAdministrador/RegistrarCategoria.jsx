@@ -16,7 +16,9 @@ const RegistrarCategoria = () => {
     }
   
     const nuevaCategoria = {
-      nombre: titulo // Cambia "titulo" a "nombre"
+      title: titulo,
+      description: descripcion,
+      img_url: imagen
     };
   
     try {
@@ -88,5 +90,6 @@ const RegistrarCategoria = () => {
 };
 
 export default RegistrarCategoria;
+
 
 

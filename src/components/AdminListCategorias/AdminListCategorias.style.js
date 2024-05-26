@@ -30,7 +30,7 @@ export const ListRow = styled.div`
   background-color: #ffffff;
   border-bottom: 1px solid #e6e6e6;
   margin-bottom: 4px;
-  height: 40px;
+  height: 100px;
   transition: background-color 0.3s ease;
 
   &:hover {
@@ -51,10 +51,14 @@ export const ListCell = styled.div`
 `;
 
 export const AccordionContent = styled.div`
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
-  padding: 16px;
-  background-color: #fafafa;
-  border-radius: 0 0 8px 8px;
+  max-height: ${(props) => (props.isOpen ? '150px' : '0')};
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: ${(props) => (props.isOpen ? '16px' : '0 16px')};
 `;
 
 export const IconButton = styled.button`

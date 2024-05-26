@@ -12,10 +12,12 @@ import {
   DescriptionTitle,
 } from "./AdminListProd.style";
 import useAdminListProd from "./useAdminListProd";
-import { actualizarProducto, eliminarProducto } from "../../data/juegos";
+import { eliminarProducto } from "../../data/juegos";
+import EditProductForm from "./EditProductForm";
 
 const AdminListProd = () => {
   const [datos, setDatos] = useState();
+  const [editingProduct, setEditingProduct] = useState(null);
   const { data, isLoading, error } = useAdminListProd();
 
   useEffect(() => {
@@ -45,35 +47,28 @@ const AdminListProd = () => {
     categoria();
   }, []); */
 
-  const handleEditClick = async (e, id) => {
+  const handleEditClick = (e, producto) => {
     e.stopPropagation();
-    const newName = prompt("Ingrese el nuevo nombre del juego:");
-    if (newName) {
-      try {
-        const productoActualizado = { ...datos.find(producto => producto.id === id), nombre: newName };
-        // Realizar la solicitud de actualización al servidor
-        await actualizarProducto(id, productoActualizado);
-        // Actualizar el estado local solo después de que la solicitud haya tenido éxito
-        setDatos(prevData =>
-          prevData.map(producto =>
-            producto.id === id ? { ...productoActualizado } : producto
-          )
-        );
-        toast.success("Producto actualizado exitosamente.");
-      } catch (error) {
-        console.error("Error al actualizar el producto:", error.message);
-        toast.error("Error al actualizar el producto.");
-      }
-    }
+    setEditingProduct(producto.id);
   };
-  
+
+  const handleSave = (updatedProduct) => {
+    setDatos((prevData) =>
+      prevData.map((producto) =>
+        producto.id === updatedProduct.id ? updatedProduct : producto
+      )
+    );
+    setEditingProduct(null);
+  };
 
   const handleDeleteClick = async (e, id) => {
     e.stopPropagation();
     if (window.confirm("¿Estás seguro de que deseas eliminar este juego?")) {
       try {
         await eliminarProducto(id);
-        setDatos(prevData => prevData.filter(producto => producto.id !== id));
+        setDatos((prevData) =>
+          prevData.filter((producto) => producto.id !== id)
+        );
       } catch (error) {
         console.error("Error al eliminar el producto:", error.message);
         toast.error("Error al eliminar el producto.");
@@ -118,7 +113,7 @@ const AdminListProd = () => {
                 <ListCell>{producto.altura}</ListCell>
                 <ListCell>{producto.ancho}</ListCell>
                 <ListCell>{producto.cantidad}</ListCell>
-                <ListCell>{producto.tipo?.nombre || 'N/A'}</ListCell> 
+                <ListCell>{producto.tipo?.title || "N/A"}</ListCell>
                 <ListCell
                   style={{
                     display: "flex",
@@ -138,7 +133,7 @@ const AdminListProd = () => {
                 </ListCell>
 
                 <ListCell>
-                  <IconButton onClick={(e) => handleEditClick(e, producto.id)}>
+                  <IconButton onClick={(e) => handleEditClick(e, producto)}>
                     <AiFillEdit />
                   </IconButton>
 
@@ -149,10 +144,17 @@ const AdminListProd = () => {
                   </IconButton>
                 </ListCell>
               </ListRow>
-              <AccordionContent isOpen={openIndex === index}>
-                <DescriptionTitle>Descripción:</DescriptionTitle>
-                <p>{producto.descripcion}</p>
-              </AccordionContent>
+              <AccordionContent isOpen={openIndex === index || editingProduct === producto.id}>
+              <DescriptionTitle>Descripción:</DescriptionTitle>
+              <p>{producto.descripcion}</p>
+              {editingProduct === producto.id && (
+                <EditProductForm
+                  producto={producto}
+                  onCancel={() => setEditingProduct(null)}
+                  onSave={handleSave}
+                />
+              )}
+            </AccordionContent>
             </React.Fragment>
           ))}
       </ListBody>
