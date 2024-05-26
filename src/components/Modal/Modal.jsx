@@ -11,12 +11,10 @@ import {
 } from './Modal.styled';
 
 const Modal = ({ title, children }) => {
-  const { isModalOpen, openModal, closeModal } = useModalStore();
+  const { isModalOpen, closeModal } = useModalStore();
 
   return (
     <>
-      
-
       {isModalOpen && (
         <ModalOverlay onClick={closeModal}>
           <ModalContentWrapper onClick={(e) => e.stopPropagation()}>

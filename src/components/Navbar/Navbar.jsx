@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import styled from 'styled-components';
 import SignUpModal from '../Modal/SignUpModal';
+import MenuAvatar from './MenuAvatar';
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -59,7 +61,7 @@ const NavButton = styled.button`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #fff;
+    color: #ca63d2;
   }
 `;
 
@@ -74,6 +76,13 @@ const Avatar = styled.div`
   height: 40px;
   border-radius: 50%;
   background-color: gray;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 `;
 
 const Navbar = ({ menuItems, logo }) => {
@@ -84,9 +93,7 @@ const Navbar = ({ menuItems, logo }) => {
     navigate('/');
   };
 
-  const handleLoginClick = () => {
-    navigate('/login');
-  };
+  const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
 
   const handleSignUpClick = () => {
     setShowModal(true);
@@ -110,8 +117,13 @@ const Navbar = ({ menuItems, logo }) => {
         </CenterSection>
         <RightSection>
           <SearchInput type='text' placeholder='Buscar' />
-          <Avatar />
-          <NavButton onClick={handleLoginClick}>Login</NavButton>
+          {isAuthenticated && <MenuAvatar user={user} />}
+          <NavButton
+            onClick={() => loginWithRedirect()}
+            disabled={isAuthenticated}
+          >
+            LogIn
+          </NavButton>
           <NavButton onClick={handleSignUpClick}>Sign Up</NavButton>
         </RightSection>
       </NavbarContainer>
