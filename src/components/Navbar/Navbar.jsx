@@ -145,12 +145,14 @@ const Navbar = ({ menuItems, logo }) => {
         <RightSection>
           <SearchInput type='text' placeholder='Buscar' />
           {isAuthenticated && <MenuAvatar user={user} />}
-          <NavButton
-            onClick={() => loginWithRedirect()}
-            disabled={isAuthenticated}
-          >
-            LogIn
-          </NavButton>
+          {!isAuthenticated && (
+            <NavButton
+              onClick={() => loginWithRedirect()}
+              disabled={isAuthenticated}
+            >
+              LogIn
+            </NavButton>
+          )}
           <NavButton onClick={handleSignUpClick}>Sign Up</NavButton>
         </RightSection>
       </NavbarContainer>
