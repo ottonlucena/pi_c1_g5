@@ -55,17 +55,16 @@
   
 
 
-  .submit{
-    border: 1px solid #ccc;
+  .submit{ 
     border-radius: 8px;
     padding: 20px;
     height: auto;
     cursor: pointer;
-    background-color: #f5e9fc;
+    background-color: rgba(124, 185, 75, 0.3);
     text-align: center;
-    color: #6743dd;
-    border: none;
-    font-size: 18px;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
    margin-top: 20px;
    
   }

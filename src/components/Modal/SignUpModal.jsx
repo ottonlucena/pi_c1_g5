@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from '../Modal/SignUpModal.module.css';
 import { TbEyeClosed } from 'react-icons/tb';
 import { RxEyeOpen } from 'react-icons/rx';
+import sendEmail from '../SendEmail/SendEmail';
 
 const SignUpModal = ({ showModal, setShowModal }) => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,33 +24,32 @@ const SignUpModal = ({ showModal, setShowModal }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
-    setShowSuccessMessage(true);
-    setTimeout(() => {
-      setShowSuccessMessage(false);
-      setShowModal(false);
-      window.location.reload();
-    }, 2000);
+
+    try {
+      
+      await sendEmail(formData.email);
+    
+      setShowSuccessMessage(true);
+      
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        setShowModal(false);
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      setError('Error al enviar el correo electrónico');
+      console.error('Error al enviar el correo electrónico:', error);
+    }
   };
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
-  };
-
-  const handleSignUpClick = () => {
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    });
-    setShowModal(true);
   };
 
   return (
@@ -129,6 +130,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
               </button>
             </form>
             {showSuccessMessage && <p>La cuenta se ha creado correctamente.</p>}
+            {error && <p>{error}</p>}
           </div>
         </div>
       )}

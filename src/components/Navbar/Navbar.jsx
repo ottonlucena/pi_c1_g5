@@ -2,11 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import styled from 'styled-components';
-<<<<<<< HEAD
-=======
 import SignUpModal from '../Modal/SignUpModal';
 import MenuAvatar from './MenuAvatar';
->>>>>>> f45909a7ae816e093104040d10103616e4da24a2
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -96,30 +93,6 @@ const Navbar = ({ menuItems, logo }) => {
     navigate('/');
   };
 
-<<<<<<< HEAD
-  return (
-    <NavbarContainer>
-      <LeftSection>
-        <img
-          src={logo}
-          alt='Logo'
-          style={{ maxWidth: '100%', width: '200px' }}
-          onClick={redirectToHome}
-        />
-      </LeftSection>
-      <CenterSection>
-        {menuItems.map((item) => (
-          <NavButton key={item}>{item}</NavButton>
-        ))}
-      </CenterSection>
-      <RightSection>
-        <SearchInput type='text' placeholder='Buscar' />
-        <Avatar />
-        <NavButton>Login</NavButton>
-        <NavButton>Sign Up</NavButton>
-      </RightSection>
-    </NavbarContainer>
-=======
   const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
 
   const handleSignUpClick = () => {
@@ -158,7 +131,6 @@ const Navbar = ({ menuItems, logo }) => {
       </NavbarContainer>
       <SignUpModal showModal={showModal} setShowModal={setShowModal} />
     </>
->>>>>>> f45909a7ae816e093104040d10103616e4da24a2
   );
 };
 
