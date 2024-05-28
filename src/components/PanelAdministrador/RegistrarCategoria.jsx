@@ -5,74 +5,91 @@ import { agregarCategoria } from '../../data/dataService'; // Ajusta la ruta seg
 const RegistrarCategoria = () => {
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const [imagen, setImagen] = useState(null);
+  const [imagen, setImagen] = useState('');
   const [mensaje, setMensaje] = useState('');
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
+  const handleFormSubmit = async (event) => {
+    event.preventDefault(); // Prevenir el comportamiento predeterminado de recargar la página
     if (!titulo || !descripcion || !imagen) {
       setMensaje('Por favor complete todos los campos.');
       return;
     }
-
+  
     const nuevaCategoria = {
-      titulo,
-      descripcion,
-      imagen: URL.createObjectURL(imagen)
+      title: titulo,
+      description: descripcion,
+      img_url: imagen
     };
-
-    agregarCategoria(nuevaCategoria);
-    setTitulo('');
-    setDescripcion('');
-    setImagen(null);
-    alert('Categoria registrada exitosamente!');
+  
+    try {
+      await agregarCategoria(nuevaCategoria);
+      setTitulo('');
+      setDescripcion('');
+      setImagen('');
+      alert('Categoría registrada exitosamente!');
+    } catch (error) {
+      setMensaje('Error al registrar la categoría.');
+    }
   };
 
+  const handleImagenChange = (event) => {
+    const file = event.target.files[0];
+  
+    if (file) {
+      // Creamos un objeto URL para la imagen seleccionada
+      const imageUrl = URL.createObjectURL(file);
+      setImagen(imageUrl);
+    }
+  };
+  
   return (
     <div className={styles.containerPrincipal}>
-    <div className={styles.container}>
-      <h2 className={styles.titleForm}>Registrar Categoría</h2>
-      {mensaje && <p className={styles.mensaje}>{mensaje}</p>}
-      <form onSubmit={handleFormSubmit} className={styles.form}>
-      <div className={styles.generalInfo}>
-        <div className={styles.inputContainer}>
-          <label htmlFor="titulo" className={styles.label}>Título:</label>
-          <input
-            type="text"
-            id="titulo"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="descripcion" className={styles.label}>Descripción:</label>
-          <textarea
-            id="descripcion"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-            className={styles.textarea}
-            required
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="imagen" className={styles.label}>Imagen Representativa:</label>
-          <input
-            type="file"
-            id="imagen"
-            accept="image/*"
-            onChange={(e) => setImagen(e.target.files[0])}
-            className={styles.inputFile}
-            required
-          />
-        </div>
-        </div>
-        <button type="submit" className={styles.submitButton}>Guardar Categoría</button>
-      </form>
-    </div>
+      <div className={styles.container}>
+        <h2 className={styles.titleForm}>Registrar Categoría</h2>
+        {mensaje && <p className={styles.mensaje}>{mensaje}</p>}
+        <form className={styles.form}>
+          <div className={styles.generalInfo}>
+            <div className={styles.inputContainer}>
+              <label htmlFor="titulo" className={styles.label}>Título:</label>
+              <input
+                type="text"
+                id="titulo"
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+                className={styles.input}
+                required
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <label htmlFor="descripcion" className={styles.label}>Descripción:</label>
+              <textarea
+                id="descripcion"
+                value={descripcion}
+                onChange={(e) => setDescripcion(e.target.value)}
+                className={styles.textarea}
+                required
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <label htmlFor="imagen" className={styles.label}>Imagen:</label>
+              <input
+                type="file"
+                accept="image/*"
+                id="imagen"
+                onChange={handleImagenChange}
+                className={styles.input}
+                required
+              />
+            </div>
+          </div>
+          <button type="button" onClick={handleFormSubmit} className={styles.submitButton}>Guardar Categoría</button>
+        </form>
+      </div>
     </div>
   );
 };
 
 export default RegistrarCategoria;
+
+
+

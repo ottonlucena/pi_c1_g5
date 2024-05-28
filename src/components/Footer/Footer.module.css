@@ -20,7 +20,7 @@ footer img {
   height: 50px;
 }
 
-ul {
+footer ul {
   list-style-type: none;
   display: flex;
   gap: 30px;

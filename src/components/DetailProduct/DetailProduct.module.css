@@ -20,7 +20,7 @@
 .productBody {
   display: flex;
   justify-content: space-between;
-  padding: 4rem;
+  padding: 3rem 4rem 0rem 4rem;
 }
 
 .productDescription {
@@ -32,32 +32,97 @@
 
 
 .productImage img{
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
   border-radius: 4px;
   object-fit: cover;
+}
+
+.contCarac{
+  padding: 4rem 0rem 4rem 0rem;
+  display: flex;
+  justify-content: center;
+}
+
+.productCharacteristics {
+  width: 1280px;
+  border: 1px solid #f5e9fc;
+  border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.characteristic {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.characteristicItem {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.characteristicItem p {
+  margin-left: 5px;
+  font-size: 20px;
+  color: #795af6; /* Ajusta el espaciado entre el icono y el texto según sea necesario */
 }
 
 
 
 
-
+/* Estilos para dispositivos móviles */
 @media (max-width: 767px) {
-  .productBody {
-    flex-direction: column;
-    align-items: center;
+  .productHeader {
+    padding: 1rem; /* Reducir el padding para dispositivos móviles */
   }
 
-  .productBody p {
-    width: auto;
-    text-align: center;
+  .productTitle {
+    font-size: 24px; /* Reducir el tamaño de la fuente para dispositivos móviles */
+  }
+
+  .productBody {
+    flex-direction: column; /* Cambiar la dirección del flexbox para dispositivos móviles */
+    gap: 1rem; /* Agregar espacio entre los elementos */
+    padding: 1rem; /* Reducir el padding para dispositivos móviles */
+  }
+
+  .productDescription {
+    width: 100%; /* Ocupar todo el ancho disponible */
+    font-size: 16px; /* Reducir el tamaño de la fuente para dispositivos móviles */
+  }
+
+  .productImage img {
+    width: 100%; /* Hacer que la imagen ocupe todo el ancho disponible */
+    height: auto; /* Ajustar la altura automáticamente */
+  }
+
+  .productCharacteristics {
+    width: 100%; /* Hacer que las características ocupen todo el ancho disponible */
+    flex-direction: column; /* Cambiar la dirección del flexbox para dispositivos móviles */
+    align-items: center; /* Centrar los elementos horizontalmente */
+    padding: 1rem; /* Reducir el padding para dispositivos móviles */
+  }
+
+  .characteristicItem p {
+    font-size: 16px; /* Reducir el tamaño de la fuente para dispositivos móviles */
+    margin-left: 0; /* Eliminar el margen izquierdo */
+  }
+  .contCarac{
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
   }
 }
 
 /* Estilos para tabletas */
 @media (min-width: 768px) and (max-width: 1023px) {
   .productBody {
-    gap: 1rem;
+    gap: 1rem; /* Agregar espacio entre los elementos */
   }
 }
+
 

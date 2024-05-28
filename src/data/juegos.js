@@ -1,62 +1,84 @@
-// data.js
+const API_URL = "http://localhost:8080/api/juegos";
 
-// dataService.js
-
-/* import initialJuegos from '../data/juegos.json';
-
-const obtenerProductos = () => {
-  return JSON.parse(localStorage.getItem('productos')) || [];
+// Obtener todos los juegos
+const obtenerProductos = async () => {
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+      throw new Error("error", response.statusText);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("error", error);
+    throw error;
+  }
 };
 
-const guardarProductos = (productos) => {
-  localStorage.setItem('productos', JSON.stringify(productos));
-};
-
-const agregarProducto = (nuevoProducto) => {
-  let productos = obtenerProductos();
-  productos.push(nuevoProducto);
-  guardarProductos(productos);
-  console.log("Producto agregado:", nuevoProducto);
-};
-
-const mostrarProductos = () => {
-  const productos = obtenerProductos();
-  console.log("Productos registrados:");
-  productos.forEach((producto, index) => {
-    console.log(`${index + 1}. ${producto.nombre}: ${producto.descripcion}`);
+// Agregar un nuevo juego
+const agregarProducto = async (nuevoProducto) => {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(nuevoProducto),
   });
-};
 
-const obtenerProductoPorId = (id) => {
-  const productos = obtenerProductos();
-  return productos.find((producto) => producto.id === id);
-};
-
-const actualizarProducto = (id, productoActualizado) => {
-  let productos = obtenerProductos();
-  const index = productos.findIndex((producto) => producto.id === id);
-  if (index !== -1) {
-    productos[index] = productoActualizado;
-    guardarProductos(productos);
-    console.log("Producto actualizado:", productoActualizado);
-  } else {
-    console.log(`Producto con id ${id} no encontrado.`);
+  if (!response.ok) {
+    throw new Error("Error al agregar el producto");
   }
+
+  const data = await response.json();
+  console.log("Producto agregado:", data);
+  return data;
 };
 
-const eliminarProducto = (id) => {
-  let productos = obtenerProductos();
-  const index = productos.findIndex((producto) => producto.id === id);
-  if (index !== -1) {
-    productos.splice(index, 1);
-    guardarProductos(productos);
-    console.log(`Producto con id ${id} eliminado.`);
-  } else {
-    console.log(`Producto con id ${id} no encontrado.`);
+// Obtener un juego por ID
+const obtenerProductoPorId = async (id) => {
+  const response = await fetch(`${API_URL}/${id}`);
+  const data = await response.json();
+  return data;
+};
+
+// Actualizar un juego
+const actualizarProducto = async (id, productoActualizado) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(productoActualizado),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error al actualizar el producto con id ${id}`);
   }
+
+  const data = await response.json();
+  console.log("Producto actualizado:", data);
+  return data;
 };
 
-export { agregarProducto, mostrarProductos, obtenerProductoPorId, actualizarProducto, eliminarProducto }; */
 
+// Eliminar un juego
+const eliminarProducto = async (id) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  });
 
-  
+  if (!response.ok) {
+    throw new Error(`Error al eliminar el producto con id ${id}`);
+  }
+
+  console.log(`Producto con id ${id} eliminado.`);
+  return id;
+};
+
+export {
+  obtenerProductos,
+  agregarProducto,
+  obtenerProductoPorId,
+  actualizarProducto,
+  eliminarProducto,
+};

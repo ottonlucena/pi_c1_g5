@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import styled from 'styled-components';
+<<<<<<< HEAD
+=======
+import SignUpModal from '../Modal/SignUpModal';
+import MenuAvatar from './MenuAvatar';
+>>>>>>> f45909a7ae816e093104040d10103616e4da24a2
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -58,7 +64,7 @@ const NavButton = styled.button`
   transition: color 0.3s ease;
 
   &:hover {
-    color: #fff;
+    color: #ca63d2;
   }
 `;
 
@@ -73,6 +79,13 @@ const Avatar = styled.div`
   height: 40px;
   border-radius: 50%;
   background-color: gray;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 `;
 
 const Navbar = ({ menuItems, logo }) => {
@@ -83,6 +96,7 @@ const Navbar = ({ menuItems, logo }) => {
     navigate('/');
   };
 
+<<<<<<< HEAD
   return (
     <NavbarContainer>
       <LeftSection>
@@ -105,6 +119,46 @@ const Navbar = ({ menuItems, logo }) => {
         <NavButton>Sign Up</NavButton>
       </RightSection>
     </NavbarContainer>
+=======
+  const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
+
+  const handleSignUpClick = () => {
+    setShowModal(true);
+  };
+
+  return (
+    <>
+      <NavbarContainer>
+        <LeftSection>
+          <img
+            src={logo}
+            alt='Logo'
+            style={{ maxWidth: '100%', width: '200px' }}
+            onClick={redirectToHome}
+          />
+        </LeftSection>
+        <CenterSection>
+          {menuItems.map((item) => (
+            <NavButton key={item}>{item}</NavButton>
+          ))}
+        </CenterSection>
+        <RightSection>
+          <SearchInput type='text' placeholder='Buscar' />
+          {isAuthenticated && <MenuAvatar user={user} />}
+          {!isAuthenticated && (
+            <NavButton
+              onClick={() => loginWithRedirect()}
+              disabled={isAuthenticated}
+            >
+              LogIn
+            </NavButton>
+          )}
+          <NavButton onClick={handleSignUpClick}>Sign Up</NavButton>
+        </RightSection>
+      </NavbarContainer>
+      <SignUpModal showModal={showModal} setShowModal={setShowModal} />
+    </>
+>>>>>>> f45909a7ae816e093104040d10103616e4da24a2
   );
 };
 

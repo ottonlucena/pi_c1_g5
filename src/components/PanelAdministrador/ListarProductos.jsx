@@ -65,6 +65,7 @@ const ListarProductos = () => {
               >
                 Agregar Producto
               </button>
+
               <button
                 className={`${styles.btnAgregar} ${
                   selectedComponent === "AdminListProd" && styles.selected
@@ -98,11 +99,11 @@ const ListarProductos = () => {
           <>
             {selectedComponent === null && ( // Renderizar el panel si no se ha seleccionado ningún componente
               <div className={styles.panelContainer} onClick={handlePanelClick}>
-             {/*    <div className={styles.panel}>
+                {/*    <div className={styles.panel}>
                   <div className={styles.cuadrante}>Cuadrante 1</div>
                   <div className={styles.cuadrante}>Cuadrante 2</div>
                 </div> */}
-               {/*  <div className={styles.panel}>
+                {/*  <div className={styles.panel}>
                   <div className={styles.cuadrante}>Cuadrante 3</div>
                   <div className={styles.cuadrante}>Cuadrante 4</div>
                 </div> */}
