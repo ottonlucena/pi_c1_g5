@@ -41,24 +41,29 @@ const obtenerProductoPorId = async (id) => {
   return data;
 };
 
-// Actualizar un juego
-const actualizarProducto = async (id, productoActualizado) => {
-  const response = await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(productoActualizado),
-  });
+const actualizarProducto = async (productoActualizado) => {
+  try {
+    const response = await fetch(`${API_URL}/${productoActualizado.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productoActualizado),
+    });
 
-  if (!response.ok) {
-    throw new Error(`Error al actualizar el producto con id ${id}`);
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`Error al actualizar el producto: ${error.message}`);
+    }
+
+    const data = await response.json();
+    console.log("Producto actualizado:", data);
+    return data;
+  } catch (error) {
+    throw new Error(`Error al actualizar el producto: ${error.message}`);
   }
-
-  const data = await response.json();
-  console.log("Producto actualizado:", data);
-  return data;
 };
+
 
 
 // Eliminar un juego

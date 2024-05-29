@@ -69,7 +69,9 @@ const RegistrarProducto = () => {
       img_url,
       tipo: {
         id: categoriaSeleccionada.id,
-        nombre: categoriaSeleccionada.nombre,
+        title: categoriaSeleccionada.title,
+        description: categoriaSeleccionada.description,
+        img_url: categoriaSeleccionada.img_url
       },
       caracteristicas,
     };
@@ -280,28 +282,27 @@ const RegistrarProducto = () => {
               ))}
             </div>
           </div>
-            <div className={styles.inputContainer}>
-              <label htmlFor="imagen" className={styles.label}>
-                Imagen:
-              </label>
-              <input
-                type="file"
-                id="imagen"
-                accept=".jpg, .jpeg, .png"
-                onChange={handleImageChange}
-                className={`${styles.input} ${styles.fileInput}`}
-                required
+          <div className={styles.inputContainer}>
+            <label htmlFor="imagen" className={styles.label}>
+              Imagen:
+            </label>
+            <input
+              type="file"
+              id="imagen"
+              accept=".jpg, .jpeg, .png"
+              onChange={handleImageChange}
+              className={`${styles.input} ${styles.fileInput}`}
+              required
+            />
+            {img_url && (
+              <img
+                src={img_url}
+                alt="Imagen seleccionada"
+                className={styles.imagePreview}
               />
-              {img_url && (
-                <img
-                  src={img_url}
-                  alt="Imagen seleccionada"
-                  className={styles.imagePreview}
-                />
-                
-              )}
-              <button className={styles.submitButton} onClick={handleRemoveImage}>Eliminar imagen</button>
-            </div>
+            )}
+            <button type="button" className={styles.submitButton} onClick={handleRemoveImage}>Eliminar imagen</button>
+          </div>
           <button type="submit" className={styles.submitButton}>
             Registrar
           </button>
@@ -312,3 +313,4 @@ const RegistrarProducto = () => {
 };
 
 export default RegistrarProducto;
+
