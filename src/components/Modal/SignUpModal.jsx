@@ -6,13 +6,14 @@ import sendEmail from '../SendEmail/SendEmail';
 
 const SignUpModal = ({ showModal, setShowModal }) => {
   const [formData, setFormData] = useState({
+    rut: '',
     nombre: '',
     apellido: '',
-    rut: '',
     telefono: '',
     email: '',
     direccion: '',
     password: '',
+    confirmPassword: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -33,6 +34,17 @@ const SignUpModal = ({ showModal, setShowModal }) => {
       return;
     }
 
+    // Crear objeto de usuario en el formato de la base de datos
+    const usuario = {
+      rut: formData.rut,
+      nombre: formData.nombre,
+      apellido: formData.apellido,
+      telefono: formData.telefono,
+      email: formData.email,
+      direccion: formData.direccion,
+      password: formData.password,
+    };
+
     try {
       // Enviar datos al servidor
       const response = await fetch('http://localhost:8080/api/usuarios', {
@@ -40,11 +52,12 @@ const SignUpModal = ({ showModal, setShowModal }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(usuario),
       });
 
       if (!response.ok) {
-        throw new Error('Error al enviar datos al servidor');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al enviar datos al servidor');
       }
 
       await sendEmail(formData.email);
@@ -56,7 +69,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
         window.location.reload();
       }, 2000);
     } catch (error) {
-      setError('Error al enviar el formulario');
+      setError('Error al enviar el formulario: ' + error.message);
       console.error('Error al enviar el formulario:', error);
     }
   };
@@ -75,6 +88,17 @@ const SignUpModal = ({ showModal, setShowModal }) => {
             </span>
             <h2 className={styles.titulo}>Crear una cuenta</h2>
             <form className={styles.inputContainer} onSubmit={handleSubmit}>
+              <label htmlFor='rut'>RUT:</label>
+              <input
+                className={styles.input}
+                type='text'
+                id='rut'
+                name='rut'
+                value={formData.rut}
+                onChange={handleChange}
+                required
+              />
+
               <label htmlFor='nombre'>Nombre:</label>
               <input
                 className={styles.input}
@@ -93,17 +117,6 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                 id='apellido'
                 name='apellido'
                 value={formData.apellido}
-                onChange={handleChange}
-                required
-              />
-
-              <label htmlFor='rut'>RUT:</label>
-              <input
-                className={styles.input}
-                type='text'
-                id='rut'
-                name='rut'
-                value={formData.rut}
                 onChange={handleChange}
                 required
               />
