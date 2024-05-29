@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import styled from 'styled-components';
+import SignUpModal from '../../components/Modal/SignUpModal'
 
 const NavbarContainer = styled.nav`
   display: flex;
