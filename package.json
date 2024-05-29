@@ -10,8 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@auth0/auth0-react": "^2.2.4",
-    "@clerk/themes": "^2.1.7",
     "@emailjs/browser": "^4.3.3",
     "@emotion/styled": "^11.11.5",
     "@fontsource/playfair-display": "^5.0.24",

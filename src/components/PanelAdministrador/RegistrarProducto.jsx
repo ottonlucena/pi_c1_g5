@@ -1,22 +1,22 @@
-import { useState, useEffect } from "react";
-import styles from "./RegistrarProducto.module.css";
-import { agregarProducto } from "../../data/juegos";
-import { LeerCategorias } from "../../data/dataService";
+import { useState, useEffect } from 'react';
+import styles from './RegistrarProducto.module.css';
+import { agregarProducto } from '../../data/juegos';
+import { LeerCategorias } from '../../data/dataService';
 
 const RegistrarProducto = () => {
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [largo, setLargo] = useState("");
-  const [ancho, setAncho] = useState("");
-  const [altura, setAltura] = useState("");
-  const [capacidad, setCapacidad] = useState("");
-  const [valorArriendo, setValorArriendo] = useState("");
-  const [cantidad, setCantidad] = useState("");
-  const [img_url, setImgUrl] = useState("");
-  const [categoria, setCategoria] = useState("");
+  const [nombre, setNombre] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [largo, setLargo] = useState('');
+  const [ancho, setAncho] = useState('');
+  const [altura, setAltura] = useState('');
+  const [capacidad, setCapacidad] = useState('');
+  const [valorArriendo, setValorArriendo] = useState('');
+  const [cantidad, setCantidad] = useState('');
+  const [img_url, setImgUrl] = useState('');
+  const [categoria, setCategoria] = useState('');
   const [categorias, setCategorias] = useState([]);
-  const [caracteristicas, setCaracteristicas] = useState(["", "", "", "", ""]);
-  const [error, setError] = useState("");
+  const [caracteristicas, setCaracteristicas] = useState(['', '', '', '', '']);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchCategorias = async () => {
@@ -24,7 +24,7 @@ const RegistrarProducto = () => {
         const categoriasData = await LeerCategorias();
         setCategorias(categoriasData);
       } catch (error) {
-        console.error("Error al leer las categorías", error);
+        console.error('Error al leer las categorías', error);
       }
     };
     fetchCategorias();
@@ -45,7 +45,7 @@ const RegistrarProducto = () => {
       !categoria ||
       caracteristicas.some((car) => !car)
     ) {
-      setError("Por favor complete todos los campos.");
+      setError('Por favor complete todos los campos.');
       return;
     }
 
@@ -53,7 +53,7 @@ const RegistrarProducto = () => {
       (cat) => cat.id.toString() === categoria
     );
     if (!categoriaSeleccionada) {
-      setError("Categoría seleccionada no es válida.");
+      setError('Categoría seleccionada no es válida.');
       return;
     }
 
@@ -71,29 +71,30 @@ const RegistrarProducto = () => {
         id: categoriaSeleccionada.id,
         title: categoriaSeleccionada.title,
         description: categoriaSeleccionada.description,
-        img_url: categoriaSeleccionada.img_url
+        img_url: categoriaSeleccionada.img_url,
       },
       caracteristicas,
     };
 
     try {
+      console.log('Nuevo Producto', JSON.stringify(nuevoProducto, 2, null));
       await agregarProducto(nuevoProducto);
-      alert("Producto registrado exitosamente!");
-      setNombre("");
-      setDescripcion("");
-      setLargo("");
-      setAncho("");
-      setAltura("");
-      setCapacidad("");
-      setValorArriendo("");
-      setCantidad("");
-      setImgUrl("");
-      setCategoria("");
-      setCaracteristicas(["", "", "", "", ""]);
-      setError("");
+      alert('Producto registrado exitosamente!');
+      setNombre('');
+      setDescripcion('');
+      setLargo('');
+      setAncho('');
+      setAltura('');
+      setCapacidad('');
+      setValorArriendo('');
+      setCantidad('');
+      setImgUrl('');
+      setCategoria('');
+      setCaracteristicas(['', '', '', '', '']);
+      setError('');
     } catch (error) {
-      setError("Error al registrar el producto. Inténtelo de nuevo.");
-      console.error("Error al registrar el producto:", error);
+      setError('Error al registrar el producto. Inténtelo de nuevo.');
+      console.error('Error al registrar el producto:', error);
     }
   };
 
@@ -123,12 +124,12 @@ const RegistrarProducto = () => {
           <div className={styles.formSection}>
             <div className={styles.generalInfo}>
               <div className={styles.inputContainer}>
-                <label htmlFor="nombre" className={styles.label}>
+                <label htmlFor='nombre' className={styles.label}>
                   Nombre:
                 </label>
                 <input
-                  type="text"
-                  id="nombre"
+                  type='text'
+                  id='nombre'
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
                   className={`${styles.input} ${styles.textInput}`}
@@ -136,11 +137,11 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="descripcion" className={styles.label}>
+                <label htmlFor='descripcion' className={styles.label}>
                   Descripción:
                 </label>
                 <textarea
-                  id="descripcion"
+                  id='descripcion'
                   value={descripcion}
                   onChange={(e) => setDescripcion(e.target.value)}
                   className={`${styles.input} ${styles.textAreaInput}`}
@@ -148,12 +149,12 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="largo" className={styles.label}>
+                <label htmlFor='largo' className={styles.label}>
                   Largo (metros):
                 </label>
                 <input
-                  type="number"
-                  id="largo"
+                  type='number'
+                  id='largo'
                   value={largo}
                   onChange={(e) =>
                     handleChangeNumericInput(setLargo, e.target.value)
@@ -163,12 +164,12 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="ancho" className={styles.label}>
+                <label htmlFor='ancho' className={styles.label}>
                   Ancho (metros):
                 </label>
                 <input
-                  type="number"
-                  id="ancho"
+                  type='number'
+                  id='ancho'
                   value={ancho}
                   onChange={(e) =>
                     handleChangeNumericInput(setAncho, e.target.value)
@@ -178,12 +179,12 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="altura" className={styles.label}>
+                <label htmlFor='altura' className={styles.label}>
                   Altura (metros):
                 </label>
                 <input
-                  type="number"
-                  id="altura"
+                  type='number'
+                  id='altura'
                   value={altura}
                   onChange={(e) =>
                     handleChangeNumericInput(setAltura, e.target.value)
@@ -193,17 +194,17 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="categoria" className={styles.label}>
+                <label htmlFor='categoria' className={styles.label}>
                   Categoría:
                 </label>
                 <select
-                  id="categoria"
+                  id='categoria'
                   value={categoria}
                   onChange={(e) => setCategoria(e.target.value)}
                   className={`${styles.input} ${styles.selectInput}`}
                   required
                 >
-                  <option value="">Seleccione una categoría</option>
+                  <option value=''>Seleccione una categoría</option>
                   {categorias.map((cat, index) => (
                     <option key={index} value={cat.id}>
                       {cat.title}
@@ -212,12 +213,12 @@ const RegistrarProducto = () => {
                 </select>
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="capacidad" className={styles.label}>
+                <label htmlFor='capacidad' className={styles.label}>
                   Capacidad:
                 </label>
                 <input
-                  type="number"
-                  id="capacidad"
+                  type='number'
+                  id='capacidad'
                   value={capacidad}
                   onChange={(e) =>
                     handleChangeNumericInput(setCapacidad, e.target.value)
@@ -229,12 +230,12 @@ const RegistrarProducto = () => {
             </div>
             <div className={styles.metaData}>
               <div className={styles.inputContainer}>
-                <label htmlFor="valorArriendo" className={styles.label}>
+                <label htmlFor='valorArriendo' className={styles.label}>
                   Valor de Arriendo:
                 </label>
                 <input
-                  type="number"
-                  id="valorArriendo"
+                  type='number'
+                  id='valorArriendo'
                   value={valorArriendo}
                   onChange={(e) =>
                     handleChangeNumericInput(setValorArriendo, e.target.value)
@@ -244,12 +245,12 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="cantidad" className={styles.label}>
+                <label htmlFor='cantidad' className={styles.label}>
                   Cantidad:
                 </label>
                 <input
-                  type="number"
-                  id="cantidad"
+                  type='number'
+                  id='cantidad'
                   value={cantidad}
                   onChange={(e) =>
                     handleChangeNumericInput(setCantidad, e.target.value)
@@ -265,7 +266,7 @@ const RegistrarProducto = () => {
                     className={styles.label}
                   >{`Característica ${index + 1}:`}</label>
                   <input
-                    type="text"
+                    type='text'
                     id={`caracteristica${index + 1}`}
                     value={caracteristica}
                     onChange={(e) =>
@@ -283,13 +284,13 @@ const RegistrarProducto = () => {
             </div>
           </div>
           <div className={styles.inputContainer}>
-            <label htmlFor="imagen" className={styles.label}>
+            <label htmlFor='imagen' className={styles.label}>
               Imagen:
             </label>
             <input
-              type="file"
-              id="imagen"
-              accept=".jpg, .jpeg, .png"
+              type='file'
+              id='imagen'
+              accept='.jpg, .jpeg, .png'
               onChange={handleImageChange}
               className={`${styles.input} ${styles.fileInput}`}
               required
@@ -297,13 +298,19 @@ const RegistrarProducto = () => {
             {img_url && (
               <img
                 src={img_url}
-                alt="Imagen seleccionada"
+                alt='Imagen seleccionada'
                 className={styles.imagePreview}
               />
             )}
-            <button type="button" className={styles.submitButton} onClick={handleRemoveImage}>Eliminar imagen</button>
+            <button
+              type='button'
+              className={styles.submitButton}
+              onClick={handleRemoveImage}
+            >
+              Eliminar imagen
+            </button>
           </div>
-          <button type="submit" className={styles.submitButton}>
+          <button type='submit' className={styles.submitButton}>
             Registrar
           </button>
         </form>
@@ -313,4 +320,3 @@ const RegistrarProducto = () => {
 };
 
 export default RegistrarProducto;
-
