@@ -34,7 +34,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
       return;
     }
 
-    // Crear objeto de usuario en el formato de la base de datos
+    
     const usuario = {
       rut: formData.rut,
       nombre: formData.nombre,
@@ -46,7 +46,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
     };
 
     try {
-      // Enviar datos al servidor
+      
       const response = await fetch('http://localhost:8080/api/usuarios', {
         method: 'POST',
         headers: {
@@ -62,7 +62,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
 
       await sendEmail(formData.email);
       setShowSuccessMessage(true);
-      // Reinicia el formulario después de 2 segundos
+      
       setTimeout(() => {
         setShowSuccessMessage(false);
         setShowModal(false);
