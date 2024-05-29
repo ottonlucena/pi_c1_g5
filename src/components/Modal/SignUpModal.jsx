@@ -33,7 +33,6 @@ const SignUpModal = ({ showModal, setShowModal }) => {
       return;
     }
 
-    
     const usuario = {
       rut: formData.rut,
       nombre: formData.nombre,
@@ -45,7 +44,6 @@ const SignUpModal = ({ showModal, setShowModal }) => {
     };
 
     try {
-      
       const response = await fetch('http://localhost:8080/api/usuarios', {
         method: 'POST',
         headers: {
@@ -56,7 +54,9 @@ const SignUpModal = ({ showModal, setShowModal }) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al enviar datos al servidor');
+        throw new Error(
+          errorData.message || 'Error al enviar datos al servidor'
+        );
       }
 
       await sendEmail(formData.email);
@@ -93,6 +93,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                 id='rut'
                 name='rut'
                 value={formData.rut}
+              />
               <label htmlFor='nombre'>Nombre:</label>
               <input
                 className={styles.input}
