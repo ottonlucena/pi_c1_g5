@@ -2,13 +2,14 @@ import { useState } from 'react';
 import CategoryCard from "./CategoryCard";
 import styles from "./CategorySection.module.css";
 
+
 const categories = [
-  { name: "Inflables y Castillos", description: "Atracciones inflables para fiestas y eventos al aire libre.", emoji: "🏰" },
-  { name: "Juegos de Agua", description: "Toboganes y juegos acuáticos para refrescarse en verano.", emoji: "💦" },
-  { name: "Juegos Mecánicos", description: "Atracciones emocionantes para todas las edades.", emoji: "🎡" },
-  { name: "Juegos de Destreza", description: "Actividades con premios para desafiar habilidades.", emoji: "🎯" },
-  { name: "Niños Pequeños", description: "Carruseles y áreas de juegos para los más pequeños.", emoji: "👶" },
-  { name: "Todos", description: "Mostrar todos los productos.", emoji: "🔍" }
+  { value: 'INFLABLES', name: "Inflables y Castillos", description: "Atracciones inflables para fiestas y eventos al aire libre.", emoji: "🏰" },
+  { value: 'AGUA', name: "Juegos de Agua", description: "Toboganes y juegos acuáticos para refrescarse en verano.", emoji: "💦" },
+  { value: 'MECANICOS', name: "Juegos Mecánicos", description: "Atracciones emocionantes para todas las edades.", emoji: "🎡" },
+  { value: 'DESTREZA', name: "Juegos de Destreza", description: "Actividades con premios para desafiar habilidades.", emoji: "🎯" },
+  { value: 'NINOS', name: "Niños Pequeños", description: "Carruseles y áreas de juegos para los más pequeños.", emoji: "👶" },
+  { value: 'TODOS', name: "Todos", description: "Mostrar todos los productos.", emoji: "🔍" }
 ];
 
 const CategorySection = ({ onCategoryClick }) => {
@@ -16,14 +17,14 @@ const CategorySection = ({ onCategoryClick }) => {
 
   const handleCategoryClick = (category) => {
     let updatedCategories = [...selectedCategories];
-    if (category === "Todos") {
+    if (category.value === 'TODOS') {
       updatedCategories = [];
     } else {
-      const index = selectedCategories.indexOf(category);
+      const index = selectedCategories.indexOf(category.value);
       if (index !== -1) {
         updatedCategories.splice(index, 1);
       } else {
-        updatedCategories.push(category);
+        updatedCategories.push(category.value);
       }
     }
     setSelectedCategories(updatedCategories);
@@ -34,12 +35,12 @@ const CategorySection = ({ onCategoryClick }) => {
     <div className={styles.categorySection}>
       {categories.map(category => (
         <CategoryCard
-          key={category.name}
+          key={category.value}
           categoryName={category.name}
           categoryDescription={category.description}
           categoryEmoji={category.emoji}
-          isSelected={selectedCategories.includes(category.name)}
-          onClick={() => handleCategoryClick(category.name)}
+          isSelected={selectedCategories.includes(category.value)}
+          onClick={() => handleCategoryClick(category)}
         />
       ))}
     </div>

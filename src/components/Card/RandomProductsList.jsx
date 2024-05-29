@@ -17,12 +17,8 @@ const RandomProductsList = () => {
     if (selectedCategories.length === 0) {
       return arr;
     }
-    const normalizedCategories = selectedCategories.map((cat) =>
-      cat.toLowerCase()
-    );
-
     return arr.filter((item) =>
-      normalizedCategories.includes(item.tipo.title.toLowerCase())
+      selectedCategories.includes(item.tipo.title)
     );
   };
 
@@ -31,42 +27,28 @@ const RandomProductsList = () => {
       try {
         const response = await fetch('http://localhost:8080/api/juegos');
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('No hay conexión');
         }
         const data = await response.json();
         setRandomProducts(getRandomProducts(data, 6));
-        setFilteredProducts(filterByTypos(data));
+        setFilteredProducts(filterByTypos(data, selectedCategories));
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('No se pueden obtener datos:', error);
       }
     };
 
     fetchProducts();
   }, []);
 
-  // useEffect(() => {
-  //   const filterProducts = () => {
-  //     if (selectedCategories.length === 0) {
-  //       setFilteredProducts(randomProducts);
-  //     } else {
-  //       const filtered = randomProducts.filter((product) =>
-  //         selectedCategories.includes(product.tipo.title)
-  //       );
-  //       setFilteredProducts(filtered);
-  //     }
-  //   };
-
-  //   filterProducts();
-  // }, [selectedCategories, randomProducts]);
+  useEffect(() => {
+    setFilteredProducts(filterByTypos(randomProducts, selectedCategories));
+  }, [selectedCategories, randomProducts]);
 
   const handleCategorySelect = (categories) => {
     setSelectedCategories(categories);
-    console.log('Categoria seleccionada:', selectedCategories);
-    console.log(
-      'Llamando filterByTipos',
-      filterByTypos(filteredProducts, selectedCategories)
-    );
-    setFilteredProducts(filterByTypos(filteredProducts, selectedCategories));
+    console.log('Categoria seleccionada:', categories);
+    console.log('Llamando filterByTypos', filterByTypos(randomProducts, categories));
+    setFilteredProducts(filterByTypos(randomProducts, categories));
   };
 
   return (
