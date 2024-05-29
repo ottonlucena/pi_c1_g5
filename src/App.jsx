@@ -35,7 +35,8 @@ const App = () => {
           <Route
             path='/'
             element={
-              <div>
+              <div>      
+                  
                 <RandomProductsList />
                 <FeaturedProducts />
               </div>
@@ -54,10 +55,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
-
-
-
-
