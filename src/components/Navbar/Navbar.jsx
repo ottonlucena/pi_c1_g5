@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import styled from 'styled-components';
-import SignUpModal from '../../components/Modal/SignUpModal'
+import SignUpModal from '../Modal/SignUpModal';
+import MenuAvatar from './MenuAvatar';
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -93,11 +94,7 @@ const Navbar = ({ menuItems, logo }) => {
     navigate('/');
   };
 
-  const redirectToAdmin = () => {
-    navigate('/admin');
-  };
-
-  const { loginWithRedirect, isAuthenticated, user } = useAuth0();
+  const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
 
   const handleSignUpClick = () => {
     setShowModal(true);
@@ -138,7 +135,6 @@ const Navbar = ({ menuItems, logo }) => {
       </NavbarContainer>
       <SignUpModal showModal={showModal} setShowModal={setShowModal} />
     </>
-
   );
 };
 

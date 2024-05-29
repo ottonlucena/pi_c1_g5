@@ -12,17 +12,25 @@ import EmailForm from "./components/SendEmail/EmailForm.jsx";
 
 // import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
+/* import AdminListPropd from './components/AdminListProd/AdminListProd.jsx'; */
 import RegistrarProducto from "./components/PanelAdministrador/RegistrarProducto.jsx";
 import ListarProductos from "./components/PanelAdministrador/ListarProductos.jsx";
 
 const menuItems = ["Nosotros", "Servicios", "Contacto", "Galería"];
 
-/* import RegistrarProducto from "./components/PanelAdministrador/RegistrarProducto.jsx"; */
 const App = () => {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <>
       <BrowserRouter>
-        <Navbar menuItems={menuItems} logo={LogoFestivall} />
+        <Navbar
+          menuItems={menuItems}
+          logo={LogoFestivall}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
+
         <Routes>
           <Route
             path="/"

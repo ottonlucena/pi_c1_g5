@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import styles from '../Modal/SignUpModal.module.css';
-import { TbEyeClosed } from 'react-icons/tb';
-import { RxEyeOpen } from 'react-icons/rx';
-import sendEmail from '../SendEmail/SendEmail';
+import { useState } from "react";
+import styles from "../Modal/SignUpModal.module.css";
+import { TbEyeClosed } from "react-icons/tb";
+import { RxEyeOpen } from "react-icons/rx";
+import sendEmail from "../SendEmail/SendEmail";
 
 const SignUpModal = ({ showModal, setShowModal }) => {
   const [formData, setFormData] = useState({
-    rut: '',
-    nombre: '',
-    apellido: '',
-    telefono: '',
-    email: '',
-    direccion: '',
-    password: '',
+    rut: "",
+    nombre: "",
+    apellido: "",
+    telefono: "",
+    email: "",
+    direccion: "",
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -29,47 +29,15 @@ const SignUpModal = ({ showModal, setShowModal }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert('Las contraseñas no coinciden');
+      alert("Las contraseñas no coinciden");
       return;
     }
-
-    const usuario = {
-      rut: formData.rut,
-      nombre: formData.nombre,
-      apellido: formData.apellido,
-      telefono: formData.telefono,
-      email: formData.email,
-      direccion: formData.direccion,
-      password: formData.password,
-    };
-
-    try {
-      const response = await fetch('http://localhost:8080/api/usuarios', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(usuario),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.message || 'Error al enviar datos al servidor'
-        );
-      }
-
-      await sendEmail(formData.email);
-      setShowSuccessMessage(true);
-      setTimeout(() => {
-        setShowSuccessMessage(false);
-        setShowModal(false);
-        window.location.reload();
-      }, 2000);
-    } catch (error) {
-      setError('Error al enviar el formulario: ' + error.message);
-      console.error('Error al enviar el formulario:', error);
-    }
+    setShowSuccessMessage(true);
+    setTimeout(() => {
+      setShowSuccessMessage(false);
+      setShowModal(false);
+      window.location.reload();
+    }, 2000);
   };
 
   const toggleShowPassword = () => {
@@ -86,74 +54,46 @@ const SignUpModal = ({ showModal, setShowModal }) => {
             </span>
             <h2 className={styles.titulo}>Crear una cuenta</h2>
             <form className={styles.inputContainer} onSubmit={handleSubmit}>
-              <label htmlFor='rut'>RUT:</label>
+              <label htmlFor="firstName">Nombre:</label>
               <input
                 className={styles.input}
-                type='text'
-                id='rut'
-                name='rut'
-                value={formData.rut}
-                onChange={handleChange}
-                required
-              />
-              <label htmlFor='nombre'>Nombre:</label>
-              <input
-                className={styles.input}
-                type='text'
-                id='nombre'
-                name='nombre'
+                type="text"
+                id="nombre"
+                name="nombre"
                 value={formData.nombre}
                 onChange={handleChange}
                 required
               />
-              <label htmlFor='apellido'>Apellidos:</label>
+
+              <label htmlFor="lastName">Apellidos:</label>
               <input
                 className={styles.input}
-                type='text'
-                id='apellido'
-                name='apellido'
-                value={formData.apellido}
-                onChange={handleChange}
-                required
-              />
-              <label htmlFor='telefono'>Teléfono:</label>
-              <input
-                className={styles.input}
-                type='tel'
-                id='telefono'
-                name='telefono'
-                value={formData.telefono}
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
                 onChange={handleChange}
                 required
               />
 
-              <label htmlFor='email'>Correo electrónico:</label>
+              <label htmlFor="email">Correo electrónico:</label>
               <input
                 className={styles.input}
-                type='email'
-                id='email'
-                name='email'
+                type="email"
+                id="email"
+                name="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
               />
-              <label htmlFor='direccion'>Dirección:</label>
-              <input
-                className={styles.input}
-                type='text'
-                id='direccion'
-                name='direccion'
-                value={formData.direccion}
-                onChange={handleChange}
-                required
-              />
-              <label htmlFor='password'>Contraseña:</label>
+
+              <label htmlFor="password">Contraseña:</label>
               <div className={styles.passwordContainer}>
                 <input
                   className={styles.input}
-                  type={showPassword ? 'text' : 'password'}
-                  id='password'
-                  name='password'
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
                   value={formData.password}
                   onChange={handleChange}
                   required
@@ -165,17 +105,17 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                   {showPassword ? <TbEyeClosed /> : <RxEyeOpen />}
                 </span>
               </div>
-              <label htmlFor='confirmPassword'>Confirmar Contraseña:</label>
+              <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
               <input
                 className={styles.input}
-                type='password'
-                id='confirmPassword'
-                name='confirmPassword'
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
               />
-              <button className={styles.submit} type='submit'>
+              <button className={styles.submit} type="submit">
                 Registrarse
               </button>
             </form>
