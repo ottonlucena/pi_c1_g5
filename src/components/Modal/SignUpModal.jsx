@@ -93,6 +93,8 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                 id='rut'
                 name='rut'
                 value={formData.rut}
+                onChange={handleChange}
+                required
               />
               <label htmlFor='nombre'>Nombre:</label>
               <input
