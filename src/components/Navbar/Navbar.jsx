@@ -2,11 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import styled from 'styled-components';
-<<<<<<< HEAD
-=======
-import SignUpModal from '../Modal/SignUpModal';
-import MenuAvatar from './MenuAvatar';
->>>>>>> f45909a7ae816e093104040d10103616e4da24a2
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -89,6 +84,7 @@ const Avatar = styled.div`
 `;
 
 const Navbar = ({ menuItems, logo }) => {
+  const admin = true;
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
@@ -96,31 +92,11 @@ const Navbar = ({ menuItems, logo }) => {
     navigate('/');
   };
 
-<<<<<<< HEAD
-  return (
-    <NavbarContainer>
-      <LeftSection>
-        <img
-          src={logo}
-          alt='Logo'
-          style={{ maxWidth: '100%', width: '200px' }}
-          onClick={redirectToHome}
-        />
-      </LeftSection>
-      <CenterSection>
-        {menuItems.map((item) => (
-          <NavButton key={item}>{item}</NavButton>
-        ))}
-      </CenterSection>
-      <RightSection>
-        <SearchInput type='text' placeholder='Buscar' />
-        <Avatar />
-        <NavButton>Login</NavButton>
-        <NavButton>Sign Up</NavButton>
-      </RightSection>
-    </NavbarContainer>
-=======
-  const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
+  const redirectToAdmin = () => {
+    navigate('/admin');
+  };
+
+  const { loginWithRedirect, isAuthenticated, user } = useAuth0();
 
   const handleSignUpClick = () => {
     setShowModal(true);
@@ -141,6 +117,9 @@ const Navbar = ({ menuItems, logo }) => {
           {menuItems.map((item) => (
             <NavButton key={item}>{item}</NavButton>
           ))}
+          {isAuthenticated && admin && (
+            <NavButton onClick={redirectToAdmin}>Admin</NavButton>
+          )}
         </CenterSection>
         <RightSection>
           <SearchInput type='text' placeholder='Buscar' />
@@ -158,7 +137,7 @@ const Navbar = ({ menuItems, logo }) => {
       </NavbarContainer>
       <SignUpModal showModal={showModal} setShowModal={setShowModal} />
     </>
->>>>>>> f45909a7ae816e093104040d10103616e4da24a2
+
   );
 };
 

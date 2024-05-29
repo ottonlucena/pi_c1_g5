@@ -12,12 +12,11 @@ import {
   DescriptionTitle,
 } from "./AdminListProd.style";
 import useAdminListProd from "./useAdminListProd";
-import { eliminarProducto } from "../../data/juegos";
-import EditProductForm from "./EditProductForm";
+import { eliminarProducto, actualizarProducto } from "../../data/juegos";
 
 const AdminListProd = () => {
-  const [datos, setDatos] = useState();
-  const [editingProduct, setEditingProduct] = useState(null);
+  const [datos, setDatos] = useState([]);
+  const [openIndex, setOpenIndex] = useState(null);
   const { data, isLoading, error } = useAdminListProd();
 
   useEffect(() => {
@@ -27,38 +26,59 @@ const AdminListProd = () => {
       toast.dismiss("ToastyLoad");
     }
     if (error) {
-      toast.error("Error en al cargar la data");
+      toast.error("Error al cargar la data");
     }
     if (data) {
       setDatos(data);
     }
   }, [isLoading, error, data]);
 
-  /* useEffect(() => {
-    const categoria = async () => {
-      try {
-        const fetchedData = await LeerCategorias();
-        setData(fetchedData);
-      } catch (error) {
-        console.error("error", error);
-        throw error;
-      }
-    };
-    categoria();
-  }, []); */
-
-  const handleEditClick = (e, producto) => {
+  const handleEditClick = async (e, producto, propiedad) => {
     e.stopPropagation();
-    setEditingProduct(producto.id);
+    const newValue = prompt(`Ingrese el nuevo valor para ${propiedad}:`);
+    if (newValue !== null) {
+      try {
+        // Crear una copia del producto actualizado
+        let updatedProduct = { ...producto };
+  
+        // Actualizar la propiedad correspondiente
+        if (propiedad.startsWith("tipo.")) {
+          const subProp = propiedad.split(".")[1];
+          updatedProduct = {
+            ...updatedProduct,
+            tipo: {
+              ...updatedProduct.tipo,
+              [subProp]: newValue
+            }
+          };
+        } else {
+          updatedProduct[propiedad] = newValue;
+        }
+        
+        // Actualizar el producto en el servidor
+        await actualizarProducto(updatedProduct);
+  
+        // Actualizar el estado local con el producto actualizado
+        setDatos((prevData) =>
+          prevData.map((prod) =>
+            prod.id === producto.id ? updatedProduct : prod
+          )
+        );
+  
+        toast.success("Producto actualizado correctamente");
+      } catch (error) {
+        console.error("Error al actualizar el producto:", error.message);
+        toast.error("Error al actualizar el producto.");
+      }
+    }
   };
-
-  const handleSave = (updatedProduct) => {
-    setDatos((prevData) =>
-      prevData.map((producto) =>
-        producto.id === updatedProduct.id ? updatedProduct : producto
-      )
-    );
-    setEditingProduct(null);
+  
+  const handleRowClick = (index) => {
+    if (openIndex === index) {
+      setOpenIndex(null);
+    } else {
+      setOpenIndex(index);
+    }
   };
 
   const handleDeleteClick = async (e, id) => {
@@ -69,17 +89,12 @@ const AdminListProd = () => {
         setDatos((prevData) =>
           prevData.filter((producto) => producto.id !== id)
         );
+        toast.success("Producto eliminado correctamente");
       } catch (error) {
         console.error("Error al eliminar el producto:", error.message);
         toast.error("Error al eliminar el producto.");
       }
     }
-  };
-
-  const [openIndex, setOpenIndex] = useState(null);
-
-  const handleRowClick = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
@@ -133,10 +148,16 @@ const AdminListProd = () => {
                 </ListCell>
 
                 <ListCell>
-                  <IconButton onClick={(e) => handleEditClick(e, producto)}>
+                  <IconButton
+                    onClick={(e) => handleEditClick(e, producto, "nombre")}
+                  >
                     <AiFillEdit />
                   </IconButton>
-
+                  <IconButton
+                    onClick={(e) => handleEditClick(e, producto, "tipo.title")}
+                  >
+                    <AiFillEdit />
+                  </IconButton>
                   <IconButton
                     onClick={(e) => handleDeleteClick(e, producto.id)}
                   >
@@ -144,17 +165,10 @@ const AdminListProd = () => {
                   </IconButton>
                 </ListCell>
               </ListRow>
-              <AccordionContent isOpen={openIndex === index || editingProduct === producto.id}>
-              <DescriptionTitle>Descripción:</DescriptionTitle>
-              <p>{producto.descripcion}</p>
-              {editingProduct === producto.id && (
-                <EditProductForm
-                  producto={producto}
-                  onCancel={() => setEditingProduct(null)}
-                  onSave={handleSave}
-                />
-              )}
-            </AccordionContent>
+              <AccordionContent isOpen={openIndex === index}>
+                <DescriptionTitle>Descripción:</DescriptionTitle>
+                <p>{producto.descripcion}</p>
+              </AccordionContent>
             </React.Fragment>
           ))}
       </ListBody>
