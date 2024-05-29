@@ -86,6 +86,7 @@ const Avatar = styled.div`
 `;
 
 const Navbar = ({ menuItems, logo }) => {
+  const admin = true;
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
@@ -114,6 +115,9 @@ const Navbar = ({ menuItems, logo }) => {
           {menuItems.map((item) => (
             <NavButton key={item}>{item}</NavButton>
           ))}
+          {isAuthenticated && admin && (
+            <NavButton onClick={redirectToAdmin}>Admin</NavButton>
+          )}
         </CenterSection>
         <RightSection>
           <SearchInput type='text' placeholder='Buscar' />

@@ -3,6 +3,7 @@ import styles from '../Modal/SignUpModal.module.css';
 import { TbEyeClosed } from 'react-icons/tb';
 import { RxEyeOpen } from 'react-icons/rx';
 import sendEmail from '../SendEmail/SendEmail';
+import sendEmail from '../SendEmail/SendEmail';
 
 const SignUpModal = ({ showModal, setShowModal }) => {
   const [formData, setFormData] = useState({
@@ -13,7 +14,6 @@ const SignUpModal = ({ showModal, setShowModal }) => {
     email: '',
     direccion: '',
     password: '',
-    confirmPassword: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -33,45 +33,12 @@ const SignUpModal = ({ showModal, setShowModal }) => {
       alert('Las contraseñas no coinciden');
       return;
     }
-
-    
-    const usuario = {
-      rut: formData.rut,
-      nombre: formData.nombre,
-      apellido: formData.apellido,
-      telefono: formData.telefono,
-      email: formData.email,
-      direccion: formData.direccion,
-      password: formData.password,
-    };
-
-    try {
-      
-      const response = await fetch('http://localhost:8080/api/usuarios', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(usuario),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al enviar datos al servidor');
-      }
-
-      await sendEmail(formData.email);
-      setShowSuccessMessage(true);
-      
-      setTimeout(() => {
-        setShowSuccessMessage(false);
-        setShowModal(false);
-        window.location.reload();
-      }, 2000);
-    } catch (error) {
-      setError('Error al enviar el formulario: ' + error.message);
-      console.error('Error al enviar el formulario:', error);
-    }
+    setShowSuccessMessage(true);
+    setTimeout(() => {
+      setShowSuccessMessage(false);
+      setShowModal(false);
+      window.location.reload();
+    }, 2000);
   };
 
   const toggleShowPassword = () => {
@@ -88,18 +55,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
             </span>
             <h2 className={styles.titulo}>Crear una cuenta</h2>
             <form className={styles.inputContainer} onSubmit={handleSubmit}>
-              <label htmlFor='rut'>RUT:</label>
-              <input
-                className={styles.input}
-                type='text'
-                id='rut'
-                name='rut'
-                value={formData.rut}
-                onChange={handleChange}
-                required
-              />
-
-              <label htmlFor='nombre'>Nombre:</label>
+              <label htmlFor='firstName'>Nombre:</label>
               <input
                 className={styles.input}
                 type='text'
@@ -110,24 +66,13 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                 required
               />
 
-              <label htmlFor='apellido'>Apellidos:</label>
+              <label htmlFor='lastName'>Apellidos:</label>
               <input
                 className={styles.input}
                 type='text'
-                id='apellido'
-                name='apellido'
-                value={formData.apellido}
-                onChange={handleChange}
-                required
-              />
-
-              <label htmlFor='telefono'>Teléfono:</label>
-              <input
-                className={styles.input}
-                type='tel'
-                id='telefono'
-                name='telefono'
-                value={formData.telefono}
+                id='lastName'
+                name='lastName'
+                value={formData.lastName}
                 onChange={handleChange}
                 required
               />
@@ -139,17 +84,6 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                 id='email'
                 name='email'
                 value={formData.email}
-                onChange={handleChange}
-                required
-              />
-
-              <label htmlFor='direccion'>Dirección:</label>
-              <input
-                className={styles.input}
-                type='text'
-                id='direccion'
-                name='direccion'
-                value={formData.direccion}
                 onChange={handleChange}
                 required
               />
@@ -172,7 +106,6 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                   {showPassword ? <TbEyeClosed /> : <RxEyeOpen />}
                 </span>
               </div>
-
               <label htmlFor='confirmPassword'>Confirmar Contraseña:</label>
               <input
                 className={styles.input}
@@ -183,7 +116,6 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                 onChange={handleChange}
                 required
               />
-
               <button className={styles.submit} type='submit'>
                 Registrarse
               </button>
