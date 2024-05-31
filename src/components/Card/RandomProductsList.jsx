@@ -4,14 +4,9 @@ import PaginationProductCard from './PaginationProductCard';
 import CategorySection from '../Categorias/CategorySection';
 
 const RandomProductsList = () => {
-  const [randomProducts, setRandomProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-
-  const getRandomProducts = (products, count) => {
-    const shuffled = products.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  };
 
   const filterByTypos = (arr, selectedCategories = []) => {
     if (selectedCategories.length === 0) {
@@ -30,7 +25,7 @@ const RandomProductsList = () => {
           throw new Error('No hay conexión');
         }
         const data = await response.json();
-        setRandomProducts(getRandomProducts(data, 6));
+        setAllProducts(data);
         setFilteredProducts(filterByTypos(data, selectedCategories));
       } catch (error) {
         console.error('No se pueden obtener datos:', error);
@@ -41,21 +36,22 @@ const RandomProductsList = () => {
   }, []);
 
   useEffect(() => {
-    setFilteredProducts(filterByTypos(randomProducts, selectedCategories));
-  }, [selectedCategories, randomProducts]);
+    setFilteredProducts(filterByTypos(allProducts, selectedCategories));
+  }, [selectedCategories, allProducts]);
 
   const handleCategorySelect = (categories) => {
     setSelectedCategories(categories);
-    console.log('Categoria seleccionada:', categories);
-    console.log('Llamando filterByTypos', filterByTypos(randomProducts, categories));
-    setFilteredProducts(filterByTypos(randomProducts, categories));
+    setFilteredProducts(filterByTypos(allProducts, categories));
   };
 
   return (
     <div>
       <CategorySection onCategoryClick={handleCategorySelect} />
       <div className={styles.randomProductsList}>
-        <PaginationProductCard products={filteredProducts} itemsPerPage={6} />
+        <PaginationProductCard
+          products={filteredProducts}
+          itemsPerPage={6}
+        />
       </div>
     </div>
   );
