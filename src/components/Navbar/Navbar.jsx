@@ -94,6 +94,9 @@ const Navbar = ({ menuItems, logo }) => {
     navigate('/');
   };
 
+  const redirectToAdmin = () => {
+    navigate('/admin');
+  };
   const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
 
   const handleSignUpClick = () => {
