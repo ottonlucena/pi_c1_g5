@@ -26,6 +26,7 @@
     "react-loader-spinner": "^6.1.6",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.23.1",
+    "react-share": "^5.1.0",
     "react-toastify": "^10.0.5",
     "styled-components": "^6.1.11",
     "zustand": "^4.5.2"
