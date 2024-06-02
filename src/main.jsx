@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { FluentProvider, webLightTheme } from '@fluentui/react-components';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '@fontsource/playfair-display';
@@ -23,7 +24,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       }}
     >
       <QueryClientProvider client={queryClient}>
-        <App />
+        <FluentProvider theme={webLightTheme}>
+          <App />
+        </FluentProvider>
       </QueryClientProvider>
     </Auth0Provider>
   </React.StrictMode>
