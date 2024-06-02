@@ -34,6 +34,29 @@ const agregarProducto = async (nuevoProducto) => {
   return data;
 };
 
+const actualizarProducto = async (nuevoProducto) => {
+  const response = await fetch(API_URL, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(nuevoProducto),
+  });
+
+  if (!response.ok) {
+    throw new Error("Error al actualizar el producto");
+  }
+
+  const data = await response.json();
+  console.log("Producto actualizado:", data);
+  return data;
+};
+
+  
+
+
+
+
 // Obtener un juego por ID
 const obtenerProductoPorId = async (id) => {
   const response = await fetch(`${API_URL}/${id}`);
@@ -41,28 +64,11 @@ const obtenerProductoPorId = async (id) => {
   return data;
 };
 
-const actualizarProducto = async (productoActualizado) => {
-  try {
-    const response = await fetch(`${API_URL}/${productoActualizado.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(productoActualizado),
-    });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`Error al actualizar el producto: ${error.message}`);
-    }
 
-    const data = await response.json();
-    console.log("Producto actualizado:", data);
-    return data;
-  } catch (error) {
-    throw new Error(`Error al actualizar el producto: ${error.message}`);
-  }
-};
+
+
+
 
 
 
