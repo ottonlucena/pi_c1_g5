@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { HiOutlineShare } from 'react-icons/hi';
-import Popup from 'react-customizable-popup';
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverSurface,
+} from '@fluentui/react-components';
 import ShareSocial from '../ShareSocial/ShareSocial';
 import '@fontsource/capriola';
 
@@ -13,6 +17,7 @@ const CardContainer = styled.div`
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   border-radius: 8px;
+  border: 8px solid white;
 `;
 
 const ContentContainer = styled.div`
@@ -62,6 +67,7 @@ const TextContainer = styled.div`
   padding: 16px;
   max-width: 90%;
   z-index: 1;
+  line-height: 1.2;
   border-radius: 20px;
 `;
 
@@ -124,18 +130,17 @@ const ProductCard = ({ product }) => {
             <DetailLink to={`/detalle/${id}`}>Ver Detalle</DetailLink>
           </TextContainer>
         </ContentContainer>
-        <Popup
-          toggler={
+        <Popover withArrow>
+          <PopoverTrigger disableButtonEnhancement>
             <ShareIconWrapper>
               <HiOutlineShare />
             </ShareIconWrapper>
-          }
-          position={['center', 'top']}
-          noScroll={false}
-        >
-          {<ShareSocial imageUrl={img_url} />}
-        </Popup>
-        ;
+          </PopoverTrigger>
+
+          <PopoverSurface tabIndex={-1}>
+            {<ShareSocial imageUrl={img_url} />}
+          </PopoverSurface>
+        </Popover>
       </CardContainer>
     </>
   );
