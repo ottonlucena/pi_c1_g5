@@ -12,11 +12,16 @@ import {
   DescriptionTitle,
 } from "./AdminListProd.style";
 import useAdminListProd from "./useAdminListProd";
-import { eliminarProducto, actualizarProducto } from "../../data/juegos";
+import { eliminarProducto } from "../../data/juegos";
+import Modal from "react-modal";
+import EditProductForm from "./EditProductForm";
 
 const AdminListProd = () => {
   const [datos, setDatos] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [productoActual, setProductoActual] = useState(null);
+
   const { data, isLoading, error } = useAdminListProd();
 
   useEffect(() => {
@@ -33,56 +38,23 @@ const AdminListProd = () => {
     }
   }, [isLoading, error, data]);
 
-  const handleEditClick = async (e, producto, propiedad) => {
-    e.stopPropagation();
-    const newValue = prompt(`Ingrese el nuevo valor para ${propiedad}:`);
-    if (newValue !== null) {
-      try {
-        // Crear una copia del producto actualizado
-        let updatedProduct = { ...producto };
-  
-        // Actualizar la propiedad correspondiente
-        if (propiedad.startsWith("tipo.")) {
-          const subProp = propiedad.split(".")[1];
-          updatedProduct = {
-            ...updatedProduct,
-            tipo: {
-              ...updatedProduct.tipo,
-              [subProp]: newValue
-            }
-          };
-        } else {
-          updatedProduct[propiedad] = newValue;
-        }
-        
-        // Actualizar el producto en el servidor
-        await actualizarProducto(updatedProduct);
-  
-        // Actualizar el estado local con el producto actualizado
-        setDatos((prevData) =>
-          prevData.map((prod) =>
-            prod.id === producto.id ? updatedProduct : prod
-          )
-        );
-  
-        toast.success("Producto actualizado correctamente");
-      } catch (error) {
-        console.error("Error al actualizar el producto:", error.message);
-        toast.error("Error al actualizar el producto.");
-      }
-    }
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
   };
-  
+
+  const handleEditClick = (producto) => {
+    console.log("Editando producto:", producto);
+    setProductoActual(producto);
+    toggleModal();
+  };
+
   const handleRowClick = (index) => {
-    if (openIndex === index) {
-      setOpenIndex(null);
-    } else {
-      setOpenIndex(index);
-    }
+    setOpenIndex(openIndex === index ? null : index);
   };
 
   const handleDeleteClick = async (e, id) => {
     e.stopPropagation();
+    console.log("Eliminando producto con ID:", id);
     if (window.confirm("¿Estás seguro de que deseas eliminar este juego?")) {
       try {
         await eliminarProducto(id);
@@ -103,12 +75,12 @@ const AdminListProd = () => {
         <ListCell>ID</ListCell>
         <ListCell>Nombre</ListCell>
         <ListCell>Largo (Metros)</ListCell>
-        <ListCell>Valor Arriendo</ListCell>
+        <ListCell>Ancho (Metros)</ListCell>
+        <ListCell>Altura (Metros)</ListCell>
         <ListCell>Capacidad</ListCell>
-        <ListCell>Altura</ListCell>
-        <ListCell>Ancho</ListCell>
+        <ListCell>Valor de Arriendo</ListCell>
         <ListCell>Cantidad</ListCell>
-        <ListCell>Categoria</ListCell>
+        <ListCell>Categoría</ListCell>
         <ListCell>Imagen</ListCell>
         <ListCell>Acciones</ListCell>
       </ListHeader>
@@ -116,26 +88,17 @@ const AdminListProd = () => {
         {datos &&
           datos.map((producto, index) => (
             <React.Fragment key={producto.id}>
-              <ListRow
-                onClick={() => handleRowClick(index)}
-                isOdd={index % 2 !== 0}
-              >
+              <ListRow onClick={() => handleRowClick(index)}>
                 <ListCell>{producto.id}</ListCell>
                 <ListCell>{producto.nombre}</ListCell>
                 <ListCell>{producto.largo}</ListCell>
-                <ListCell>{producto.valorArriendo}</ListCell>
-                <ListCell>{producto.capacidad}</ListCell>
-                <ListCell>{producto.altura}</ListCell>
                 <ListCell>{producto.ancho}</ListCell>
+                <ListCell>{producto.altura}</ListCell>
+                <ListCell>{producto.capacidad}</ListCell>
+                <ListCell>{producto.valorArriendo}</ListCell>
                 <ListCell>{producto.cantidad}</ListCell>
                 <ListCell>{producto.tipo?.title || "N/A"}</ListCell>
-                <ListCell
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
+                <ListCell>
                   <img
                     src={producto.img_url}
                     alt="imagen"
@@ -144,18 +107,15 @@ const AdminListProd = () => {
                       height: "50px",
                       objectFit: "cover",
                     }}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "path_to_fallback_image";
+                    }}
                   />
                 </ListCell>
 
                 <ListCell>
-                  <IconButton
-                    onClick={(e) => handleEditClick(e, producto, "nombre")}
-                  >
-                    <AiFillEdit />
-                  </IconButton>
-                  <IconButton
-                    onClick={(e) => handleEditClick(e, producto, "tipo.title")}
-                  >
+                  <IconButton onClick={() => handleEditClick(producto)}>
                     <AiFillEdit />
                   </IconButton>
                   <IconButton
@@ -173,6 +133,13 @@ const AdminListProd = () => {
           ))}
       </ListBody>
       <ToastContainer position="top-center" />
+      {isOpen && (
+        <Modal isOpen={isOpen} onRequestClose={toggleModal}>
+          <div>
+            <EditProductForm producto={productoActual} onClose={toggleModal} />
+          </div>
+        </Modal>
+      )}
     </ListContainer>
   );
 };

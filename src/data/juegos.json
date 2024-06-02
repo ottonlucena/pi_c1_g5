@@ -30,7 +30,7 @@
         "capacidad": 20,
         "valorArriendo": 2400,
         "cantidad": 3,
-        "img_url": "../public/assets/inflables.jpg",
+        "img_url": "../public/assets/ninos.jpg",
         "tipo": {
             "id": 1,
             "nombre": "INFLABLES"

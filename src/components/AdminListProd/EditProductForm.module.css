@@ -1,32 +1,111 @@
-/* .formContainer{
-    display: flex;
-    justify-content: center;
-    gap: 5rem;
-}
-
-.section1{
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    
-}
-
-label {
-    flex: 1;
-    margin-right: 10px;
-  }
+.formContainer {
+  width: 1050px;
   
-  input, textarea {
-    flex: 2;
-    padding: 8px;
-    box-sizing: border-box;
-    width: 300px;
-  }
+  padding: 1.2rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-  .section2{
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    
-} */
+
+}
+.formSection {
+  display: flex;
+  gap: 20px;
+}
+
+.generalInfo,
+.metaData {
+  flex: 1; /* Para que ambas secciones ocupen el mismo espacio horizontalmente */
+}
+
+.metaData {
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.generalInfo {
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.imageContainer {
+  margin-top: 30px;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.titleForm {
+  font-weight: bold;
+  font-size: 20px;
+  color: black;
+  margin-bottom: 15px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  font-weight: 400;
+  color: black;
+}
+
+.input,
+.textAreaInput,
+.numberInput,
+.fileInput {
+  width: 100%; /* Ajustar el ancho al 100% para ocupar todo el espacio disponible */
+  padding: 10px;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.fileInput {
+  background-color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.textAreaInput {
+  resize: vertical;
+}
+
+.formButtons {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.submitButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 30px;
+}
+
+
+.submitButton {
+  background-color: #f5e9fc;
+  color: #795af6;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.imagePreview {
+  width: 300px;
+  height: 300px;
+  background-color: aliceblue;
+}
 

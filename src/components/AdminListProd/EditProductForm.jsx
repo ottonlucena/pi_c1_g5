@@ -1,184 +1,318 @@
 
   
-  /* // Importaciones necesarias
-  import { useState } from "react";
-  import { toast } from "react-toastify";
-  import { actualizarProducto } from "../../data/juegos";
-  import styles from "./EditProductForm.module.css";
+  import { useState, useEffect } from 'react';
+  import styles from './EditProductForm.module.css';
+  import { actualizarProducto } from '../../data/juegos';
+  import { LeerCategorias } from '../../data/dataService';
   
-  const EditProductForm = ({ producto, onCancel, onSave }) => {
-    const [formData, setFormData] = useState({ ...producto });
-    const [nuevaCaracteristica, setNuevaCaracteristica] = useState("");
+  const EditProductForm = ({ producto, onClose }) => {
+    const [nombre, setNombre] = useState('');
+    const [descripcion, setDescripcion] = useState('');
+    const [largo, setLargo] = useState('');
+    const [ancho, setAncho] = useState('');
+    const [altura, setAltura] = useState('');
+    const [capacidad, setCapacidad] = useState('');
+    const [valorArriendo, setValorArriendo] = useState('');
+    const [cantidad, setCantidad] = useState('');
+    const [img_url, setImgUrl] = useState('');
+    const [categoria, setCategoria] = useState('');
+    const [categorias, setCategorias] = useState([]);
+    const [caracteristicas, setCaracteristicas] = useState(['', '', '', '', '']);
+    const [error, setError] = useState('');
   
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+    useEffect(() => {
+      if (producto) {
+        setNombre(producto.nombre);
+        setDescripcion(producto.descripcion);
+        setLargo(producto.largo);
+        setAncho(producto.ancho);
+        setAltura(producto.altura);
+        setCapacidad(producto.capacidad);
+        setValorArriendo(producto.valorArriendo);
+        setCantidad(producto.cantidad);
+        setImgUrl(producto.img_url);
+        setCategoria(producto.tipo.id.toString());
+        setCaracteristicas(producto.caracteristicas);
+      }
+    }, [producto]);
   
-    const handleCaracteristicaChange = (e, index) => {
-      const newCaracteristicas = [...formData.caracteristicas];
-      newCaracteristicas[index] = e.target.value;
-      setFormData((prev) => ({ ...prev, caracteristicas: newCaracteristicas }));
-    };
+    useEffect(() => {
+      const fetchCategorias = async () => {
+        try {
+          const categoriasData = await LeerCategorias();
+          setCategorias(categoriasData);
+        } catch (error) {
+          console.error('Error al leer las categorías', error);
+        }
+      };
+      fetchCategorias();
+    }, []);
   
-    const handleAddCaracteristica = () => {
-      if (nuevaCaracteristica.trim()) {
-        setFormData((prev) => ({
-          ...prev,
-          caracteristicas: [...prev.caracteristicas, nuevaCaracteristica.trim()],
-        }));
-        setNuevaCaracteristica("");
+    const handleFormSubmit = async (event) => {
+      event.preventDefault();
+      if (
+        !nombre ||
+        !descripcion ||
+        !largo ||
+        !ancho ||
+        !altura ||
+        !capacidad ||
+        !valorArriendo ||
+        !cantidad ||
+        !img_url ||
+        !categoria ||
+        caracteristicas.some((car) => !car)
+      ) {
+        setError('Por favor complete todos los campos.');
+        return;
+      }
+  
+      const categoriaSeleccionada = categorias.find(
+        (cat) => cat.id.toString() === categoria
+      );
+      if (!categoriaSeleccionada) {
+        setError('Categoría seleccionada no es válida.');
+        return;
+      }
+  
+      const nuevoProducto = {
+        id: producto.id,
+        nombre,
+        descripcion,
+        largo: parseFloat(largo),
+        ancho: parseFloat(ancho),
+        altura: parseFloat(altura),
+        capacidad: parseInt(capacidad),
+        valorArriendo: parseInt(valorArriendo),
+        cantidad: parseInt(cantidad),
+        img_url,
+        tipo: {
+          id: categoriaSeleccionada.id,
+          title: categoriaSeleccionada.title,
+          description: categoriaSeleccionada.description,
+          img_url: categoriaSeleccionada.img_url,
+        },
+        caracteristicas,
+      };
+  
+      try {
+        await actualizarProducto(nuevoProducto);
+        alert('Producto actualizado exitosamente!');
+        onClose(); // Cerrar el modal después de la actualización
+      } catch (error) {
+        setError(error.message || 'Error al actualizar el producto. Inténtelo de nuevo.');
+        console.error('Error al actualizar el producto:', error);
       }
     };
   
-    const handleRemoveCaracteristica = (index) => {
-      const newCaracteristicas = formData.caracteristicas.filter((_, i) => i !== index);
-      setFormData((prev) => ({ ...prev, caracteristicas: newCaracteristicas }));
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        await actualizarProducto(formData.id, formData);
-        toast.success("Producto actualizado exitosamente.");
-        onSave(formData); // Llamada a onSave después de una actualización exitosa
-      } catch (error) {
-        console.error("Error al actualizar el producto:", error.message);
-        toast.error("Error al actualizar el producto.");
+    const handleChangeNumericInput = (setter, value) => {
+      const numericValue = parseFloat(value);
+      if (!isNaN(numericValue) && numericValue >= 0) {
+        setter(numericValue);
       }
     };
   
     return (
-      <form onSubmit={handleSubmit} className={styles.formContainer}>
-        <div className={styles.section1}>
-          <div>
-            <label>Nombre:</label>
-            <input
-              type="text"
-              name="nombre"
-              value={formData.nombre}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Descripción:</label>
-            <textarea
-              name="descripcion"
-              value={formData.descripcion}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Largo:</label>
-            <input
-              type="number"
-              name="largo"
-              value={formData.largo}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Ancho:</label>
-            <input
-              type="number"
-              name="ancho"
-              value={formData.ancho}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Altura:</label>
-            <input
-              type="number"
-              name="altura"
-              value={formData.altura}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Capacidad:</label>
-            <input
-              type="number"
-              name="capacidad"
-              value={formData.capacidad}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Valor Arriendo:</label>
-            <input
-              type="number"
-              name="valorArriendo"
-              value={formData.valorArriendo}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Cantidad:</label>
-            <input
-              type="number"
-              name="cantidad"
-              value={formData.cantidad}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-        <div className={styles.section2}>
-          <div>
-            <label>Imagen URL:</label>
-            <input
-              type="text"
-              name="img_url"
-              value={formData.img_url}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Tipo:</label>
-            <input
-              type="text"
-              name="tipo"
-              value={formData.tipo?.nombre || ""}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  tipo: { ...prev.tipo, nombre: e.target.value },
-                }))
-              }
-            />
-          </div>
-          <div>
-            <label>Características:</label>
-            {formData.caracteristicas.map((caracteristica, index) => (
-              <div key={index}>
-                <input
-                  type="text"
-                  value={caracteristica}
-                  onChange={(e) => handleCaracteristicaChange(e, index)}
-                />
-                <button type="button" onClick={() => handleRemoveCaracteristica(index)}>
-                  Eliminar
-                </button>
+      <div className={styles.containerPrincipal}>
+        <div className={styles.formContainer}>
+          <h2 className={styles.titleForm}>Editar Producto</h2>
+          {error && <p className={styles.error}>{error}</p>}
+          <form className={styles.form} onSubmit={handleFormSubmit}>
+            <div className={styles.formSection}>
+              <div className={styles.generalInfo}>
+                <div className={styles.inputContainer}>
+                  <label htmlFor='nombre' className={styles.label}>
+                    Nombre:
+                  </label>
+                  <input
+                    type='text'
+                    id='nombre'
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    className={`${styles.input} ${styles.textInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor='descripcion' className={styles.label}>
+                    Descripción:
+                  </label>
+                  <textarea
+                    id='descripcion'
+                    value={descripcion}
+                    onChange={(e) => setDescripcion(e.target.value)}
+                    className={`${styles.input} ${styles.textAreaInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor='largo' className={styles.label}>
+                    Largo (metros):
+                  </label>
+                  <input
+                    type='number'
+                    id='largo'
+                    value={largo}
+                    onChange={(e) =>
+                      handleChangeNumericInput(setLargo, e.target.value)
+                    }
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor='ancho' className={styles.label}>
+                    Ancho (metros):
+                  </label>
+                  <input
+                    type='number'
+                    id='ancho'
+                    value={ancho}
+                    onChange={(e) =>
+                      handleChangeNumericInput(setAncho, e.target.value)
+                    }
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor='altura' className={styles.label}>
+                    Altura (metros):
+                  </label>
+                  <input
+                    type='number'
+                    id='altura'
+                    value={altura}
+                    onChange={(e) =>
+                      handleChangeNumericInput(setAltura, e.target.value)
+                    }
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor='categoria' className={styles.label}>
+                    Categoría:
+                  </label>
+                  <select
+                    id='categoria'
+                    value={categoria}
+                    onChange={(e) => setCategoria(e.target.value)}
+                    className={`${styles.input} ${styles.selectInput}`}
+                    required
+                  >
+                    <option value=''>Seleccione una categoría</option>
+                    {categorias.map((cat, index) => (
+                      <option key={index} value={cat.id}>
+                        {cat.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor='capacidad' className={styles.label}>
+                    Capacidad:
+                  </label>
+                  <input
+                    type='number'
+                    id='capacidad'
+                    value={capacidad}
+                    onChange={(e) =>
+                      handleChangeNumericInput(setCapacidad, e.target.value)
+                    }
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
               </div>
-            ))}
-            <input
-              type="text"
-              value={nuevaCaracteristica}
-              onChange={(e) => setNuevaCaracteristica(e.target.value)}
-              placeholder="Añadir nueva característica"
-            />
-            <button type="button" onClick={handleAddCaracteristica}>
-              Añadir
+              <div className={styles.metaData}>
+                <div className={styles.inputContainer}>
+                  <label htmlFor='valorArriendo' className={styles.label}>
+                    Valor de Arriendo:
+                  </label>
+                  <input
+                    type='number'
+                    id='valorArriendo'
+                    value={valorArriendo}
+                    onChange={(e) =>
+                      handleChangeNumericInput(setValorArriendo, e.target.value)
+                    }
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label htmlFor='cantidad' className={styles.label}>
+                    Cantidad:
+                  </label>
+                  <input
+                    type='number'
+                    id='cantidad'
+                    value={cantidad}
+                    onChange={(e) =>
+                      handleChangeNumericInput(setCantidad, e.target.value)
+                    }
+                    className={`${styles.input} ${styles.numberInput}`}
+                    required
+                  />
+                </div>
+                {caracteristicas.map((caracteristica, index) => (
+                  <div key={index} className={styles.inputContainer}>
+                    <label
+                      htmlFor={`caracteristica${index}`}
+                      className={styles.label}
+                    >
+                      Característica {index + 1}:
+                    </label>
+                    <input
+                      type='text'
+                      id={`caracteristica${index}`}
+                      value={caracteristica}
+                      onChange={(e) =>
+                        setCaracteristicas([
+                          ...caracteristicas.slice(0, index),
+                          e.target.value,
+                          ...caracteristicas.slice(index + 1),
+                        ])
+                      }
+                      className={`${styles.input} ${styles.textInput}`}
+                      required
+                    />
+                  </div>
+                ))}
+                <div className={styles.inputContainer}>
+                  <label htmlFor='img_url' className={styles.label}>
+                    URL de la Imagen:
+                  </label>
+                  <input
+                    type='text'
+                    id='img_url'
+                    value={img_url}
+                    onChange={(e) => setImgUrl(e.target.value)}
+                    className={`${styles.input} ${styles.textInput}`}
+                    required
+                  />
+                  {img_url && (
+                    <img
+                      src={img_url}
+                      alt='Imagen proporcionada'
+                      className={styles.imagePreview}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+            <button type='submit' className={styles.submitButton}>
+              Actualizar
             </button>
-          </div>
-          <button type="submit">Guardar</button>
-          <button type="button" onClick={onCancel}>Cancelar</button>
+          </form>
         </div>
-      </form>
+      </div>
     );
   };
   
-  export default EditProductForm; */
+  export default EditProductForm;
+  
   
 
 
