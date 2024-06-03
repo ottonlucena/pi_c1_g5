@@ -23,10 +23,10 @@ jobs:
           node-version: '20'
           
       - name: Install dependencies (using PNPM)
-        run: pnpm install
+        run: npm install
 
       - name: Build React app
-        run: pnpm build
+        run: npm run build
 
       - name: Deploy to S3
         run: |
