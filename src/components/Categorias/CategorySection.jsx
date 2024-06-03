@@ -1,30 +1,58 @@
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 import CategoryCard from "./CategoryCard";
 import styles from "./CategorySection.module.css";
 
-
-const categories = [
-  { value: 'INFLABLES', name: "Inflables y Castillos", description: "Atracciones inflables para fiestas y eventos al aire libre.", emoji: "🏰" },
-  { value: 'AGUA', name: "Juegos de Agua", description: "Toboganes y juegos acuáticos para refrescarse en verano.", emoji: "💦" },
-  { value: 'MECANICOS', name: "Juegos Mecánicos", description: "Atracciones emocionantes para todas las edades.", emoji: "🎡" },
-  { value: 'DESTREZA', name: "Juegos de Destreza", description: "Actividades con premios para desafiar habilidades.", emoji: "🎯" },
-  { value: 'NINOS', name: "Niños Pequeños", description: "Carruseles y áreas de juegos para los más pequeños.", emoji: "👶" },
-  { value: 'TODOS', name: "Todos", description: "Mostrar todos los productos.", emoji: "🔍" }
-];
+const titleMapping = {
+  INFLABLES: "Inflables y Castillos 🏰",
+  AGUA: "Juegos de Agua💦",
+  MECANICOS: "Juegos Mecánicos 🎡",
+  DESTREZA: "Juegos de Destreza  🎯",
+  NIÑOS: "Niños Pequeños👶",
+  TODOS: "Todos🔍",
+};
 
 const CategorySection = ({ onCategoryClick }) => {
+  const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/category");
+        if (!response.ok) {
+          throw new Error(
+            `Error en la respuesta del servidor: ${response.statusText}`
+          );
+        }
+        const data = await response.json();
+
+        // Agregar manualmente la categoría "TODOS" al final de la lista
+        const allCategory = {
+          id: 0,
+          title: "TODOS",
+          description: "Mostrar todos los productos.",
+          img_url: "../public/assets/todos.jpg",
+        };
+
+        setCategories([...data, allCategory]);
+      } catch (error) {
+        console.error("Error al obtener las categorías:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleCategoryClick = (category) => {
     let updatedCategories = [...selectedCategories];
-    if (category.value === 'TODOS') {
+    if (category.title === "TODOS") {
       updatedCategories = [];
     } else {
-      const index = selectedCategories.indexOf(category.value);
+      const index = selectedCategories.indexOf(category.title);
       if (index !== -1) {
         updatedCategories.splice(index, 1);
       } else {
-        updatedCategories.push(category.value);
+        updatedCategories.push(category.title);
       }
     }
     setSelectedCategories(updatedCategories);
@@ -33,13 +61,13 @@ const CategorySection = ({ onCategoryClick }) => {
 
   return (
     <div className={styles.categorySection}>
-      {categories.map(category => (
+      {categories.map((category) => (
         <CategoryCard
-          key={category.value}
-          categoryName={category.name}
+          key={category.id}
+          categoryName={titleMapping[category.title] || category.title}
           categoryDescription={category.description}
-          categoryEmoji={category.emoji}
-          isSelected={selectedCategories.includes(category.value)}
+          categoryImageUrl={category.img_url}
+          isSelected={selectedCategories.includes(category.title)}
           onClick={() => handleCategoryClick(category)}
         />
       ))}
