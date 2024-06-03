@@ -13,7 +13,6 @@ import {
 } from "./AdminListProd.style";
 import useAdminListProd from "./useAdminListProd";
 import { eliminarProducto } from "../../data/juegos";
-import Modal from "react-modal";
 import EditProductForm from "./EditProductForm";
 
 const AdminListProd = () => {
@@ -133,13 +132,6 @@ const AdminListProd = () => {
           ))}
       </ListBody>
       <ToastContainer position="top-center" />
-      {isOpen && (
-        <Modal isOpen={isOpen} onRequestClose={toggleModal}>
-          <div>
-            <EditProductForm producto={productoActual} onClose={toggleModal} />
-          </div>
-        </Modal>
-      )}
     </ListContainer>
   );
 };
