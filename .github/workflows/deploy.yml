@@ -20,7 +20,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Install dependencies (using PNPM)
-        run: pnpm install
+        run: npm install
 
       - name: Build React app
         run: npm run build
