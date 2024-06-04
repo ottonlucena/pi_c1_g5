@@ -1,4 +1,14 @@
-import React, { useState, useEffect } from "react";
+import * as React from "react";
+import {
+  Dialog,
+  DialogSurface,
+  DialogTitle,
+  DialogBody,
+  DialogActions,
+  DialogContent,
+  Button,
+} from "@fluentui/react-components";
+import { useState, useEffect } from "react";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import {
@@ -14,6 +24,31 @@ import {
 import useAdminListProd from "./useAdminListProd";
 import { eliminarProducto } from "../../data/juegos";
 import EditProductForm from "./EditProductForm";
+
+import styled from "styled-components";
+
+
+const SecondaryButton = styled(Button)`
+  background-color: #f5e9fc;
+  color: #795af6;
+
+  &:hover {
+    background-color: #795af6;
+    color: white;
+  }
+
+`;
+
+
+const PrimaryButton = styled(Button)`
+  background-color: #f5e9fc;
+  color: #795af6;
+
+  &:hover {
+    background-color: #795af6;
+    color: white;
+  }
+`;
 
 const AdminListProd = () => {
   const [datos, setDatos] = useState([]);
@@ -68,6 +103,16 @@ const AdminListProd = () => {
     }
   };
 
+  const handleUpdateProduct = (productoActualizado) => {
+    setDatos((prevDatos) => {
+      return prevDatos.map((producto) =>
+        producto.id === productoActualizado.id ? productoActualizado : producto
+      );
+    });
+    toggleModal();
+    toast.success("Producto actualizado correctamente");
+  };
+
   return (
     <ListContainer>
       <ListHeader>
@@ -112,7 +157,6 @@ const AdminListProd = () => {
                     }}
                   />
                 </ListCell>
-
                 <ListCell>
                   <IconButton onClick={() => handleEditClick(producto)}>
                     <AiFillEdit />
@@ -132,6 +176,25 @@ const AdminListProd = () => {
           ))}
       </ListBody>
       <ToastContainer position="top-center" />
+      <Dialog open={isOpen} onDismiss={toggleModal}>
+        <DialogSurface style={{ width: '98%', padding: '15px 30px 15px 30px' }}>
+          <DialogBody>
+            <DialogTitle>Editar Producto</DialogTitle>
+            <DialogContent>
+              <EditProductForm
+                producto={productoActual}
+                onSave={handleUpdateProduct}
+              />
+            </DialogContent>
+            <DialogActions>
+              <SecondaryButton onClick={toggleModal}>Cerrar</SecondaryButton>
+              <PrimaryButton form="edit-product-form" type="submit">
+                Guardar Cambios
+              </PrimaryButton>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
     </ListContainer>
   );
 };
