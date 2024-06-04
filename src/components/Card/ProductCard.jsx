@@ -1,6 +1,7 @@
+import  { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { HiOutlineShare } from 'react-icons/hi';
+import { HiOutlineShare, HiHeart, HiOutlineHeart } from 'react-icons/hi'; // Importa los íconos de corazón
 import {
   Popover,
   PopoverTrigger,
@@ -111,7 +112,27 @@ const ShareIconWrapper = styled.div`
   }
 `;
 
+const FavoriteIconWrapper = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: ${({ isFavorite }) => (isFavorite ? '#795af6' : '#795af6')}; // Cambia el color del icono según el estado de favorito
+  cursor: pointer;
+  z-index: 1;
+  font-size: 30px;
+  svg {
+    stroke-width: 1px; /* Establece el grosor del borde del corazón */
+  }
+`;
+
+
 const ProductCard = ({ product }) => {
+  const [isFavorite, setIsFavorite] = useState(false); // Estado para controlar si el producto está marcado como favorito
+
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite); // Cambia el estado de favorito al contrario del estado actual
+  };
+
   if (!product) {
     return <div>No hay información del producto</div>;
   }
@@ -141,9 +162,15 @@ const ProductCard = ({ product }) => {
             {<ShareSocial imageUrl={img_url} />}
           </PopoverSurface>
         </Popover>
+
+        {/* Agrega el botón de favoritos y maneja el estado de favorito */}
+        <FavoriteIconWrapper onClick={toggleFavorite} isFavorite={isFavorite}>
+          {isFavorite ? <HiHeart /> : <HiOutlineHeart />}
+        </FavoriteIconWrapper>
       </CardContainer>
     </>
   );
 };
 
 export default ProductCard;
+
