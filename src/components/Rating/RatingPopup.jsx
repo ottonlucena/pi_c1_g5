@@ -1,6 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const RatingPopup = ({ onClose }) => {
+const RatingPopup = ({ juegoId, onClose }) => {
+  const [comentarios, setComentarios] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchValoraciones = async (id) => {
+    try {
+      const response = await fetch('http://localhost:8080/api/valoracion/filter/4', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error al obtener los comentarios');
+      }
+
+      const data = await response.json();
+      setComentarios(data.valoraciones);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    fetchValoraciones(juegoId);
+  }, [juegoId]);
+
   return (
     <div style={{
       position: 'fixed',
@@ -13,7 +46,20 @@ const RatingPopup = ({ onClose }) => {
       zIndex: 1000
     }}>
       <h2>Comentarios</h2>
-      {/* Aquí van los comentarios desde la db que vinculo jorge*/}
+      {loading ? (
+        <p>Cargando comentarios...</p>
+      ) : error ? (
+        <p>Error: {error}</p>
+      ) : (
+        <ul>
+          {comentarios.map((comentario, index) => (
+            <li key={index}>
+              <p><strong>{comentario.nombre}</strong> ({comentario.fecha}): {comentario.comentario}</p>
+              <p>Valoración: {comentario.valoracion}</p>
+            </li>
+          ))}
+        </ul>
+      )}
       <button 
         onClick={onClose}
         style={{ 

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Rating as FluentRating } from '@fluentui/react-components';
 import axios from 'axios';
 import RatingPopup from '../Rating/RatingPopup'; 
+
+
 const Rating = ({ promedioValoracion, user, hasReservation }) => {
   const [averageRating, setAverageRating] = useState(0);
   const [ratingCount, setRatingCount] = useState(0);
@@ -46,7 +48,7 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
   const handleRatingChange = (event, newRating) => {
     setUserRating(newRating);
     setShowAverage(true); 
- 
+    // Simulación de enviar la calificación del usuario a la API
     console.log(`Nuevo rating para el producto con promedioValoracion ${promedioValoracion}: ${newRating}`);
   };
 
