@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-
+import useRatingStore from './useRatingStore';
 const RatingPopup = ({ juegoId, onClose }) => {
+  const juegoIdent = useRatingStore((state)=> state.juegoIdent)
   const [comentarios, setComentarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchValoraciones = async (id) => {
     try {
-      const response = await fetch('http://localhost:8080/api/valoracion/filter/4', {
+      const response = await fetch(`http://localhost:8080/api/valoracion/filter/${4}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

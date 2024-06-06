@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaCircle } from "react-icons/fa";
 import useDetailProduct from "./useDetailProduct";
 import Rating from "../Rating/Rating";
+
 export const MoreButton = styled.button`
   margin-top: 15%;
   padding: 10px 20px;

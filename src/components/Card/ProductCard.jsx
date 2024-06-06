@@ -10,6 +10,7 @@ import {
 import ShareSocial from '../ShareSocial/ShareSocial';
 import '@fontsource/capriola';
 import {Rating as FluentRating} from '@fluentui/react-components'
+import useRatingStore from '../Rating/useRatingStore';
 
 const CardContainer = styled.div`
   position: relative;
@@ -135,8 +136,9 @@ const RatingWrapper = styled.div`
 `;
 
 const ProductCard = ({ product }) => {
+  
   const [isFavorite, setIsFavorite] = useState(false); // Estado para controlar si el producto está marcado como favorito
-
+const setJuegoId = useRatingStore ((state)=>state.setJuegoId)
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite); // Cambia el estado de favorito al contrario del estado actual
   };
@@ -144,8 +146,12 @@ const ProductCard = ({ product }) => {
   if (!product) {
     return <div>No hay información del producto</div>;
   }
-
+  //Implementacion de zustand
+  const handleOpenRatingPopup = () => {
+    setJuegoId(product.id); 
+  };
   const { id, nombre, img_url, promedioValoracion } = product; 
+  
   const averageRating = promedioValoracion; 
   return (
     <>
