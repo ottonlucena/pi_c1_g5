@@ -9,6 +9,7 @@ import {
 } from '@fluentui/react-components';
 import ShareSocial from '../ShareSocial/ShareSocial';
 import '@fontsource/capriola';
+import {Rating as FluentRating} from '@fluentui/react-components'
 
 const CardContainer = styled.div`
   position: relative;
@@ -125,6 +126,13 @@ const FavoriteIconWrapper = styled.div`
   }
 `;
 
+const RatingWrapper = styled.div`
+  margin-top: auto;
+  align-self: center;
+  user-select: none; 
+  pointer-events: none; 
+
+`;
 
 const ProductCard = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false); // Estado para controlar si el producto está marcado como favorito
@@ -137,8 +145,8 @@ const ProductCard = ({ product }) => {
     return <div>No hay información del producto</div>;
   }
 
-  const { id, nombre, img_url } = product;
-
+  const { id, nombre, img_url, promedioValoracion } = product; 
+  const averageRating = promedioValoracion; 
   return (
     <>
       <CardContainer>
@@ -148,6 +156,9 @@ const ProductCard = ({ product }) => {
         <ContentContainer>
           <TextContainer>
             <Title>{nombre}</Title>
+            <RatingWrapper>
+               <FluentRating value={averageRating} readOnly />
+            </RatingWrapper>
             <DetailLink to={`/detalle/${id}`}>Ver Detalle</DetailLink>
           </TextContainer>
         </ContentContainer>
