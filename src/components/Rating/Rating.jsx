@@ -10,7 +10,8 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
   const [userRating, setUserRating] = useState(null);
   const [showAverage, setShowAverage] = useState(true); 
   const [isPopupOpen, setIsPopupOpen] = useState(false); 
-  const [comments, setComments] = useState([]); 
+  const [comments, setComments] = useState([]);
+
 
   useEffect(() => {
     const getProductData = async () => {
@@ -53,11 +54,12 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
   };
 
   const handleViewComments = () => {
-    setIsPopupOpen(true); // Mostrar el popup
+
+    setIsPopupOpen(true); 
   };
 
   const handleClosePopup = () => {
-    setIsPopupOpen(false); // Ocultar el popup
+    setIsPopupOpen(false); 
   };
 
   return (
@@ -89,7 +91,7 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
       >
         Ver comentarios
       </button>
-      {isPopupOpen && <RatingPopup comments={comments} onClose={handleClosePopup} />}
+      {isPopupOpen && <RatingPopup onClose={handleClosePopup} />}
     </div>
   );
 };

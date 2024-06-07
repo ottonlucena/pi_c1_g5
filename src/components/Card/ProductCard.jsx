@@ -1,16 +1,18 @@
-import  { useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { HiOutlineShare, HiHeart, HiOutlineHeart } from 'react-icons/hi'; // Importa los íconos de corazón
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { HiOutlineShare, HiHeart, HiOutlineHeart } from "react-icons/hi"; // Importa los íconos de corazón
 import {
   Popover,
   PopoverTrigger,
   PopoverSurface,
-} from '@fluentui/react-components';
-import ShareSocial from '../ShareSocial/ShareSocial';
-import '@fontsource/capriola';
-import {Rating as FluentRating} from '@fluentui/react-components'
-import useRatingStore from '../Rating/useRatingStore';
+} from "@fluentui/react-components";
+import ShareSocial from "../ShareSocial/ShareSocial";
+import "@fontsource/capriola";
+import { Rating as FluentRating } from "@fluentui/react-components";
+import { useNavigate } from "react-router-dom";
+import useRatingStore from "../Rating/useRatingStore";
+import { Button } from "@fluentui/react-components";
 
 const CardContainer = styled.div`
   position: relative;
@@ -36,7 +38,7 @@ const ContentContainer = styled.div`
   z-index: 1;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -76,7 +78,7 @@ const TextContainer = styled.div`
 
 const Title = styled.h3`
   margin: 0;
-  font-family: 'Capriola', sans-serif;
+  font-family: "Capriola", sans-serif;
   font-size: 35px;
   color: #333;
 `;
@@ -118,7 +120,10 @@ const FavoriteIconWrapper = styled.div`
   position: absolute;
   top: 16px;
   right: 16px;
-  color: ${({ isFavorite }) => (isFavorite ? '#795af6' : '#795af6')}; // Cambia el color del icono según el estado de favorito
+  color: ${({ isFavorite }) =>
+    isFavorite
+      ? "#795af6"
+      : "#795af6"}; // Cambia el color del icono según el estado de favorito
   cursor: pointer;
   z-index: 1;
   font-size: 30px;
@@ -130,15 +135,13 @@ const FavoriteIconWrapper = styled.div`
 const RatingWrapper = styled.div`
   margin-top: auto;
   align-self: center;
-  user-select: none; 
-  pointer-events: none; 
-
+  user-select: none;
+  pointer-events: none;
 `;
 
 const ProductCard = ({ product }) => {
-  
   const [isFavorite, setIsFavorite] = useState(false); // Estado para controlar si el producto está marcado como favorito
-const setJuegoId = useRatingStore ((state)=>state.setJuegoId)
+
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite); // Cambia el estado de favorito al contrario del estado actual
   };
@@ -146,13 +149,17 @@ const setJuegoId = useRatingStore ((state)=>state.setJuegoId)
   if (!product) {
     return <div>No hay información del producto</div>;
   }
-  //Implementacion de zustand
-  const handleOpenRatingPopup = () => {
-    setJuegoId(product.id); 
-  };
-  const { id, nombre, img_url, promedioValoracion } = product; 
+  const { id, nombre, img_url, promedioValoracion } = product;
+
+  const navigate = useNavigate();
+  const setJuegoId = useRatingStore((state) => state.setJuegoId);
+  const handleDetalle = () => {
+    console.log("esto es de la card", id)
+    setJuegoId(id);
   
-  const averageRating = promedioValoracion; 
+    navigate(`/detalle/${id}`);
+  };
+  const averageRating = promedioValoracion;
   return (
     <>
       <CardContainer>
@@ -163,9 +170,10 @@ const setJuegoId = useRatingStore ((state)=>state.setJuegoId)
           <TextContainer>
             <Title>{nombre}</Title>
             <RatingWrapper>
-               <FluentRating value={averageRating} readOnly />
+              <FluentRating value={averageRating} readOnly />
             </RatingWrapper>
-            <DetailLink to={`/detalle/${id}`}>Ver Detalle</DetailLink>
+            <Button appearance="primary" onClick={handleDetalle}> Ver Detalle</Button>
+          
           </TextContainer>
         </ContentContainer>
         <Popover withArrow>
@@ -190,4 +198,3 @@ const setJuegoId = useRatingStore ((state)=>state.setJuegoId)
 };
 
 export default ProductCard;
-

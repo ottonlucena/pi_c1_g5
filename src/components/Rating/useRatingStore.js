@@ -2,7 +2,7 @@ import {create} from 'zustand';
 
 const useRatingStore = create((set) => ({
   juegoId: null,
-  setJuegoId: (id) => set({ juegoId: id }),
+  setJuegoId: (newId) => set({ juegoId: newId }),
 }));
 
 export default useRatingStore;

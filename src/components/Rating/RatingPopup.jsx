@@ -1,76 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import useRatingStore from './useRatingStore';
-const RatingPopup = ({ juegoId, onClose }) => {
-  const juegoIdent = useRatingStore((state)=> state.juegoIdent)
+import React, { useEffect, useState } from "react";
+import useRatingStore from "./useRatingStore";
+import useRatingPopup from "./useRatingPopup";
+import { ToastContainer, toast } from "react-toastify";
+
+const RatingPopup = ({ onClose }) => {
   const [comentarios, setComentarios] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  const fetchValoraciones = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/valoracion/filter/${4}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        
-      });
-      
-      if (!response.ok) {
-        throw new Error('Error al obtener los comentarios');
-      }
+  const juegoId = useRatingStore((state) => state.juegoId);
+  console.log("valor del id", juegoId);
 
-      const data = await response.json();
-      setComentarios(data.valoraciones);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: puntuacion, isLoading, error } = useRatingPopup(juegoId);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-    fetchValoraciones(juegoId);
-  }, [juegoId]);
+    if (isLoading) {
+      toast.info("Cargando...", { autoClose: false, toastId: "ToastyLoad" });
+    } else {
+      toast.dismiss("ToastyLoad");
+    }
+    if (error) {
+      toast.error("Error al cargar la data");
+    }
+  }, [isLoading, error]);
+
+  if (!puntuacion) {
+    return null;
+  }
+
+  // const fetchValoraciones = async (id) => {
+  //   const juegoId = useRatingStore((state) => state.setJuegoId);
+  //   console.log("valor del id", juegoId);
+  //   try {
+  //     const response = await fetch(
+  //       `http://localhost:8080/api/valoracion/filter/${juegoId}`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       throw new Error("Error al obtener los comentarios");
+  //     }
+
+  //     const data = await response.json();
+  //     setComentarios(data.valoraciones);
+  //   } catch (error) {
+  //     setError(error.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   setError(null);
+  //   fetchValoraciones(juegoId);
+  // }, [juegoId]);
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      backgroundColor: 'white',
-      padding: '20px',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-      zIndex: 1000
-    }}>
+    <div
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        backgroundColor: "white",
+        padding: "20px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+        zIndex: 1000,
+      }}
+    >
       <h2>Comentarios</h2>
-      {loading ? (
-        <p>Cargando comentarios...</p>
-      ) : error ? (
-        <p>Error: {error}</p>
-      ) : (
+      {puntuacion && (
         <ul>
-          {comentarios.map((comentario, index) => (
-            <li key={index}>
-              <p><strong>{comentario.nombre}</strong> ({comentario.fecha}): {comentario.comentario}</p>
-              <p>Valoración: {comentario.valoracion}</p>
+          {puntuacion.valoraciones.map((calificacion) => (
+            <li key={puntuacion.juego_id}>
+              <p>
+                <strong>{calificacion?.nombre}</strong> ({calificacion?.fecha}):{" "}
+                {calificacion?.comentario}
+              </p>
+              <p>Valoración: {calificacion?.valoracion}</p>
             </li>
           ))}
         </ul>
       )}
-      <button 
+      <button
         onClick={onClose}
-        style={{ 
-          marginTop: '10px', 
-          padding: '10px 20px', 
-          backgroundColor: '#795af6', 
-          color: '#fff', 
-          border: 'none', 
-          borderRadius: '5px', 
-          cursor: 'pointer' 
+        style={{
+          marginTop: "10px",
+          padding: "10px 20px",
+          backgroundColor: "#795af6",
+          color: "#fff",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
         }}
       >
         Cerrar
