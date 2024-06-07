@@ -3,12 +3,13 @@ import useRatingStore from "./useRatingStore";
 import useRatingPopup from "./useRatingPopup";
 import { ToastContainer, toast } from "react-toastify";
 import { Button } from "@fluentui/react-components";
+import {useStore} from "../../data/Store/store";
 
 const RatingPopup = ({ onClose }) => {
   const [comentarios, setComentarios] = useState([]);
 
   const juegoId = useRatingStore((state) => state.juegoId);
-  console.log("valor del id", juegoId);
+  const setCantidadValoracion = useStore((state) => state.setCantidadValoracion);
 
   const { data: puntuacion, isLoading, error } = useRatingPopup(juegoId);
 
@@ -21,6 +22,7 @@ const RatingPopup = ({ onClose }) => {
     if (error) {
       toast.error("Error al cargar la data");
     }
+  
   }, [isLoading, error]);
 
   if (!puntuacion) {
@@ -28,7 +30,7 @@ const RatingPopup = ({ onClose }) => {
   }
 
   const comentarioStyle = {
-    backgroundColor: "#f5f5f5", // Color de fondo
+    backgroundColor: "#f5f5f5",
     padding: "10px",
     marginBottom: "10px",
     borderRadius: "5px",
@@ -79,7 +81,9 @@ const RatingPopup = ({ onClose }) => {
         }}
       >
         Comentarios
-      </h2>
+      </h2>{setCantidadValoracion(puntuacion?.cantidad_valoraciones)}
+      {console.log("esto es lo que hacemos" ,puntuacion?.cantidad_valoraciones)}
+
       {puntuacion && (
         puntuacion.valoraciones.length > 0 ? (
           <ul style={{ listStyleType: "none", padding: 0 }}>
@@ -108,6 +112,7 @@ const RatingPopup = ({ onClose }) => {
           cursor: "pointer",
           marginBlockStart: "180px",
           marginLeft: "80%",
+         
         }}
       >
         Cerrar

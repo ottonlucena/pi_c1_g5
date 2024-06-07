@@ -142,6 +142,7 @@ const RatingWrapper = styled.div`
 const ProductCard = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false); // Estado para controlar si el producto está marcado como favorito
 
+
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite); // Cambia el estado de favorito al contrario del estado actual
   };

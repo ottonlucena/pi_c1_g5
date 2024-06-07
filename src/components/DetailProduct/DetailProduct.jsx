@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaCircle } from "react-icons/fa";
 import useDetailProduct from "./useDetailProduct";
 import Rating from "../Rating/Rating";
+import { useStore } from "../../data/Store/store";
 
 export const MoreButton = styled.button`
   margin-top: 15%;
@@ -36,6 +37,7 @@ const DetailProduct = () => {
   const { id } = useParams();
   const { isModalOpen, openModal, closeModal } = useModalStore();
   const { data: product, isLoading, error } = useDetailProduct(id);
+
 
   useEffect(() => {
     if (isLoading) {
@@ -69,7 +71,7 @@ const DetailProduct = () => {
             <img src={product?.img_url} alt={product?.nombre} />
             <Rating
             promedioValoracion={product ? product.promedioValoracion : 0}
-            cantidadValoraciones={product ? product.cantidad_valoraciones : 0}
+            
             />
        
           </div>
