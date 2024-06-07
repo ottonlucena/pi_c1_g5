@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useRatingStore from "./useRatingStore";
 import useRatingPopup from "./useRatingPopup";
 import { ToastContainer, toast } from "react-toastify";
+import { Button } from "@fluentui/react-components";
 
 const RatingPopup = ({ onClose }) => {
   const [comentarios, setComentarios] = useState([]);
@@ -26,38 +27,32 @@ const RatingPopup = ({ onClose }) => {
     return null;
   }
 
-  // const fetchValoraciones = async (id) => {
-  //   const juegoId = useRatingStore((state) => state.setJuegoId);
-  //   console.log("valor del id", juegoId);
-  //   try {
-  //     const response = await fetch(
-  //       `http://localhost:8080/api/valoracion/filter/${juegoId}`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
+  const comentarioStyle = {
+    backgroundColor: "#f5f5f5", // Color de fondo
+    padding: "10px",
+    marginBottom: "10px",
+    borderRadius: "5px",
+  };
 
-  //     if (!response.ok) {
-  //       throw new Error("Error al obtener los comentarios");
-  //     }
+  const nombreStyle = {
+    fontWeight: "bold",
+    color: "#333",
+  };
 
-  //     const data = await response.json();
-  //     setComentarios(data.valoraciones);
-  //   } catch (error) {
-  //     setError(error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  const fechaStyle = {
+    fontStyle: "italic",
+    color: "#666",
+  };
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   setError(null);
-  //   fetchValoraciones(juegoId);
-  // }, [juegoId]);
+  const comentarioTextoStyle = {
+    marginTop: "5px",
+    color: "#333",
+  };
+
+  const valoracionStyle = {
+    marginTop: "5px",
+    color: "#333",
+  };
 
   return (
     <div
@@ -66,27 +61,42 @@ const RatingPopup = ({ onClose }) => {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        backgroundColor: "white",
+        backgroundColor: "#f0f0f0", 
         padding: "20px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
         zIndex: 1000,
+        width: "500px", 
+        height: "400px",
+        overflowY: "scroll",
       }}
     >
-      <h2>Comentarios</h2>
+      <h2
+        style={{
+          fontSize: "20px", 
+          fontFamily: "Segoe UI",
+          fontWeight: "700",
+          padding: "20px", 
+        }}
+      >
+        Comentarios
+      </h2>
       {puntuacion && (
-        <ul>
-          {puntuacion.valoraciones.map((calificacion) => (
-            <li key={puntuacion.juego_id}>
-              <p>
-                <strong>{calificacion?.nombre}</strong> ({calificacion?.fecha}):{" "}
-                {calificacion?.comentario}
-              </p>
-              <p>Valoración: {calificacion?.valoracion}</p>
-            </li>
-          ))}
-        </ul>
+        puntuacion.valoraciones.length > 0 ? (
+          <ul style={{ listStyleType: "none", padding: 0 }}>
+            {puntuacion.valoraciones.map((calificacion) => (
+              <li key={calificacion.id} style={comentarioStyle}>
+                <p style={nombreStyle}>{calificacion?.nombre}</p>
+                <p style={fechaStyle}>{calificacion?.fecha}</p>
+                <p style={comentarioTextoStyle}>{calificacion?.comentario}</p>
+                <p style={valoracionStyle}>Valoración: {calificacion?.valoracion}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Este juego aún no recibe comentarios</p>
+        )
       )}
-      <button
+      <Button
         onClick={onClose}
         style={{
           marginTop: "10px",
@@ -96,10 +106,12 @@ const RatingPopup = ({ onClose }) => {
           border: "none",
           borderRadius: "5px",
           cursor: "pointer",
+          marginBlockStart: "180px",
+          marginLeft: "80%",
         }}
       >
         Cerrar
-      </button>
+      </Button>
     </div>
   );
 };

@@ -96,6 +96,8 @@ const getValoraciones = async (id) => {
   }
 };
 
+
+
 export {
   obtenerProductos,
   agregarProducto,
@@ -103,4 +105,5 @@ export {
   actualizarProducto,
   eliminarProducto,
   getValoraciones,
+  
 };

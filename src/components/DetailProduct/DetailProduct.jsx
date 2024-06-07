@@ -68,9 +68,10 @@ const DetailProduct = () => {
           <div className={styles.productImage}>
             <img src={product?.img_url} alt={product?.nombre} />
             <Rating
-              promedioValoracion={product ? product.promedioValoracion : 0}
+            promedioValoracion={product ? product.promedioValoracion : 0}
+            cantidadValoraciones={product ? product.cantidad_valoraciones : 0}
             />
-            {/* Pasa la promedioValoracion del producto al componente Rating */}
+       
           </div>
         </div>
         <div className={styles.contCarac}>

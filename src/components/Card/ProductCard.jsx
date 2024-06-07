@@ -154,7 +154,7 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const setJuegoId = useRatingStore((state) => state.setJuegoId);
   const handleDetalle = () => {
-    console.log("esto es de la card", id)
+   
     setJuegoId(id);
   
     navigate(`/detalle/${id}`);

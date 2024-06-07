@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Rating as FluentRating } from '@fluentui/react-components';
 import axios from 'axios';
 import RatingPopup from '../Rating/RatingPopup'; 
-
+import { Button } from "@fluentui/react-components";
 
 const Rating = ({ promedioValoracion, user, hasReservation }) => {
   const [averageRating, setAverageRating] = useState(0);
@@ -24,7 +24,7 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
         
           const product = productData[0];
           setAverageRating(product.promedioValoracion);
-          setRatingCount(product.numeroDeCalificaciones || 0);
+          setRatingCount(product.cantidad_valoraciones || 0);
           setComments(product.comentario || []); 
         } else {
           console.warn('No products found with the given promedioValoracion');
@@ -77,7 +77,7 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
           onChange={handleRatingChange}
         />
       )}
-      <button 
+      <Button 
         onClick={handleViewComments}
         style={{ 
           marginTop: '10px', 
@@ -90,7 +90,7 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
         }}
       >
         Ver comentarios
-      </button>
+      </Button>
       {isPopupOpen && <RatingPopup onClose={handleClosePopup} />}
     </div>
   );
