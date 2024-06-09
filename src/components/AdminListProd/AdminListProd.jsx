@@ -24,27 +24,9 @@ import {
 import useAdminListProd from "./useAdminListProd";
 import { eliminarProducto } from "../../data/juegos";
 import EditProductForm from "./EditProductForm";
-import styled from "styled-components";
 
-const SecondaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
 
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-`;
 
-const PrimaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
-
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-`;
 
 const AdminListProd = () => {
   const [datos, setDatos] = useState([]);
@@ -191,12 +173,12 @@ const AdminListProd = () => {
               />
             </DialogContent>
             <DialogActions>
-              <SecondaryButton onClick={toggleEditModal}>
+              <Button appearance="primary" onClick={toggleEditModal}>
                 Cerrar
-              </SecondaryButton>
-              <PrimaryButton form="edit-product-form" type="submit">
+              </Button>
+              <Button appearance="primary" form="edit-product-form" type="submit">
                 Guardar Cambios
-              </PrimaryButton>
+              </Button>
             </DialogActions>
           </DialogBody>
         </DialogSurface>
@@ -210,10 +192,10 @@ const AdminListProd = () => {
               <p>¿ Estás seguro de que deseas eliminar <strong>{productoAEliminar?.nombre}</strong> ?</p>
             </DialogContent>
             <DialogActions>
-              <SecondaryButton onClick={toggleDeleteModal}>
+              <Button appearance="primary" onClick={toggleDeleteModal}>
                 Cancelar
-              </SecondaryButton>
-              <PrimaryButton onClick={confirmDelete}>Eliminar</PrimaryButton>
+              </Button>
+              <Button appearance="primary" onClick={confirmDelete}>Eliminar</Button>
             </DialogActions>
           </DialogBody>
         </DialogSurface>

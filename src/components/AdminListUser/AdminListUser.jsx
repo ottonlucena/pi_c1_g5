@@ -15,28 +15,15 @@ import {
   DescriptionTitle,
 } from "./AdminListUser.style";
 import EditUserForm from "./EditUserForm";
-import { Dialog, DialogSurface, DialogTitle, DialogBody, DialogActions, DialogContent, Button } from "@fluentui/react-components";
-import styled from "styled-components";
-
-const SecondaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
-
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-`;
-
-const PrimaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
-
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-`;
+import {
+  Dialog,
+  DialogSurface,
+  DialogTitle,
+  DialogBody,
+  DialogActions,
+  DialogContent,
+  Button,
+} from "@fluentui/react-components";
 
 const AdminListUser = () => {
   const { data, isLoading, error } = useAdminListUser();
@@ -87,7 +74,9 @@ const AdminListUser = () => {
   const confirmDelete = async () => {
     try {
       await deleteUser(usuarioAEliminar.id);
-      setDatos((prevData) => prevData.filter((user) => user.id !== usuarioAEliminar.id));
+      setDatos((prevData) =>
+        prevData.filter((user) => user.id !== usuarioAEliminar.id)
+      );
       toast.success("Usuario eliminado correctamente");
     } catch (error) {
       toast.error("Error al eliminar el usuario");
@@ -151,30 +140,41 @@ const AdminListUser = () => {
       <ToastContainer position="top-center" />
 
       <Dialog open={isEditOpen} onDismiss={toggleEditModal}>
-        <DialogSurface style={{ width: '98%', padding: '15px 30px 15px 30px' }}>
+        <DialogSurface style={{ width: "98%", padding: "15px 30px 15px 30px" }}>
           <DialogBody>
             <DialogTitle>Editar Usuario</DialogTitle>
             <DialogContent>
               <EditUserForm user={usuarioActual} onSave={handleUpdateUser} />
             </DialogContent>
             <DialogActions>
-              <SecondaryButton onClick={toggleEditModal}>Cerrar</SecondaryButton>
-              <PrimaryButton form="edit-user-form" type="submit">Guardar Cambios</PrimaryButton>
+              <Button appearance="primary" onClick={toggleEditModal}>
+                Cerrar
+              </Button>
+              <Button appearance="primary" form="edit-user-form" type="submit">
+                Guardar Cambios
+              </Button>
             </DialogActions>
           </DialogBody>
         </DialogSurface>
       </Dialog>
 
       <Dialog open={isDeleteOpen} onDismiss={toggleDeleteModal}>
-        <DialogSurface style={{ width: '98%', padding: '15px 30px 15px 30px' }}>
+        <DialogSurface style={{ width: "98%", padding: "15px 30px 15px 30px" }}>
           <DialogBody>
             <DialogTitle>Confirmar Eliminación</DialogTitle>
             <DialogContent>
-              <p>¿Está seguro de que desea eliminar al usuario <strong>{usuarioAEliminar?.nombre}</strong>?</p>
+              <p>
+                ¿Está seguro de que desea eliminar al usuario{" "}
+                <strong>{usuarioAEliminar?.nombre}</strong>?
+              </p>
             </DialogContent>
             <DialogActions>
-              <SecondaryButton onClick={toggleDeleteModal}>Cancelar</SecondaryButton>
-              <PrimaryButton onClick={confirmDelete}>Eliminar</PrimaryButton>
+              <Button appearance="primary" onClick={toggleDeleteModal}>
+                Cancelar
+              </Button>
+              <Button appearance="primary" onClick={confirmDelete}>
+                Eliminar
+              </Button>
             </DialogActions>
           </DialogBody>
         </DialogSurface>
@@ -184,6 +184,3 @@ const AdminListUser = () => {
 };
 
 export default AdminListUser;
-
-
-

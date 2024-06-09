@@ -23,25 +23,7 @@ import {
 } from "@fluentui/react-components";
 import styled from "styled-components";
 
-const SecondaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
 
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-`;
-
-const PrimaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
-
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-`;
 
 export const InlineInput = styled.input`
   width: 100%;
@@ -176,8 +158,8 @@ const AdminListCaracteristicas = () => {
                   />
                 </label>
                 <DialogActions>
-                  <SecondaryButton onClick={() => setIsEditModalOpen(false)}>Cerrar</SecondaryButton>
-                  <PrimaryButton type="submit">Guardar Cambios</PrimaryButton>
+                  <Button appearance="primary" onClick={() => setIsEditModalOpen(false)}>Cerrar</Button>
+                  <Button appearance="primary" type="submit">Guardar Cambios</Button>
                 </DialogActions>
               </form>
             </DialogContent>
@@ -193,8 +175,8 @@ const AdminListCaracteristicas = () => {
               <p>¿Estás seguro de que deseas eliminar la característica <strong>{caracteristicaAEliminar?.nombre}</strong>?</p>
             </DialogContent>
             <DialogActions>
-              <SecondaryButton onClick={() => setIsDeleteModalOpen(false)}>Cancelar</SecondaryButton>
-              <PrimaryButton onClick={confirmDelete}>Eliminar</PrimaryButton>
+              <Button appearance="primary" onClick={() => setIsDeleteModalOpen(false)}>Cancelar</Button>
+              <Button appearance="primary" onClick={confirmDelete}>Eliminar</Button>
             </DialogActions>
           </DialogBody>
         </DialogSurface>
