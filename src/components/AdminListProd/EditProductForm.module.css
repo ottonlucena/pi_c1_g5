@@ -16,13 +16,13 @@
 }
 
 .metaData {
-  border: 1px solid #e6e6e6;
+  
   border-radius: 8px;
   padding: 1rem;
 }
 
 .generalInfo {
-  border: 1px solid #e6e6e6;
+  
   border-radius: 8px;
   padding: 1rem;
 }
@@ -48,8 +48,8 @@
 }
 
 .label {
-  font-weight: 400;
   color: black;
+  font-weight: bold;
 }
 
 .input,
@@ -104,5 +104,45 @@
   width: 300px;
   height: 300px;
   background-color: aliceblue;
+}
+
+
+.caracteristicaItem {
+  display: grid;
+  grid-template-columns: auto auto 1fr; /* Columnas para el checkbox, el nombre y el botón */
+  gap: 7px; /* Espacio entre los elementos */
+  align-items: center; /* Alinear verticalmente */
+  margin-top: 20px;
+}
+
+.checkboxContainer {
+  justify-self: center; /* Alinear el checkbox al centro */
+}
+
+.labelContainer {
+  overflow: hidden; /* Evitar que el texto se desborde */
+  white-space: nowrap; /* No permitir saltos de línea */
+  text-overflow: ellipsis; /* Mostrar puntos suspensivos si el texto es demasiado largo */
+}
+
+
+
+/* Botón Agregar */
+.addButton {
+  background-color: #795af6;
+  color: #f5e9fc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Transición suave */
+  margin-top: 12px;
+}
+
+.addButton:hover {
+  background-color: #603dcf; /* Color de fondo más oscuro al pasar el mouse */
+}
+
+.titleCaract {
+  margin-top: 10px;
 }
 

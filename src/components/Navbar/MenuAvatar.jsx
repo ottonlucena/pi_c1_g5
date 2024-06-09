@@ -4,9 +4,12 @@ import {
   MenuButton,
   MenuDivider,
 } from '@szhsin/react-menu';
-import { useAuth0 } from '@auth0/auth0-react';
+/* import { useAuth0 } from '@auth0/auth0-react'; */
 import styled, { keyframes } from 'styled-components';
 import { getObjetWorlds } from '../../Utils/utils';
+import { useAuth } from '../AuthContext/AuthContext';
+import { Link } from 'react-router-dom';
+
 
 const menuShow = keyframes`
   from {
@@ -35,9 +38,11 @@ const Names = styled.div``;
 
 import '@szhsin/react-menu/dist/index.css';
 const MenuAvatar = (users) => {
-  const { logout } = useAuth0();
+const { logout } = useAuth();
+  //const { logout } = useAuth0();//
   const { user } = users;
   const nameObj = getObjetWorlds(user.name);
+  
 
   return (
     <Menu
@@ -70,7 +75,9 @@ const MenuAvatar = (users) => {
       }
     >
       <MenuItem>Perfil</MenuItem>
-      <MenuItem>Opcion 2</MenuItem>
+      <MenuItem>
+      <Link to='/favoritos' style={{ textDecoration: 'none', color: 'inherit' }}>Favoritos</Link>
+      </MenuItem>
       <MenuDivider />
       <MenuItem onClick={() => logout()}>LogOut</MenuItem>
     </Menu>

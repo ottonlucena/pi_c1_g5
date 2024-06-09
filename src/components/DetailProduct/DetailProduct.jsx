@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCircle } from "react-icons/fa";
 
-import { obtenerProductoPorId } from "../../data/juegos"; // Asegúrate de reemplazar "tu_ruta_del_servicio_aqui" con la ruta correcta
+import { obtenerProductoPorId } from "../../data/juegos";
 
 export const MoreButton = styled.button`
   margin-top: 15%;
@@ -76,20 +76,20 @@ const DetailProduct = () => {
           />
         </div>
       </div>
+      <h2 className={styles.caractTitle}>Caracteristicas</h2>
       <div className={styles.contCarac}>
-      <div className={styles.productCharacteristics}>
-        {product &&
-          product.caracteristicas &&
-          product.caracteristicas.map((caracteristica, index) => (
-            <div key={index} className={styles.characteristic}>
-              <div className={styles.characteristicItem}>
-                <FaCircle color="#f5e9fc" size={10} />
-                <p>{caracteristica}</p>
+        <div className={styles.productCharacteristics}>
+          {product &&
+            product.caracteristicas &&
+            product.caracteristicas.map((caracteristica, index) => (
+              <div key={index} className={styles.characteristic}>
+                <div className={styles.characteristicItem}>
+                  <FaCircle color="#f5e9fc" size={10} />
+                  <p>{caracteristica.nombre}</p>
+                </div>
               </div>
-            </div>
-          ))}
-      </div>
-
+            ))}
+        </div>
       </div>
 
       <Modal>

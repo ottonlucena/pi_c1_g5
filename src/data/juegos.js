@@ -52,25 +52,12 @@ const actualizarProducto = async (nuevoProducto) => {
   return data;
 };
 
-  
-
-
-
-
 // Obtener un juego por ID
 const obtenerProductoPorId = async (id) => {
   const response = await fetch(`${API_URL}/${id}`);
   const data = await response.json();
   return data;
 };
-
-
-
-
-
-
-
-
 
 // Eliminar un juego
 const eliminarProducto = async (id) => {
