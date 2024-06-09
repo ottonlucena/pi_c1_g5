@@ -1,14 +1,18 @@
 
+
 import  { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { HiOutlineShare, HiHeart, HiOutlineHeart } from 'react-icons/hi'; // Importa los íconos de corazón
+
 import {
   Popover,
   PopoverTrigger,
   PopoverSurface,
+
 } from '@fluentui/react-components';
 import { useAuth } from '../AuthContext/AuthContext';
+
 } from "@fluentui/react-components";
 import ShareSocial from "../ShareSocial/ShareSocial";
 import "@fontsource/capriola";
@@ -152,6 +156,7 @@ const ProductCard = ({ product }) => {
     setIsFavorite(favorites.includes(product.id));
   }, [product.id, favorites]);
 
+
   const toggleFavorite = () => {
     if (!isAuthenticated) {
       console.log('Redireccionar al inicio de sesión...');
@@ -174,39 +179,46 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const setJuegoId = useRatingStore((state) => state.setJuegoId);
   const handleDetalle = () => {
-    console.log("esto es de la card", id)
     setJuegoId(id);
-  
     navigate(`/detalle/${id}`);
   };
   const averageRating = promedioValoracion;
   return (
 
-    <CardContainer>
-      <ImageWrapper>
-        <img src={img_url} alt={nombre} />
-      </ImageWrapper>
-      <ContentContainer>
-        <TextContainer>
-          <Title>{nombre}</Title>
-          <DetailLink to={`/detalle/${id}`}>Ver Detalle</DetailLink>
-        </TextContainer>
-      </ContentContainer>
-      <Popover withArrow>
-        <PopoverTrigger disableButtonEnhancement>
-          <ShareIconWrapper>
-            <HiOutlineShare />
-          </ShareIconWrapper>
-        </PopoverTrigger>
-        <PopoverSurface tabIndex={-1}>
-          {<ShareSocial imageUrl={img_url} />}
-        </PopoverSurface>
-      </Popover>
-      <FavoriteIconWrapper onClick={toggleFavorite} isFavorite={isFavorite}>
-        {isFavorite ? <HiHeart /> : <HiOutlineHeart />}
-      </FavoriteIconWrapper>
-    </CardContainer>
- 
+    <>
+      <CardContainer>
+        <ImageWrapper>
+          <img src={img_url} alt={nombre} />
+        </ImageWrapper>
+        <ContentContainer>
+          <TextContainer>
+            <Title>{nombre}</Title>
+            <RatingWrapper>
+              <FluentRating value={averageRating} readOnly />
+            </RatingWrapper>
+            <Button appearance="primary" onClick={handleDetalle}> Ver Detalle</Button>
+          
+          </TextContainer>
+        </ContentContainer>
+        <Popover withArrow>
+          <PopoverTrigger disableButtonEnhancement>
+            <ShareIconWrapper>
+              <HiOutlineShare />
+            </ShareIconWrapper>
+          </PopoverTrigger>
+
+          <PopoverSurface tabIndex={-1}>
+            {<ShareSocial imageUrl={img_url} />}
+          </PopoverSurface>
+        </Popover>
+
+        {/* Agrega el botón de favoritos y maneja el estado de favorito */}
+        <FavoriteIconWrapper onClick={toggleFavorite} isFavorite={isFavorite}>
+          {isFavorite ? <HiHeart /> : <HiOutlineHeart />}
+        </FavoriteIconWrapper>
+      </CardContainer>
+    </>
+
   );
 };
 
