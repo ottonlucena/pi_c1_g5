@@ -1,6 +1,8 @@
 import { Button } from '@fluentui/react-components';
 import { ImSearch } from 'react-icons/im';
 import { useState } from 'react';
+import { Button } from '@fluentui/react-components';
+import { ImSearch } from 'react-icons/im';
 import { useNavigate } from 'react-router-dom';
 // import { useAuth0 } from '@auth0/auth0-react'; // Comentado por ahora
 import styled from 'styled-components';
@@ -93,11 +95,12 @@ const Navbar = ({ menuItems, logo }) => {
   };
 
   const handleLogin = () => {
-    const simulatedUser = { name: 'John Doe', picture: '../public/assets/ninos.jpg' };
+    const simulatedUser = {
+      name: 'John Doe',
+      picture: '../public/assets/ninos.jpg',
+    };
     login(simulatedUser);
   };
-
-  
 
   return (
     <>
@@ -119,22 +122,28 @@ const Navbar = ({ menuItems, logo }) => {
           )}
         </CenterSection>
         <RightSection>
-          <SearchInput type='text' placeholder='Buscar' />
+          <Button
+            appearance='primary'
+            iconPosition='before'
+            onClick={handleOpen}
+            shape='circular'
+            icon={<ImSearch />}
+          >
+            Buscar
+          </Button>
           {isAuthenticated && <MenuAvatar user={user} />}
           {!isAuthenticated ? (
             <NavButton onClick={handleLogin}>LogIn</NavButton>
           ) : (
-            <>
-
-            </>
+            <></>
           )}
           <NavButton onClick={handleSignUpClick}>Sign Up</NavButton>
         </RightSection>
       </NavbarContainer>
+      <SearchDrawer open={open} onClose={handleClose} />
       <SignUpModal showModal={showModal} setShowModal={setShowModal} />
     </>
   );
 };
 
 export default Navbar;
-

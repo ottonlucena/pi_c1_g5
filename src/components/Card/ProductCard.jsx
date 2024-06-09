@@ -1,5 +1,4 @@
-
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { HiOutlineShare, HiHeart, HiOutlineHeart } from 'react-icons/hi'; // Importa los íconos de corazón
@@ -8,18 +7,14 @@ import {
   Popover,
   PopoverTrigger,
   PopoverSurface,
-
 } from '@fluentui/react-components';
 import { useAuth } from '../AuthContext/AuthContext';
-
-} from "@fluentui/react-components";
-import ShareSocial from "../ShareSocial/ShareSocial";
-import "@fontsource/capriola";
-import { Rating as FluentRating } from "@fluentui/react-components";
-import { useNavigate } from "react-router-dom";
-import useRatingStore from "../Rating/useRatingStore";
-import { Button } from "@fluentui/react-components";
-
+import ShareSocial from '../ShareSocial/ShareSocial';
+import '@fontsource/capriola';
+import { Rating as FluentRating } from '@fluentui/react-components';
+import { useNavigate } from 'react-router-dom';
+import useRatingStore from '../Rating/useRatingStore';
+import { Button } from '@fluentui/react-components';
 
 const CardContainer = styled.div`
   position: relative;
@@ -45,7 +40,7 @@ const ContentContainer = styled.div`
   z-index: 1;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -85,7 +80,7 @@ const TextContainer = styled.div`
 
 const Title = styled.h3`
   margin: 0;
-  font-family: "Capriola", sans-serif;
+  font-family: 'Capriola', sans-serif;
   font-size: 35px;
   color: #333;
 `;
@@ -152,7 +147,6 @@ const ProductCard = ({ product }) => {
     setIsFavorite(favorites.includes(product.id));
   }, [product.id, favorites]);
 
-
   const toggleFavorite = () => {
     if (!isAuthenticated) {
       console.log('Redireccionar al inicio de sesión...');
@@ -180,7 +174,6 @@ const ProductCard = ({ product }) => {
   };
   const averageRating = promedioValoracion;
   return (
-
     <>
       <CardContainer>
         <ImageWrapper>
@@ -192,8 +185,10 @@ const ProductCard = ({ product }) => {
             <RatingWrapper>
               <FluentRating value={averageRating} readOnly />
             </RatingWrapper>
-            <Button appearance="primary" onClick={handleDetalle}> Ver Detalle</Button>
-          
+            <Button appearance='primary' onClick={handleDetalle}>
+              {' '}
+              Ver Detalle
+            </Button>
           </TextContainer>
         </ContentContainer>
         <Popover withArrow>
@@ -218,7 +213,6 @@ const ProductCard = ({ product }) => {
         </FavoriteIconWrapper>
       </CardContainer>
     </>
-
   );
 };
 
