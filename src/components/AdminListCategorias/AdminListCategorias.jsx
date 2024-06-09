@@ -10,7 +10,6 @@ import {
 } from "@fluentui/react-components";
 import { toast, ToastContainer } from "react-toastify";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import styled from "styled-components";
 import {
   ListContainer,
   ListHeader,
@@ -25,25 +24,7 @@ import useAdminListCategorias from "./useAdminListCategorias";
 import { eliminarCategoriaPorNombre } from "../../data/dataService";
 import EditCategoryForm from "./EditCategoryForm";
 
-const SecondaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
 
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-`;
-
-const PrimaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
-
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-`;
 
 const AdminListCategorias = () => {
   const [datos, setDatos] = useState([]);
@@ -175,10 +156,10 @@ const AdminListCategorias = () => {
               />
             </DialogContent>
             <DialogActions>
-              <SecondaryButton onClick={toggleEditModal}>Cerrar</SecondaryButton>
-              <PrimaryButton form="edit-category-form" type="submit">
+              <Button appearance="primary" onClick={toggleEditModal}>Cerrar</Button>
+              <Button appearance="primary" form="edit-category-form" type="submit">
                 Guardar Cambios
-              </PrimaryButton>
+              </Button>
             </DialogActions>
           </DialogBody>
         </DialogSurface>
@@ -192,8 +173,8 @@ const AdminListCategorias = () => {
               <p>¿Estás seguro de que deseas eliminar la categoría <strong>{categoriaAEliminar?.title}</strong>?</p>
             </DialogContent>
             <DialogActions>
-              <SecondaryButton onClick={toggleDeleteModal}>Cancelar</SecondaryButton>
-              <PrimaryButton onClick={confirmDelete}>Eliminar</PrimaryButton>
+              <Button appearance="primary" onClick={toggleDeleteModal}>Cancelar</Button>
+              <Button appearance="primary" onClick={confirmDelete}>Eliminar</Button>
             </DialogActions>
           </DialogBody>
         </DialogSurface>

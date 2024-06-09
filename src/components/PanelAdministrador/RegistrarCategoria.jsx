@@ -2,7 +2,15 @@ import { useState } from 'react';
 import styles from './RegistrarCategoria.module.css';
 import { agregarCategoria } from '../../data/dataService';
 import { ToastContainer, toast } from 'react-toastify';
+import {
+  Button,
+} from "@fluentui/react-components";
 
+
+import styled from "styled-components";
+const SubmitButton = styled(Button)`
+  margin-top: 15px;
+`;
 const RegistrarCategoria = () => {
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -84,7 +92,7 @@ const RegistrarCategoria = () => {
               />
             </div>
           </div>
-          <button type="button" onClick={handleFormSubmit} className={styles.submitButton}>Guardar Categoría</button>
+          <SubmitButton appearance='primary' type="button" onClick={handleFormSubmit} className={styles.submitButton}>Guardar Categoría</SubmitButton>
         </form>
       </div>
     </div>

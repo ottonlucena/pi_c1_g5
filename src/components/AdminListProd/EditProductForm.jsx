@@ -7,24 +7,9 @@ import {
   obtenerCaracteristicas,
 } from "../../data/caracteristicas";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  Button,
-} from "@fluentui/react-components";
-
+import { Button } from "@fluentui/react-components";
 
 import styled from "styled-components";
-
-
-const SecondaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
-
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-
-`;
 
 export const InlineInput = styled.input`
   width: 100%;
@@ -215,8 +200,6 @@ const EditProductForm = ({ producto, onSave }) => {
     }
   };
 
-  
-
   return (
     <div className={styles.containerPrincipal}>
       <div className={styles.formContainer}>
@@ -394,23 +377,23 @@ const EditProductForm = ({ producto, onSave }) => {
                 onChange={(e) => setNuevaCaracteristica(e.target.value)}
                 className={`${styles.input} ${styles.textInput}`}
               />
-              <SecondaryButton
+              <Button
+                appearance="primary"
                 type="button"
                 onClick={handleCrearCaracteristica}
                 className={styles.addButton}
               >
                 Agregar
-              </SecondaryButton>
+              </Button>
             </div>
           </div>
-          
 
           <div className={styles.caracteristicasList}>
             {caracteristicas.map((caracteristica) => (
               <div
                 key={caracteristica.id}
                 className={styles.caracteristicaItem}
-              >              
+              >
                 <div className={styles.checkboxContainer}>
                   <input
                     type="checkbox"
@@ -439,7 +422,6 @@ const EditProductForm = ({ producto, onSave }) => {
                     {caracteristica.nombre}
                   </label>
                 </div>
-               
               </div>
             ))}
           </div>

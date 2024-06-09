@@ -6,36 +6,14 @@ import {
   crearCaracteristica,
   obtenerCaracteristicas,
 } from "../../data/caracteristicas";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import {
-  Button,
-} from "@fluentui/react-components";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Button } from "@fluentui/react-components";
 
 import styled from "styled-components";
 
-
-const SecondaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
-
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-
-`;
 const SubmitButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
   margin-top: 15px;
-
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-
 `;
 
 const RegistrarProducto = () => {
@@ -185,10 +163,9 @@ const RegistrarProducto = () => {
     }
   };
 
-
   return (
     <div className={styles.containerPrincipal}>
-    <ToastContainer position="top-center"/>
+      <ToastContainer position="top-center" />
       <div className={styles.formContainer}>
         <h2 className={styles.titleForm}>Agregar Juego</h2>
         {error && <p className={styles.error}>{error}</p>}
@@ -357,25 +334,26 @@ const RegistrarProducto = () => {
                   </div>
                 )}
               </div>
-          <div className={styles.inputContainer}>
-            <label htmlFor="nuevaCaracteristica" className={styles.label}>
-              Nueva Característica:
-            </label>
-            <input
-              type="text"
-              id="nuevaCaracteristica"
-              value={nuevaCaracteristica}
-              onChange={(e) => setNuevaCaracteristica(e.target.value)}
-              className={`${styles.input} ${styles.textInput}`}
-            />
-            <SecondaryButton
-              type="button"
-              onClick={handleCrearCaracteristica}
-              className={styles.addButton}
-            >
-              Agregar
-            </SecondaryButton>
-          </div>
+              <div className={styles.inputContainer}>
+                <label htmlFor="nuevaCaracteristica" className={styles.label}>
+                  Nueva Característica:
+                </label>
+                <input
+                  type="text"
+                  id="nuevaCaracteristica"
+                  value={nuevaCaracteristica}
+                  onChange={(e) => setNuevaCaracteristica(e.target.value)}
+                  className={`${styles.input} ${styles.textInput}`}
+                />
+                <SubmitButton
+                  appearance="primary"
+                  type="button"
+                  onClick={handleCrearCaracteristica}
+                  className={styles.addButton}
+                >
+                  Agregar
+                </SubmitButton>
+              </div>
             </div>
           </div>
           <div className={styles.caracteristicasList}>
@@ -416,7 +394,11 @@ const RegistrarProducto = () => {
             ))}
           </div>
 
-          <SubmitButton type="submit" className={styles.submitButton}>
+          <SubmitButton
+            appearance="primary"
+            type="submit"
+            className={styles.submitButton}
+          >
             Registrar Producto
           </SubmitButton>
         </form>
