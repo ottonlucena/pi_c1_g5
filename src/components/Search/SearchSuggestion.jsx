@@ -180,6 +180,17 @@ const SearchSuggestion = () => {
     initialDateRef.current?.focus();
   }, [setInitialValue, setFinishValue]);
 
+  const handleSearch = useCallback(() => {
+    const sendToPost = {
+      selectedOption: selectedOption,
+      initialValue: initialValue,
+      finishValue: finishValue,
+    };
+    console.log(
+      'lo que se necesita enviar a el endpoint sendToPost',
+      sendToPost
+    );
+  }, [finishValue, initialValue, selectedOption]);
   return (
     <>
       <ContainerText>
@@ -238,7 +249,7 @@ const SearchSuggestion = () => {
             Limpiar
           </Button>
           <Button
-            onClick={handleClear}
+            onClick={handleSearch}
             appearance='primary'
             className={customStyles.clearButton}
           >
