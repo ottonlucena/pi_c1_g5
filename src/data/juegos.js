@@ -73,29 +73,27 @@ const eliminarProducto = async (id) => {
   return id;
 };
 
-const getValoraciones = async (id) => {
-  try {
-    const response = await fetch(
-      `http://localhost:8080/api/valoracion/filter/${id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Error al obtener los comentarios");
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(error.message);
+const getValoraciones = async (juegoId) => {
+  const response = await fetch(`http://localhost:8080/api/valoracion/filter/${juegoId}`);
+  if (!response.ok) {
+    throw new Error('Error al obtener valoraciones');
   }
+  return response.json();
 };
 
+const enviarValoracion = async (juegoId, valoracionData) => {
+  const response = await fetch(`http://localhost:8080/api/valoracion/${juegoId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(valoracionData),
+  });
+  if (!response.ok) {
+    throw new Error('Error al enviar la valoración');
+  }
+  return response.json();
+};
 
 
 export {
@@ -105,5 +103,5 @@ export {
   actualizarProducto,
   eliminarProducto,
   getValoraciones,
-  
+  enviarValoracion,
 };

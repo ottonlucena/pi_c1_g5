@@ -71,3 +71,17 @@ export const deleteUser = async (userId) => {
     throw error;
   }
 };
+
+export const getUserIdByEmail = async (email) => {
+  try {
+    const response = await fetch(`${API_URL}?email=${email}`);
+    if (!response.ok) {
+      throw new Error('Error al obtener el ID del usuario');
+    }
+    const user = await response.json();
+    return user.id;
+  } catch (error) {
+    console.error('Error al obtener el ID del usuario:', error);
+    throw error;
+  }
+};

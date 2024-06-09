@@ -43,14 +43,15 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
     if (promedioValoracion) {
       getProductData();
     } else {
-      console.error("ayudaaaaaaa");
+      console.error("Error al cargar la data");
     }
-  }, [promedioValoracion]);
+  }, [promedioValoracion, cantidadValoracion]);
+  console.log(cantidadValoracion)
 
   const handleRatingChange = (event, newRating) => {
     setUserRating(newRating);
     setShowAverage(true);
-    // Simulación de enviar la calificación del usuario a la API
+ 
     console.log(
       `Nuevo rating para el producto con promedioValoracion ${promedioValoracion}: ${newRating}`
     );
@@ -76,15 +77,14 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
             color: "#333",
           }}
         >
-          Puntuación: {averageRating} estrellas ({cantidadValoracion}{" "}
-          calificaciones)
+          Puntuación: {averageRating} Estrellas / {cantidadValoracion} Calificaciones
         </p>
       </div>
       {user && hasReservation && (
         <FluentRating
           step={0.5}
           defaultValue={0}
-          onChange={handleRatingChange}
+            onChange={handleRatingChange}
         />
       )}
       <Button
