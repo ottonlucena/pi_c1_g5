@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
-import useAdminListUser from "./useAdminListUser";
 import "react-toastify/dist/ReactToastify.css";
+import useAdminListUser from "./useAdminListUser";
 import { deleteUser, updateUser } from "../../data/user";
 import {
   ListContainer,
@@ -13,12 +13,39 @@ import {
   AccordionContent,
   IconButton,
   DescriptionTitle,
-} from "./AdminListCategorias.style";
+} from "./AdminListUser.style";
+import EditUserForm from "./EditUserForm";
+import { Dialog, DialogSurface, DialogTitle, DialogBody, DialogActions, DialogContent, Button } from "@fluentui/react-components";
+import styled from "styled-components";
+
+const SecondaryButton = styled(Button)`
+  background-color: #f5e9fc;
+  color: #795af6;
+
+  &:hover {
+    background-color: #795af6;
+    color: white;
+  }
+`;
+
+const PrimaryButton = styled(Button)`
+  background-color: #f5e9fc;
+  color: #795af6;
+
+  &:hover {
+    background-color: #795af6;
+    color: white;
+  }
+`;
 
 const AdminListUser = () => {
   const { data, isLoading, error } = useAdminListUser();
   const [datos, setDatos] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [usuarioActual, setUsuarioActual] = useState(null);
+  const [usuarioAEliminar, setUsuarioAEliminar] = useState(null);
 
   useEffect(() => {
     if (isLoading) {
@@ -34,37 +61,53 @@ const AdminListUser = () => {
     }
   }, [isLoading, error, data]);
 
+  const toggleEditModal = () => {
+    setIsEditOpen(!isEditOpen);
+  };
+
+  const toggleDeleteModal = () => {
+    setIsDeleteOpen(!isDeleteOpen);
+  };
+
+  const handleEditClick = (user) => {
+    setUsuarioActual(user);
+    toggleEditModal();
+  };
+
   const handleRowClick = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const handleEditClick = async (e, user, propiedad) => {
+  const handleDeleteClick = (e, user) => {
     e.stopPropagation();
-    const newValue = prompt(`Ingrese el nuevo valor para ${propiedad}:`, user[propiedad]);
-    if (newValue !== null && newValue.trim() !== "") {
-      try {
-        const usuarioActualizado = { ...user, [propiedad]: newValue };
-        await updateUser(user.id, usuarioActualizado);
-        setDatos((prevData) =>
-          prevData.map((us) => (us.id === user.id ? usuarioActualizado : us))
-        );
-        toast.success("Usuario actualizado correctamente");
-      } catch (error) {
-        toast.error("Error al actualizar el usuario");
-      }
+    setUsuarioAEliminar(user);
+    toggleDeleteModal();
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await deleteUser(usuarioAEliminar.id);
+      setDatos((prevData) => prevData.filter((user) => user.id !== usuarioAEliminar.id));
+      toast.success("Usuario eliminado correctamente");
+    } catch (error) {
+      toast.error("Error al eliminar el usuario");
+    } finally {
+      toggleDeleteModal();
     }
   };
 
-  const handleDeleteClick = async (e, id) => {
-    e.stopPropagation();
-    if (window.confirm("¿Está seguro de que desea eliminar el usuario?")) {
-      try {
-        await deleteUser(id);
-        setDatos((prevData) => prevData.filter((user) => user.id !== id));
-        toast.success("Usuario eliminado correctamente");
-      } catch (error) {
-        toast.error("Error al eliminar el usuario");
-      }
+  const handleUpdateUser = async (usuarioActualizado) => {
+    try {
+      await updateUser(usuarioActualizado);
+      setDatos((prevDatos) => {
+        return prevDatos.map((usuario) =>
+          usuario.id === usuarioActualizado.id ? usuarioActualizado : usuario
+        );
+      });
+      toggleEditModal();
+      toast.success("Usuario actualizado correctamente");
+    } catch (error) {
+      toast.error("Error al actualizar el usuario");
     }
   };
 
@@ -81,28 +124,16 @@ const AdminListUser = () => {
         {datos &&
           datos.map((usuario, index) => (
             <React.Fragment key={usuario.id}>
-              <ListRow
-                onClick={() => handleRowClick(index)}
-                isOdd={index % 2 !== 0}
-              >
+              <ListRow onClick={() => handleRowClick(index)}>
                 <ListCell>{usuario.id}</ListCell>
                 <ListCell>{usuario.nombre}</ListCell>
                 <ListCell>{usuario.apellido}</ListCell>
                 <ListCell>{usuario.email}</ListCell>
                 <ListCell>
-                  <IconButton
-                    onClick={(e) => handleEditClick(e, usuario, "nombre")}
-                  >
+                  <IconButton onClick={() => handleEditClick(usuario)}>
                     <AiFillEdit />
                   </IconButton>
-                  <IconButton
-                    onClick={(e) => handleEditClick(e, usuario, "apellido")}
-                  >
-                    <AiFillEdit />
-                  </IconButton>
-                  <IconButton
-                    onClick={(e) => handleDeleteClick(e, usuario.id)}
-                  >
+                  <IconButton onClick={(e) => handleDeleteClick(e, usuario)}>
                     <AiFillDelete />
                   </IconButton>
                 </ListCell>
@@ -118,9 +149,41 @@ const AdminListUser = () => {
           ))}
       </ListBody>
       <ToastContainer position="top-center" />
+
+      <Dialog open={isEditOpen} onDismiss={toggleEditModal}>
+        <DialogSurface style={{ width: '98%', padding: '15px 30px 15px 30px' }}>
+          <DialogBody>
+            <DialogTitle>Editar Usuario</DialogTitle>
+            <DialogContent>
+              <EditUserForm user={usuarioActual} onSave={handleUpdateUser} />
+            </DialogContent>
+            <DialogActions>
+              <SecondaryButton onClick={toggleEditModal}>Cerrar</SecondaryButton>
+              <PrimaryButton form="edit-user-form" type="submit">Guardar Cambios</PrimaryButton>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
+
+      <Dialog open={isDeleteOpen} onDismiss={toggleDeleteModal}>
+        <DialogSurface style={{ width: '98%', padding: '15px 30px 15px 30px' }}>
+          <DialogBody>
+            <DialogTitle>Confirmar Eliminación</DialogTitle>
+            <DialogContent>
+              <p>¿Está seguro de que desea eliminar al usuario <strong>{usuarioAEliminar?.nombre}</strong>?</p>
+            </DialogContent>
+            <DialogActions>
+              <SecondaryButton onClick={toggleDeleteModal}>Cancelar</SecondaryButton>
+              <PrimaryButton onClick={confirmDelete}>Eliminar</PrimaryButton>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
     </ListContainer>
   );
 };
 
 export default AdminListUser;
+
+
 

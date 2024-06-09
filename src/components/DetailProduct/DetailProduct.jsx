@@ -73,9 +73,14 @@ const DetailProduct = () => {
             {/* Pasa la promedioValoracion del producto al componente Rating */}
           </div>
         </div>
-        <div className={styles.contCarac}>
-          <div className={styles.productCharacteristics}>
-            {product?.caracteristicas.map((caracteristica, index) => (
+
+      </div>
+      <h2 className={styles.caractTitle}>Caracteristicas</h2>
+      <div className={styles.contCarac}>
+        <div className={styles.productCharacteristics}>
+          {product &&
+            product.caracteristicas &&
+            product.caracteristicas.map((caracteristica, index) => (
               <div key={index} className={styles.characteristic}>
                 <div className={styles.characteristicItem}>
                   <FaCircle color="#f5e9fc" size={10} />
