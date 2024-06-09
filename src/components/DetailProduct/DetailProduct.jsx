@@ -12,7 +12,6 @@ import { FaCircle } from "react-icons/fa";
 import useDetailProduct from "./useDetailProduct";
 import Rating from "../Rating/Rating";
 
-
 export const MoreButton = styled.button`
   margin-top: 15%;
   padding: 10px 20px;
@@ -37,8 +36,6 @@ const DetailProduct = () => {
   const { id } = useParams();
   const { isModalOpen, openModal, closeModal } = useModalStore();
   const { data: product, isLoading, error } = useDetailProduct(id);
-
-
   useEffect(() => {
     if (isLoading) {
       toast.info("Cargando...", { autoClose: false, toastId: "ToastyLoad" });
@@ -74,13 +71,11 @@ const DetailProduct = () => {
             promedioValoracion={product ? product.promedioValoracion : 0}
             
             />
-       
           </div>
         </div>
         <div className={styles.contCarac}>
           <div className={styles.productCharacteristics}>
             {product?.caracteristicas.map((caracteristica, index) => (
-
               <div key={index} className={styles.characteristic}>
                 <div className={styles.characteristicItem}>
                   <FaCircle color="#f5e9fc" size={10} />
