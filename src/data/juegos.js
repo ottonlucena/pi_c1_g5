@@ -52,25 +52,12 @@ const actualizarProducto = async (nuevoProducto) => {
   return data;
 };
 
-  
-
-
-
-
 // Obtener un juego por ID
 const obtenerProductoPorId = async (id) => {
   const response = await fetch(`${API_URL}/${id}`);
   const data = await response.json();
   return data;
 };
-
-
-
-
-
-
-
-
 
 // Eliminar un juego
 const eliminarProducto = async (id) => {
@@ -86,10 +73,34 @@ const eliminarProducto = async (id) => {
   return id;
 };
 
+const getValoraciones = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/valoracion/filter/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Error al obtener los comentarios");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
 export {
   obtenerProductos,
   agregarProducto,
   obtenerProductoPorId,
   actualizarProducto,
   eliminarProducto,
+  getValoraciones,
 };

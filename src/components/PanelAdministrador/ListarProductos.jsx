@@ -5,6 +5,7 @@ import RegistrarCategoria from "./RegistrarCategoria";
 import styles from "./ListarProductos.module.css";
 import AdminListCategorias from "../AdminListCategorias/AdminListCategorias";
 import AdminListUser from "../AdminListUser/AdminListUser";
+import AdminListCaracteristicas from "../AdminListCarac/AdminListCaracteristicas";
 
 const ListarProductos = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -99,6 +100,14 @@ const ListarProductos = () => {
               >
                 Listar Usuarios
               </button>
+              <button
+                className={`${styles.btnAgregar} ${
+                  selectedComponent === "AdminListCaracteristicas" && styles.selected
+                }`}
+                onClick={() => handleComponentChange("AdminListCaracteristicas")}
+              >
+                Listar Caracteristicas
+              </button>
             </>
           )}
         </div>
@@ -139,6 +148,11 @@ const ListarProductos = () => {
             <div className={styles.componentContainer}>
               {selectedComponent === "AdminListUser" && (
                 <AdminListUser/>
+              )}
+            </div>
+            <div className={styles.componentContainer}>
+              {selectedComponent === "AdminListCaracteristicas" && (
+                <AdminListCaracteristicas/>
               )}
             </div>
           </>

@@ -1,4 +1,5 @@
-import  { useState } from 'react';
+
+import  { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { HiOutlineShare, HiHeart, HiOutlineHeart } from 'react-icons/hi'; // Importa los íconos de corazón
@@ -7,8 +8,15 @@ import {
   PopoverTrigger,
   PopoverSurface,
 } from '@fluentui/react-components';
-import ShareSocial from '../ShareSocial/ShareSocial';
-import '@fontsource/capriola';
+import { useAuth } from '../AuthContext/AuthContext';
+} from "@fluentui/react-components";
+import ShareSocial from "../ShareSocial/ShareSocial";
+import "@fontsource/capriola";
+import { Rating as FluentRating } from "@fluentui/react-components";
+import { useNavigate } from "react-router-dom";
+import useRatingStore from "../Rating/useRatingStore";
+import { Button } from "@fluentui/react-components";
+
 
 const CardContainer = styled.div`
   position: relative;
@@ -34,7 +42,7 @@ const ContentContainer = styled.div`
   z-index: 1;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -74,7 +82,7 @@ const TextContainer = styled.div`
 
 const Title = styled.h3`
   margin: 0;
-  font-family: 'Capriola', sans-serif;
+  font-family: "Capriola", sans-serif;
   font-size: 35px;
   color: #333;
 `;
@@ -116,7 +124,10 @@ const FavoriteIconWrapper = styled.div`
   position: absolute;
   top: 16px;
   right: 16px;
-  color: ${({ isFavorite }) => (isFavorite ? '#795af6' : '#795af6')}; // Cambia el color del icono según el estado de favorito
+  color: ${({ isFavorite }) =>
+    isFavorite
+      ? "#795af6"
+      : "#795af6"}; // Cambia el color del icono según el estado de favorito
   cursor: pointer;
   z-index: 1;
   font-size: 30px;
@@ -125,52 +136,78 @@ const FavoriteIconWrapper = styled.div`
   }
 `;
 
+const RatingWrapper = styled.div`
+  margin-top: auto;
+  align-self: center;
+  user-select: none;
+  pointer-events: none;
+`;
 
 const ProductCard = ({ product }) => {
-  const [isFavorite, setIsFavorite] = useState(false); // Estado para controlar si el producto está marcado como favorito
+  const { isAuthenticated, favorites, addFavorite, removeFavorite } = useAuth();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    // Verificar si el producto está marcado como favorito al cargar el componente
+    setIsFavorite(favorites.includes(product.id));
+  }, [product.id, favorites]);
 
   const toggleFavorite = () => {
-    setIsFavorite(!isFavorite); // Cambia el estado de favorito al contrario del estado actual
+    if (!isAuthenticated) {
+      console.log('Redireccionar al inicio de sesión...');
+      return;
+    }
+
+    if (isFavorite) {
+      removeFavorite(product.id);
+    } else {
+      addFavorite(product.id);
+    }
+    setIsFavorite(!isFavorite);
   };
 
   if (!product) {
     return <div>No hay información del producto</div>;
   }
+  const { id, nombre, img_url, promedioValoracion } = product;
 
-  const { id, nombre, img_url } = product;
-
+  const navigate = useNavigate();
+  const setJuegoId = useRatingStore((state) => state.setJuegoId);
+  const handleDetalle = () => {
+    console.log("esto es de la card", id)
+    setJuegoId(id);
+  
+    navigate(`/detalle/${id}`);
+  };
+  const averageRating = promedioValoracion;
   return (
-    <>
-      <CardContainer>
-        <ImageWrapper>
-          <img src={img_url} alt={nombre} />
-        </ImageWrapper>
-        <ContentContainer>
-          <TextContainer>
-            <Title>{nombre}</Title>
-            <DetailLink to={`/detalle/${id}`}>Ver Detalle</DetailLink>
-          </TextContainer>
-        </ContentContainer>
-        <Popover withArrow>
-          <PopoverTrigger disableButtonEnhancement>
-            <ShareIconWrapper>
-              <HiOutlineShare />
-            </ShareIconWrapper>
-          </PopoverTrigger>
 
-          <PopoverSurface tabIndex={-1}>
-            {<ShareSocial imageUrl={img_url} />}
-          </PopoverSurface>
-        </Popover>
-
-        {/* Agrega el botón de favoritos y maneja el estado de favorito */}
-        <FavoriteIconWrapper onClick={toggleFavorite} isFavorite={isFavorite}>
-          {isFavorite ? <HiHeart /> : <HiOutlineHeart />}
-        </FavoriteIconWrapper>
-      </CardContainer>
-    </>
+    <CardContainer>
+      <ImageWrapper>
+        <img src={img_url} alt={nombre} />
+      </ImageWrapper>
+      <ContentContainer>
+        <TextContainer>
+          <Title>{nombre}</Title>
+          <DetailLink to={`/detalle/${id}`}>Ver Detalle</DetailLink>
+        </TextContainer>
+      </ContentContainer>
+      <Popover withArrow>
+        <PopoverTrigger disableButtonEnhancement>
+          <ShareIconWrapper>
+            <HiOutlineShare />
+          </ShareIconWrapper>
+        </PopoverTrigger>
+        <PopoverSurface tabIndex={-1}>
+          {<ShareSocial imageUrl={img_url} />}
+        </PopoverSurface>
+      </Popover>
+      <FavoriteIconWrapper onClick={toggleFavorite} isFavorite={isFavorite}>
+        {isFavorite ? <HiHeart /> : <HiOutlineHeart />}
+      </FavoriteIconWrapper>
+    </CardContainer>
+ 
   );
 };
 
 export default ProductCard;
-

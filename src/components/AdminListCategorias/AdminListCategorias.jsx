@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import { toast, ToastContainer } from "react-toastify";
-import useAdminListCategorias from "./useAdminListCategorias";
-import "react-toastify/dist/ReactToastify.css";
 import {
-  actualizarCategoria,
-  eliminarCategoriaPorNombre,
-} from "../../data/dataService"; // Asegúrate de importar tus servicios aquí
-
+  Dialog,
+  DialogSurface,
+  DialogTitle,
+  DialogBody,
+  DialogActions,
+  DialogContent,
+  Button,
+} from "@fluentui/react-components";
+import { toast, ToastContainer } from "react-toastify";
+import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import {
   ListContainer,
   ListHeader,
@@ -18,9 +20,19 @@ import {
   IconButton,
   DescriptionTitle,
 } from "./AdminListCategorias.style";
+import useAdminListCategorias from "./useAdminListCategorias";
+import { eliminarCategoriaPorNombre } from "../../data/dataService";
+import EditCategoryForm from "./EditCategoryForm";
+
+
 
 const AdminListCategorias = () => {
-  const [datos, setDatos] = useState();
+  const [datos, setDatos] = useState([]);
+  const [openIndex, setOpenIndex] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [categoriaActual, setCategoriaActual] = useState(null);
+  const [categoriaAEliminar, setCategoriaAEliminar] = useState(null);
   const { data, isLoading, error } = useAdminListCategorias();
 
   useEffect(() => {
@@ -30,53 +42,59 @@ const AdminListCategorias = () => {
       toast.dismiss("ToastyLoad");
     }
     if (error) {
-      toast.error("Error en al cargar la data");
+      toast.error("Error al cargar la data");
     }
     if (data) {
       setDatos(data);
     }
   }, [isLoading, error, data]);
 
-  const [openIndex, setOpenIndex] = useState(null);
+  const toggleEditModal = () => {
+    setIsEditOpen(!isEditOpen);
+  };
+
+  const toggleDeleteModal = () => {
+    setIsDeleteOpen(!isDeleteOpen);
+  };
+
+  const handleEditClick = (categoria) => {
+    setCategoriaActual(categoria);
+    toggleEditModal();
+  };
 
   const handleRowClick = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const handleEditClick = async (e, categoria, propiedad) => {
+  const handleDeleteClick = (e, categoria) => {
     e.stopPropagation();
-    console.log("Categoría pasada a handleEditClick:", categoria);
-    console.log("Propiedad a actualizar:", propiedad);
-    const newValue = prompt(`Ingrese el nuevo valor para ${propiedad}:`);
-    if (newValue !== null) {
-      try {
-        const categoriaActualizada = { ...categoria, [propiedad]: newValue };
-        await actualizarCategoria(categoria.title, categoriaActualizada); // Usamos el título en lugar del ID
-        setDatos((prevData) =>
-          prevData.map(
-            (cat) =>
-              cat.title === categoria.title ? { ...categoriaActualizada } : cat // Actualizamos solo la categoría con el título correspondiente
-          )
-        );
-        toast.success("Categoría actualizada correctamente");
-      } catch (error) {
-        toast.error("Error al actualizar la categoría");
-      }
+    setCategoriaAEliminar(categoria);
+    toggleDeleteModal();
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await eliminarCategoriaPorNombre(categoriaAEliminar.title);
+      setDatos((prevData) =>
+        prevData.filter((categoria) => categoria.title !== categoriaAEliminar.title)
+      );
+      toast.success("Categoría eliminada correctamente");
+    } catch (error) {
+      console.error("Error al eliminar la categoría:", error.message);
+      toast.error("Error al eliminar la categoría.");
+    } finally {
+      toggleDeleteModal();
     }
   };
-  const handleDeleteClick = async (e, title) => {
-    e.stopPropagation();
-    if (window.confirm("¿Está seguro de que desea eliminar esta categoría?")) {
-      try {
-        await eliminarCategoriaPorNombre(title);
-        setDatos((prevData) =>
-          prevData.filter((categoria) => categoria.title !== title)
-        );
-        toast.success("Categoría eliminada correctamente");
-      } catch (error) {
-        toast.error("Error al eliminar la categoría");
-      }
-    }
+
+  const handleUpdateCategory = (categoriaActualizada) => {
+    setDatos((prevDatos) => {
+      return prevDatos.map((categoria) =>
+        categoria.title === categoriaActualizada.title ? categoriaActualizada : categoria
+      );
+    });
+    toggleEditModal();
+    toast.success("Categoría actualizada correctamente");
   };
 
   return (
@@ -91,10 +109,7 @@ const AdminListCategorias = () => {
         {datos &&
           datos.map((categoria, index) => (
             <React.Fragment key={categoria.id}>
-              <ListRow
-                onClick={() => handleRowClick(index)}
-                isOdd={index % 2 !== 0}
-              >
+              <ListRow onClick={() => handleRowClick(index)}>
                 <ListCell>{categoria.id}</ListCell>
                 <ListCell>{categoria.title}</ListCell>
                 <ListCell>
@@ -102,51 +117,73 @@ const AdminListCategorias = () => {
                     src={categoria.img_url}
                     alt="imagen"
                     style={{
-                      width: "80px",
-                      height: "80px",
+                      width: "50px",
+                      height: "50px",
                       objectFit: "cover",
+                    }}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "path_to_fallback_image";
                     }}
                   />
                 </ListCell>
                 <ListCell>
-                  <IconButton
-                    onClick={(e) => handleDeleteClick(e, categoria.title)}
-                  >
+                  <IconButton onClick={() => handleEditClick(categoria)}>
+                    <AiFillEdit />
+                  </IconButton>
+                  <IconButton onClick={(e) => handleDeleteClick(e, categoria)}>
                     <AiFillDelete />
-                  </IconButton>
-                  <IconButton
-                    onClick={(e) =>
-                      handleEditClick(e, categoria, "title")
-                    }
-                  >
-                    <AiFillEdit />
-                  </IconButton>
-                  <IconButton
-                    onClick={(e) =>
-                      handleEditClick(e, categoria, "img_url")
-                    }
-                  >
-                    <AiFillEdit />
                   </IconButton>
                 </ListCell>
               </ListRow>
               <AccordionContent isOpen={openIndex === index}>
                 <DescriptionTitle>Descripción:</DescriptionTitle>
                 <p>{categoria.description}</p>
-                <IconButton
-                  onClick={(e) =>
-                    handleEditClick(e, categoria, "description")
-                  }
-                >
-                  <AiFillEdit />
-                </IconButton>
               </AccordionContent>
             </React.Fragment>
           ))}
       </ListBody>
       <ToastContainer position="top-center" />
+
+      <Dialog open={isEditOpen} onDismiss={toggleEditModal}>
+        <DialogSurface style={{ width: '98%', padding: '15px 30px 15px 30px' }}>
+          <DialogBody>
+            <DialogTitle>Editar Categoría</DialogTitle>
+            <DialogContent>
+              <EditCategoryForm
+                categoria={categoriaActual}
+                onSave={handleUpdateCategory}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button appearance="primary" onClick={toggleEditModal}>Cerrar</Button>
+              <Button appearance="primary" form="edit-category-form" type="submit">
+                Guardar Cambios
+              </Button>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
+
+      <Dialog open={isDeleteOpen} onDismiss={toggleDeleteModal}>
+        <DialogSurface style={{ width: '98%', padding: '15px 30px 15px 30px' }}>
+          <DialogBody>
+            <DialogTitle>Confirmar Eliminación</DialogTitle>
+            <DialogContent>
+              <p>¿Estás seguro de que deseas eliminar la categoría <strong>{categoriaAEliminar?.title}</strong>?</p>
+            </DialogContent>
+            <DialogActions>
+              <Button appearance="primary" onClick={toggleDeleteModal}>Cancelar</Button>
+              <Button appearance="primary" onClick={confirmDelete}>Eliminar</Button>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
     </ListContainer>
   );
 };
 
 export default AdminListCategorias;
+
+
+

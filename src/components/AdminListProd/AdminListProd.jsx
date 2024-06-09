@@ -25,36 +25,16 @@ import useAdminListProd from "./useAdminListProd";
 import { eliminarProducto } from "../../data/juegos";
 import EditProductForm from "./EditProductForm";
 
-import styled from "styled-components";
 
 
-const SecondaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
-
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-
-`;
-
-
-const PrimaryButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
-
-  &:hover {
-    background-color: #795af6;
-    color: white;
-  }
-`;
 
 const AdminListProd = () => {
   const [datos, setDatos] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [productoActual, setProductoActual] = useState(null);
+  const [productoAEliminar, setProductoAEliminar] = useState(null);
 
   const { data, isLoading, error } = useAdminListProd();
 
@@ -72,34 +52,42 @@ const AdminListProd = () => {
     }
   }, [isLoading, error, data]);
 
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
+  const toggleEditModal = () => {
+    setIsEditOpen(!isEditOpen);
+  };
+
+  const toggleDeleteModal = () => {
+    setIsDeleteOpen(!isDeleteOpen);
   };
 
   const handleEditClick = (producto) => {
     console.log("Editando producto:", producto);
     setProductoActual(producto);
-    toggleModal();
+    toggleEditModal();
   };
 
   const handleRowClick = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const handleDeleteClick = async (e, id) => {
+  const handleDeleteClick = (e, producto) => {
     e.stopPropagation();
-    console.log("Eliminando producto con ID:", id);
-    if (window.confirm("¿Estás seguro de que deseas eliminar este juego?")) {
-      try {
-        await eliminarProducto(id);
-        setDatos((prevData) =>
-          prevData.filter((producto) => producto.id !== id)
-        );
-        toast.success("Producto eliminado correctamente");
-      } catch (error) {
-        console.error("Error al eliminar el producto:", error.message);
-        toast.error("Error al eliminar el producto.");
-      }
+    setProductoAEliminar(producto);
+    toggleDeleteModal();
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await eliminarProducto(productoAEliminar.id);
+      setDatos((prevData) =>
+        prevData.filter((producto) => producto.id !== productoAEliminar.id)
+      );
+      toast.success("Producto eliminado correctamente");
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error.message);
+      toast.error("Error al eliminar el producto.");
+    } finally {
+      toggleDeleteModal();
     }
   };
 
@@ -109,7 +97,7 @@ const AdminListProd = () => {
         producto.id === productoActualizado.id ? productoActualizado : producto
       );
     });
-    toggleModal();
+    toggleEditModal();
     toast.success("Producto actualizado correctamente");
   };
 
@@ -161,9 +149,7 @@ const AdminListProd = () => {
                   <IconButton onClick={() => handleEditClick(producto)}>
                     <AiFillEdit />
                   </IconButton>
-                  <IconButton
-                    onClick={(e) => handleDeleteClick(e, producto.id)}
-                  >
+                  <IconButton onClick={(e) => handleDeleteClick(e, producto)}>
                     <AiFillDelete />
                   </IconButton>
                 </ListCell>
@@ -176,8 +162,8 @@ const AdminListProd = () => {
           ))}
       </ListBody>
       <ToastContainer position="top-center" />
-      <Dialog open={isOpen} onDismiss={toggleModal}>
-        <DialogSurface style={{ width: '98%', padding: '15px 30px 15px 30px' }}>
+      <Dialog open={isEditOpen} onDismiss={toggleEditModal}>
+        <DialogSurface style={{ width: "98%", padding: "15px 30px 15px 30px" }}>
           <DialogBody>
             <DialogTitle>Editar Producto</DialogTitle>
             <DialogContent>
@@ -187,10 +173,29 @@ const AdminListProd = () => {
               />
             </DialogContent>
             <DialogActions>
-              <SecondaryButton onClick={toggleModal}>Cerrar</SecondaryButton>
-              <PrimaryButton form="edit-product-form" type="submit">
+              <Button appearance="primary" onClick={toggleEditModal}>
+                Cerrar
+              </Button>
+              <Button appearance="primary" form="edit-product-form" type="submit">
                 Guardar Cambios
-              </PrimaryButton>
+              </Button>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
+
+      <Dialog open={isDeleteOpen} onDismiss={toggleDeleteModal}>
+        <DialogSurface style={{ width: "98%", padding: "15px 30px 15px 30px" }}>
+          <DialogBody>
+            <DialogTitle>Confirmar Eliminación</DialogTitle>
+            <DialogContent>
+              <p>¿ Estás seguro de que deseas eliminar <strong>{productoAEliminar?.nombre}</strong> ?</p>
+            </DialogContent>
+            <DialogActions>
+              <Button appearance="primary" onClick={toggleDeleteModal}>
+                Cancelar
+              </Button>
+              <Button appearance="primary" onClick={confirmDelete}>Eliminar</Button>
             </DialogActions>
           </DialogBody>
         </DialogSurface>

@@ -71,6 +71,12 @@
   color: #795af6; /* Ajusta el espaciado entre el icono y el texto según sea necesario */
 }
 
+.caractTitle {
+  font-size: 25px;
+  color: #795af6;
+  padding: 45px 0px 0px 45px;
+}
+
 
 
 
@@ -96,15 +102,14 @@
   }
 
   .productImage img {
-    width: 100%; /* Hacer que la imagen ocupe todo el ancho disponible */
-    height: auto; /* Ajustar la altura automáticamente */
+    width: 100%; 
+    height: auto; 
   }
 
   .productCharacteristics {
-    width: 100%; /* Hacer que las características ocupen todo el ancho disponible */
-    flex-direction: column; /* Cambiar la dirección del flexbox para dispositivos móviles */
-    align-items: center; /* Centrar los elementos horizontalmente */
-    padding: 1rem; /* Reducir el padding para dispositivos móviles */
+    width: 100%; 
+    flex-direction: column; 
+    padding: 1rem; 
   }
 
   .characteristicItem p {

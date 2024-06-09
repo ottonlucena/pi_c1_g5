@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import styles from './RandomProductsList.module.css';
-import PaginationProductCard from './PaginationProductCard';
-import CategorySection from '../Categorias/CategorySection';
+import { useState, useEffect } from "react";
+import styles from "./RandomProductsList.module.css";
+import PaginationProductCard from "./PaginationProductCard";
+import CategorySection from "../Categorias/CategorySection";
 
 const RandomProductsList = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -12,23 +12,21 @@ const RandomProductsList = () => {
     if (selectedCategories.length === 0) {
       return arr;
     }
-    return arr.filter((item) =>
-      selectedCategories.includes(item.tipo.title)
-    );
+    return arr.filter((item) => selectedCategories.includes(item.tipo.title));
   };
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/juegos');
+        const response = await fetch("http://localhost:8080/api/juegos");
         if (!response.ok) {
-          throw new Error('No hay conexión');
+          throw new Error("No hay conexión");
         }
         const data = await response.json();
         setAllProducts(data);
         setFilteredProducts(filterByTypos(data, selectedCategories));
       } catch (error) {
-        console.error('No se pueden obtener datos:', error);
+        console.error("No se pueden obtener datos:", error);
       }
     };
 
@@ -48,10 +46,7 @@ const RandomProductsList = () => {
     <div>
       <CategorySection onCategoryClick={handleCategorySelect} />
       <div className={styles.randomProductsList}>
-        <PaginationProductCard
-          products={filteredProducts}
-          itemsPerPage={6}
-        />
+        <PaginationProductCard products={filteredProducts} itemsPerPage={6} />
       </div>
     </div>
   );
