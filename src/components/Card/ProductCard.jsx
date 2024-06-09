@@ -1,11 +1,18 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { HiOutlineShare, HiHeart, HiOutlineHeart } from "react-icons/hi"; // Importa los íconos de corazón
+
+
+import  { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { HiOutlineShare, HiHeart, HiOutlineHeart } from 'react-icons/hi'; // Importa los íconos de corazón
+
 import {
   Popover,
   PopoverTrigger,
   PopoverSurface,
+
+} from '@fluentui/react-components';
+import { useAuth } from '../AuthContext/AuthContext';
+
 } from "@fluentui/react-components";
 import ShareSocial from "../ShareSocial/ShareSocial";
 import "@fontsource/capriola";
@@ -13,6 +20,7 @@ import { Rating as FluentRating } from "@fluentui/react-components";
 import { useNavigate } from "react-router-dom";
 import useRatingStore from "../Rating/useRatingStore";
 import { Button } from "@fluentui/react-components";
+
 
 const CardContainer = styled.div`
   position: relative;
@@ -140,11 +148,27 @@ const RatingWrapper = styled.div`
 `;
 
 const ProductCard = ({ product }) => {
-  const [isFavorite, setIsFavorite] = useState(false); // Estado para controlar si el producto está marcado como favorito
+  const { isAuthenticated, favorites, addFavorite, removeFavorite } = useAuth();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    // Verificar si el producto está marcado como favorito al cargar el componente
+    setIsFavorite(favorites.includes(product.id));
+  }, [product.id, favorites]);
 
 
   const toggleFavorite = () => {
-    setIsFavorite(!isFavorite); // Cambia el estado de favorito al contrario del estado actual
+    if (!isAuthenticated) {
+      console.log('Redireccionar al inicio de sesión...');
+      return;
+    }
+
+    if (isFavorite) {
+      removeFavorite(product.id);
+    } else {
+      addFavorite(product.id);
+    }
+    setIsFavorite(!isFavorite);
   };
 
   if (!product) {
@@ -155,13 +179,12 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const setJuegoId = useRatingStore((state) => state.setJuegoId);
   const handleDetalle = () => {
-   
     setJuegoId(id);
-  
     navigate(`/detalle/${id}`);
   };
   const averageRating = promedioValoracion;
   return (
+
     <>
       <CardContainer>
         <ImageWrapper>
@@ -195,6 +218,7 @@ const ProductCard = ({ product }) => {
         </FavoriteIconWrapper>
       </CardContainer>
     </>
+
   );
 };
 

@@ -96,6 +96,8 @@ const enviarValoracion = async (juegoId, valoracionData) => {
 };
 
 
+
+
 export {
   obtenerProductos,
   agregarProducto,
@@ -103,5 +105,5 @@ export {
   actualizarProducto,
   eliminarProducto,
   getValoraciones,
-  enviarValoracion,
+
 };

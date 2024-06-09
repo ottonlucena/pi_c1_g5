@@ -2,19 +2,57 @@ import { useState, useEffect } from "react";
 import styles from "./EditProductForm.module.css";
 import { actualizarProducto } from "../../data/juegos";
 import { LeerCategorias } from "../../data/dataService";
+import {
+  crearCaracteristica,
+  obtenerCaracteristicas,
+} from "../../data/caracteristicas";
+import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@fluentui/react-components";
+
 import styled from "styled-components";
 
+export const InlineInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  margin-bottom: 10px;
+  transition: border-color 0.3s ease;
 
-const CaracButton = styled(Button)`
-  background-color: #f5e9fc;
-  color: #795af6;
+  &:focus {
+    border-color: #f5e9fc;
+  }
+`;
 
-  margin-top: 10px;
+export const InlineSelect = styled.select`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  margin-bottom: 10px;
+  transition: border-color 0.3s ease;
 
-  &:hover {
-    background-color: #795af6;
-    color: white;
+  &:focus {
+    border-color: #f5e9fc;
+  }
+`;
+
+export const InlineTextArea = styled.textarea`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  margin-bottom: 10px;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: #f5e9fc;
   }
 `;
 
@@ -30,8 +68,32 @@ const EditProductForm = ({ producto, onSave }) => {
   const [img_url, setImgUrl] = useState("");
   const [categoria, setCategoria] = useState("");
   const [categorias, setCategorias] = useState([]);
-  const [caracteristicas, setCaracteristicas] = useState(["", "", "", "", ""]);
+  const [caracteristicas, setCaracteristicas] = useState([]);
+  const [selectedCaracteristicas, setSelectedCaracteristicas] = useState([]);
   const [error, setError] = useState("");
+  const [nuevaCaracteristica, setNuevaCaracteristica] = useState("");
+
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const categoriasData = await LeerCategorias();
+        setCategorias(categoriasData);
+      } catch (error) {
+        console.error("Error al leer las categorías", error);
+      }
+    };
+    const fetchCaracteristicas = async () => {
+      try {
+        const caracteristicasData = await obtenerCaracteristicas();
+        setCaracteristicas(caracteristicasData);
+      } catch (error) {
+        console.error("Error al obtener características", error);
+      }
+    };
+
+    fetchCategorias();
+    fetchCaracteristicas();
+  }, []);
 
   useEffect(() => {
     if (producto) {
@@ -45,21 +107,9 @@ const EditProductForm = ({ producto, onSave }) => {
       setCantidad(producto.cantidad);
       setImgUrl(producto.img_url);
       setCategoria(producto.tipo.id.toString());
-      setCaracteristicas(producto.caracteristicas);
+      setSelectedCaracteristicas(producto.caracteristicas.map((car) => car.id));
     }
   }, [producto]);
-
-  useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const categoriasData = await LeerCategorias();
-        setCategorias(categoriasData);
-      } catch (error) {
-        console.error("Error al leer las categorías", error);
-      }
-    };
-    fetchCategorias();
-  }, []);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -74,7 +124,7 @@ const EditProductForm = ({ producto, onSave }) => {
       !cantidad ||
       !img_url ||
       !categoria ||
-      caracteristicas.some((car) => !car)
+      selectedCaracteristicas.length === 0
     ) {
       setError("Por favor complete todos los campos.");
       return;
@@ -105,7 +155,13 @@ const EditProductForm = ({ producto, onSave }) => {
         description: categoriaSeleccionada.description,
         img_url: categoriaSeleccionada.img_url,
       },
-      caracteristicas,
+      caracteristicas: selectedCaracteristicas.map((id) => {
+        const caracteristica = caracteristicas.find((car) => car.id === id);
+        return {
+          id: caracteristica.id,
+          nombre: caracteristica.nombre,
+        };
+      }),
     };
 
     try {
@@ -126,12 +182,22 @@ const EditProductForm = ({ producto, onSave }) => {
     }
   };
 
-  const handleAddCaracteristica = () => {
-    setCaracteristicas([...caracteristicas, ""]);
-  };
+  const handleCrearCaracteristica = async () => {
+    if (!nuevaCaracteristica) {
+      setError("Ingrese un nombre para la nueva característica.");
+      return;
+    }
 
-  const handleRemoveCaracteristica = (index) => {
-    setCaracteristicas(caracteristicas.filter((_, i) => i !== index));
+    try {
+      const caracteristicaCreada = await crearCaracteristica(
+        nuevaCaracteristica
+      );
+      setCaracteristicas([...caracteristicas, caracteristicaCreada]);
+      setNuevaCaracteristica("");
+    } catch (error) {
+      setError("Error al crear la característica. Inténtelo de nuevo.");
+      console.error("Error al crear la característica:", error);
+    }
   };
 
   return (
@@ -149,7 +215,7 @@ const EditProductForm = ({ producto, onSave }) => {
                 <label htmlFor="nombre" className={styles.label}>
                   Nombre:
                 </label>
-                <input
+                <InlineInput
                   type="text"
                   id="nombre"
                   value={nombre}
@@ -162,7 +228,7 @@ const EditProductForm = ({ producto, onSave }) => {
                 <label htmlFor="descripcion" className={styles.label}>
                   Descripción:
                 </label>
-                <textarea
+                <InlineTextArea
                   id="descripcion"
                   value={descripcion}
                   onChange={(e) => setDescripcion(e.target.value)}
@@ -174,7 +240,7 @@ const EditProductForm = ({ producto, onSave }) => {
                 <label htmlFor="largo" className={styles.label}>
                   Largo (metros):
                 </label>
-                <input
+                <InlineInput
                   type="number"
                   id="largo"
                   value={largo}
@@ -189,7 +255,7 @@ const EditProductForm = ({ producto, onSave }) => {
                 <label htmlFor="ancho" className={styles.label}>
                   Ancho (metros):
                 </label>
-                <input
+                <InlineInput
                   type="number"
                   id="ancho"
                   value={ancho}
@@ -204,7 +270,7 @@ const EditProductForm = ({ producto, onSave }) => {
                 <label htmlFor="altura" className={styles.label}>
                   Altura (metros):
                 </label>
-                <input
+                <InlineInput
                   type="number"
                   id="altura"
                   value={altura}
@@ -219,7 +285,7 @@ const EditProductForm = ({ producto, onSave }) => {
                 <label htmlFor="categoria" className={styles.label}>
                   Categoría:
                 </label>
-                <select
+                <InlineSelect
                   id="categoria"
                   value={categoria}
                   onChange={(e) => setCategoria(e.target.value)}
@@ -227,18 +293,18 @@ const EditProductForm = ({ producto, onSave }) => {
                   required
                 >
                   <option value="">Seleccione una categoría</option>
-                  {categorias.map((cat, index) => (
-                    <option key={index} value={cat.id}>
+                  {categorias.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
                       {cat.title}
                     </option>
                   ))}
-                </select>
+                </InlineSelect>
               </div>
               <div className={styles.inputContainer}>
                 <label htmlFor="capacidad" className={styles.label}>
                   Capacidad:
                 </label>
-                <input
+                <InlineInput
                   type="number"
                   id="capacidad"
                   value={capacidad}
@@ -249,13 +315,11 @@ const EditProductForm = ({ producto, onSave }) => {
                   required
                 />
               </div>
-            </div>
-            <div className={styles.metaData}>
               <div className={styles.inputContainer}>
                 <label htmlFor="valorArriendo" className={styles.label}>
-                  Valor de Arriendo:
+                  Valor Arriendo:
                 </label>
-                <input
+                <InlineInput
                   type="number"
                   id="valorArriendo"
                   value={valorArriendo}
@@ -270,7 +334,7 @@ const EditProductForm = ({ producto, onSave }) => {
                 <label htmlFor="cantidad" className={styles.label}>
                   Cantidad:
                 </label>
-                <input
+                <InlineInput
                   type="number"
                   id="cantidad"
                   value={cantidad}
@@ -282,52 +346,10 @@ const EditProductForm = ({ producto, onSave }) => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <CaracButton
-                  type="button"
-                  onClick={handleAddCaracteristica}
-                  className={styles.addButton}
-                >
-                  Agregar Característica
-                </CaracButton>
-              </div>
-              {caracteristicas.map((caracteristica, index) => (
-                <div key={index} className={styles.inputContainer}>
-                  <label
-                    htmlFor={`caracteristica${index}`}
-                    className={styles.label}
-                  >
-                    Característica {index + 1}:
-                  </label>
-                  <div className={styles.inputWithButton}>
-                    <input
-                      type="text"
-                      id={`caracteristica${index}`}
-                      value={caracteristica}
-                      onChange={(e) =>
-                        setCaracteristicas([
-                          ...caracteristicas.slice(0, index),
-                          e.target.value,
-                          ...caracteristicas.slice(index + 1),
-                        ])
-                      }
-                      className={`${styles.input} ${styles.textInput}`}
-                      required
-                    />
-                    <CaracButton
-                      type="button"
-                      onClick={() => handleRemoveCaracteristica(index)}
-                      className={styles.removeButton}
-                    >
-                      Eliminar
-                    </CaracButton>
-                  </div>
-                </div>
-              ))}
-              <div className={styles.inputContainer}>
                 <label htmlFor="img_url" className={styles.label}>
                   URL de la Imagen:
                 </label>
-                <input
+                <InlineInput
                   type="text"
                   id="img_url"
                   value={img_url}
@@ -344,6 +366,64 @@ const EditProductForm = ({ producto, onSave }) => {
                 )}
               </div>
             </div>
+            <div className={styles.inputContainer}>
+              <label htmlFor="nuevaCaracteristica" className={styles.label}>
+                Nueva Característica:
+              </label>
+              <InlineInput
+                type="text"
+                id="nuevaCaracteristica"
+                value={nuevaCaracteristica}
+                onChange={(e) => setNuevaCaracteristica(e.target.value)}
+                className={`${styles.input} ${styles.textInput}`}
+              />
+              <Button
+                appearance="primary"
+                type="button"
+                onClick={handleCrearCaracteristica}
+                className={styles.addButton}
+              >
+                Agregar
+              </Button>
+            </div>
+          </div>
+
+          <div className={styles.caracteristicasList}>
+            {caracteristicas.map((caracteristica) => (
+              <div
+                key={caracteristica.id}
+                className={styles.caracteristicaItem}
+              >
+                <div className={styles.checkboxContainer}>
+                  <input
+                    type="checkbox"
+                    id={`caracteristica-${caracteristica.id}`}
+                    checked={selectedCaracteristicas.includes(
+                      caracteristica.id
+                    )}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedCaracteristicas([
+                          ...selectedCaracteristicas,
+                          caracteristica.id,
+                        ]);
+                      } else {
+                        setSelectedCaracteristicas(
+                          selectedCaracteristicas.filter(
+                            (id) => id !== caracteristica.id
+                          )
+                        );
+                      }
+                    }}
+                  />
+                </div>
+                <div className={styles.labelContainer}>
+                  <label htmlFor={`caracteristica-${caracteristica.id}`}>
+                    {caracteristica.nombre}
+                  </label>
+                </div>
+              </div>
+            ))}
           </div>
         </form>
       </div>

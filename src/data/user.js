@@ -37,14 +37,14 @@ export const createUser = async (userData) => {
 };
 
 // Actualizar un usuario existente
-export const updateUser = async (userId, updatedUserData) => {
+export const updateUser = async (userId) => {
   try {
-    const response = await fetch(`${API_URL}/${userId}`, {
+    const response = await fetch(API_URL, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(updatedUserData),
+      body: JSON.stringify(userId),
     });
     if (!response.ok) {
       throw new Error('Error al actualizar usuario');

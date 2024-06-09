@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaCircle } from "react-icons/fa";
 import useDetailProduct from "./useDetailProduct";
 import Rating from "../Rating/Rating";
-import { useStore } from "../../data/Store/store";
+
 
 export const MoreButton = styled.button`
   margin-top: 15%;
@@ -70,6 +70,7 @@ const DetailProduct = () => {
           <div className={styles.productImage}>
             <img src={product?.img_url} alt={product?.nombre} />
             <Rating
+
             promedioValoracion={product ? product.promedioValoracion : 0}
             
             />
@@ -79,6 +80,7 @@ const DetailProduct = () => {
         <div className={styles.contCarac}>
           <div className={styles.productCharacteristics}>
             {product?.caracteristicas.map((caracteristica, index) => (
+
               <div key={index} className={styles.characteristic}>
                 <div className={styles.characteristicItem}>
                   <FaCircle color="#f5e9fc" size={10} />

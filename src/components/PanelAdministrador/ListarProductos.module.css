@@ -2,7 +2,7 @@
 
 /* ListarProductos.module.css */
 .container {
-  height: 100vh; 
+  height: 120vh; 
   width: 230px; 
   background-color: #ffffff; 
   display: flex;
@@ -21,18 +21,18 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  z-index: 999; /* Asegura que el contenedor cubra todos los elementos */
+  z-index: 999; 
 }
 
 .contBtn {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centra los elementos verticalmente dentro del contenedor secundario */
-  align-items: center; /* Centra los elementos horizontalmente dentro del contenedor secundario */
+  justify-content: center;
+  align-items: center; 
 }
 
 .titleL {
-  margin-bottom: 20px; /* Espacio inferior para separar el título de los botones */
+  margin-bottom: 20px; 
 }
 
 .btnAgregar {
@@ -55,7 +55,7 @@
 
 .logo {
   position: absolute;
-  margin-bottom: 430px;
+  margin-bottom: 500px;
   height: 60px;
 }
 

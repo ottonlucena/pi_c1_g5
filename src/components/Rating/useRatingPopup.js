@@ -1,3 +1,4 @@
+
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { getValoraciones, enviarValoracion } from "../../data/juegos";
 
@@ -17,6 +18,7 @@ const useRatingPopup = (juegoId) => {
     ...valoracionesQuery,
     enviarValoracion: mutation.mutate,
   };
+
 };
 
 export default useRatingPopup;

@@ -1,28 +1,35 @@
+
 import { useState, useEffect } from "react";
 import { Rating as FluentRating } from "@fluentui/react-components";
 import axios from "axios";
 import RatingPopup from "../Rating/RatingPopup";
 import { Button } from "@fluentui/react-components";
 import { useStore } from "../../data/Store/store";
+
 const Rating = ({ promedioValoracion, user, hasReservation }) => {
   const [averageRating, setAverageRating] = useState(0);
   const [ratingCount, setRatingCount] = useState(0);
   const [userRating, setUserRating] = useState(null);
+
   const [showAverage, setShowAverage] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [comments, setComments] = useState([]);
    const cantidadValoracion = useStore((state) => state.cantidadValoracion);
 
+
   useEffect(() => {
     const getProductData = async () => {
       try {
+
         console.log(
           `Fetching data for promedioValoracion: ${promedioValoracion}`
         );
+
         const response = await axios.get(`http://localhost:8080/api/juegos`);
         const productData = response.data;
 
         if (productData.length > 0) {
+
           const product = productData[0];
           setAverageRating(product.promedioValoracion);
           setRatingCount(product.cantidad_valoraciones || 0);
@@ -36,6 +43,7 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
           console.error("Response data:", error.response.data);
           console.error("Response status:", error.response.status);
           console.error("Response headers:", error.response.headers);
+
         }
       }
     };
@@ -43,6 +51,7 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
     if (promedioValoracion) {
       getProductData();
     } else {
+
       console.error("Error al cargar la data");
     }
   }, [promedioValoracion, cantidadValoracion]);
@@ -63,12 +72,14 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
+
   };
 
   return (
     <div>
       <div>
         <FluentRating color="marigold" value={averageRating} readOnly />
+
         <p
           style={{
             fontFamily: "Verdana",
@@ -78,12 +89,14 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
           }}
         >
           Puntuación: {averageRating} Estrellas / {cantidadValoracion} Calificaciones
+
         </p>
       </div>
       {user && hasReservation && (
         <FluentRating
           step={0.5}
           defaultValue={0}
+
             onChange={handleRatingChange}
         />
       )}
@@ -101,9 +114,13 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
       >
         Ver comentarios
       </Button>
+
       {isPopupOpen && <RatingPopup onClose={handleClosePopup} />}
     </div>
   );
 };
 
+
 export default Rating;
+
+

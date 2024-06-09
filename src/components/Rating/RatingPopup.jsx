@@ -18,6 +18,7 @@ const RatingPopup = ({ onClose }) => {
 
   const { data: puntuacion, isLoading, error, enviarValoracion } = useRatingPopup(juegoId);
 
+
   useEffect(() => {
     if (isLoading) {
       toast.info("Cargando...", { autoClose: false, toastId: "ToastyLoad" });
@@ -28,7 +29,7 @@ const RatingPopup = ({ onClose }) => {
       toast.error("Error al cargar la data");
     }
   }, [isLoading, error]);
-
+  
   // useEffect(() => {
   //   async function fetchUserId() {
   //     try {
@@ -93,6 +94,7 @@ const RatingPopup = ({ onClose }) => {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
+
         backgroundColor: "#f0f0f0",
         padding: "20px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
@@ -194,6 +196,8 @@ const RatingPopup = ({ onClose }) => {
           </Button>
         </div>
       )}
+
+
     </div>
   );
 };
