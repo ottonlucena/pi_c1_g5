@@ -1,16 +1,16 @@
-const API_URL = "http://localhost:8080/api/juegos";
+const API_URL = 'http://localhost:8080/api/juegos';
 
 // Obtener todos los juegos
 const obtenerProductos = async () => {
   try {
     const response = await fetch(API_URL);
     if (!response.ok) {
-      throw new Error("error", response.statusText);
+      throw new Error('error', response.statusText);
     }
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("error", error);
+    console.error('error', error);
     throw error;
   }
 };
@@ -18,37 +18,37 @@ const obtenerProductos = async () => {
 // Agregar un nuevo juego
 const agregarProducto = async (nuevoProducto) => {
   const response = await fetch(API_URL, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(nuevoProducto),
   });
 
   if (!response.ok) {
-    throw new Error("Error al agregar el producto");
+    throw new Error('Error al agregar el producto');
   }
 
   const data = await response.json();
-  console.log("Producto agregado:", data);
+  console.log('Producto agregado:', data);
   return data;
 };
 
 const actualizarProducto = async (nuevoProducto) => {
   const response = await fetch(API_URL, {
-    method: "PUT",
+    method: 'PUT',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(nuevoProducto),
   });
 
   if (!response.ok) {
-    throw new Error("Error al actualizar el producto");
+    throw new Error('Error al actualizar el producto');
   }
 
   const data = await response.json();
-  console.log("Producto actualizado:", data);
+  console.log('Producto actualizado:', data);
   return data;
 };
 
@@ -62,7 +62,7 @@ const obtenerProductoPorId = async (id) => {
 // Eliminar un juego
 const eliminarProducto = async (id) => {
   const response = await fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
   });
 
   if (!response.ok) {
@@ -73,8 +73,24 @@ const eliminarProducto = async (id) => {
   return id;
 };
 
+const fetchSuggestions = async () => {
+  try {
+    const response = await fetch('http://localhost:8080/api/juegos/suggestion');
+    const data = await response.json();
+    if (!data || data.length === 0) {
+      return [];
+    }
+    return data;
+  } catch (error) {
+    console.error('Error fetching suggestions:', error);
+    return [];
+  }
+};
+
 const getValoraciones = async (juegoId) => {
-  const response = await fetch(`http://localhost:8080/api/valoracion/filter/${juegoId}`);
+  const response = await fetch(
+    `http://localhost:8080/api/valoracion/filter/${juegoId}`
+  );
   if (!response.ok) {
     throw new Error('Error al obtener valoraciones');
   }
@@ -82,21 +98,21 @@ const getValoraciones = async (juegoId) => {
 };
 
 const enviarValoracion = async (juegoId, valoracionData) => {
-  const response = await fetch(`http://localhost:8080/api/valoracion/${juegoId}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(valoracionData),
-  });
+  const response = await fetch(
+    `http://localhost:8080/api/valoracion/${juegoId}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(valoracionData),
+    }
+  );
   if (!response.ok) {
     throw new Error('Error al enviar la valoración');
   }
   return response.json();
 };
-
-
-
 
 export {
   obtenerProductos,
@@ -104,6 +120,6 @@ export {
   obtenerProductoPorId,
   actualizarProducto,
   eliminarProducto,
+  fetchSuggestions,
   getValoraciones,
-
 };
