@@ -122,4 +122,5 @@ export {
   eliminarProducto,
   fetchSuggestions,
   getValoraciones,
+  enviarValoracion,
 };

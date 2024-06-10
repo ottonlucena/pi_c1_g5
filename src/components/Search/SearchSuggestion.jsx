@@ -10,6 +10,8 @@ import {
 } from '@fluentui/react-components';
 import { DatePicker } from '@fluentui/react-datepicker-compat';
 import useSearchSuggestion from './useSearchSuggestion';
+import { TbEyeSearch } from 'react-icons/tb';
+import { MdOutlineAutoDelete } from 'react-icons/md';
 
 const localizedStrings = {
   days: [
@@ -245,6 +247,7 @@ const SearchSuggestion = () => {
             onClick={handleClear}
             appearance='primary'
             className={customStyles.clearButton}
+            icon={<MdOutlineAutoDelete />}
           >
             Limpiar
           </Button>
@@ -252,6 +255,7 @@ const SearchSuggestion = () => {
             onClick={handleSearch}
             appearance='primary'
             className={customStyles.clearButton}
+            icon={<TbEyeSearch />}
           >
             Buscar
           </Button>
