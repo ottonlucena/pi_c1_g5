@@ -1,13 +1,12 @@
 import { Button } from '@fluentui/react-components';
 import { ImSearch } from 'react-icons/im';
 import { useState } from 'react';
-import { Button } from '@fluentui/react-components';
-import { ImSearch } from 'react-icons/im';
 import { useNavigate } from 'react-router-dom';
 // import { useAuth0 } from '@auth0/auth0-react'; // Comentado por ahora
 import styled from 'styled-components';
 import SignUpModal from '../Modal/SignUpModal';
 import MenuAvatar from './MenuAvatar';
+import SearchDrawer from '../Search/SearchDrawer';
 import { useAuth } from '../AuthContext/AuthContext';
 
 const NavbarContainer = styled.nav`
@@ -70,17 +69,12 @@ const NavButton = styled.button`
   }
 `;
 
-const SearchInput = styled.input`
-  border-radius: 20px;
-  padding: 10px 20px;
-  border: none;
-`;
-
 const Navbar = ({ menuItems, logo }) => {
   const admin = true;
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const { isAuthenticated, user, login } = useAuth(); // Importa la función de logout
+  const [open, setOpen] = useState(false);
+  const { isAuthenticated, user, login } = useAuth();
 
   const redirectToHome = () => {
     navigate('/');
@@ -125,7 +119,7 @@ const Navbar = ({ menuItems, logo }) => {
           <Button
             appearance='primary'
             iconPosition='before'
-            onClick={handleOpen}
+            onClick={() => setOpen(true)}
             shape='circular'
             icon={<ImSearch />}
           >
@@ -140,7 +134,7 @@ const Navbar = ({ menuItems, logo }) => {
           <NavButton onClick={handleSignUpClick}>Sign Up</NavButton>
         </RightSection>
       </NavbarContainer>
-      <SearchDrawer open={open} onClose={handleClose} />
+      <SearchDrawer open={open} onClose={() => setOpen(false)} />
       <SignUpModal showModal={showModal} setShowModal={setShowModal} />
     </>
   );
