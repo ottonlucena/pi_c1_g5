@@ -123,6 +123,13 @@
   }
 }
 
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Altura total de la vista */
+}
+
 /* Estilos para tabletas */
 @media (min-width: 768px) and (max-width: 1023px) {
   .productBody {
