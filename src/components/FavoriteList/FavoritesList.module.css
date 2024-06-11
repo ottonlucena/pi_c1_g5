@@ -4,7 +4,6 @@
   flex-wrap: wrap; /* Permite que las tarjetas se ajusten a la línea según el ancho disponible */
   gap: 16px; /* Espacio entre tarjetas */
   padding: 4rem;
-  margin-bottom: 20vw;
 }
 
 .message {
@@ -28,3 +27,11 @@
   font-size: 35px;
   color: #ca63d1;
 }
+
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Altura total de la vista */
+}
+

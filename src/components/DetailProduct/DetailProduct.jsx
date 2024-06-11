@@ -10,8 +10,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaCircle } from 'react-icons/fa';
 import useDetailProduct from './useDetailProduct';
-import Rating from '../Rating/Rating';
 import { Spinner } from '@fluentui/react-components';
+import Rating from '../Rating/Rating';
 
 export const MoreButton = styled.button`
   margin-top: 15%;
@@ -39,61 +39,61 @@ const DetailProduct = () => {
   const { data: product, isLoading, error } = useDetailProduct(id);
 
   useEffect(() => {
-    if (isLoading) {
-      <Spinner appearance='primary' label={'Cargando...'} />;
-      // toast.info('Cargando...', { autoClose: false, toastId: 'ToastyLoad' });
-    } else {
-      toast.dismiss('ToastyLoad');
-    }
     if (error) {
       toast.error('Error al cargar la data');
     }
-  }, [isLoading, error]);
+  }, [error]);
+
+  if (isLoading) {
+    return (
+      <div className={styles.spinnerContainer}>
+        <Spinner appearance="primary" label="Cargando detalle..." />
+      </div>
+    );
+  }
 
   if (!product) {
     return null;
   }
-  return (
-    product && (
-      <div className={styles.detailContainer}>
-        <div className={styles.productHeader}>
-          <h1 className={styles.productTitle}>{product?.nombre}</h1>
-          <Link to='/' className={styles.goBack}>
-            <IoIosArrowBack color='white' size={40} />
-          </Link>
-        </div>
-        <div className={styles.productBody}>
-          <div className={styles.productDescription}>
-            <p>{product?.descripcion}</p>
-            <MoreButton onClick={openModal}>Ver más</MoreButton>
-          </div>
-          <div className={styles.productImage}>
-            <img src={product?.img_url} alt={product?.nombre} />
-            <Rating
-              promedioValoracion={product ? product.promedioValoracion : 0}
-            />
-          </div>
-        </div>
-        <div className={styles.contCarac}>
-          <div className={styles.productCharacteristics}>
-            {product?.caracteristicas.map((caracteristica, index) => (
-              <div key={index} className={styles.characteristic}>
-                <div className={styles.characteristicItem}>
-                  <FaCircle color='#f5e9fc' size={10} />
-                  <p>{caracteristica.nombre}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        <Modal>
-          <GalleryImgs />
-        </Modal>
-        <ToastContainer position='top-center' />
+  return (
+    <div className={styles.detailContainer}>
+      <div className={styles.productHeader}>
+        <h1 className={styles.productTitle}>{product?.nombre}</h1>
+        <Link to="/" className={styles.goBack}>
+          <IoIosArrowBack color="white" size={40} />
+        </Link>
       </div>
-    )
+      <div className={styles.productBody}>
+        <div className={styles.productDescription}>
+          <p>{product?.descripcion}</p>
+          <MoreButton onClick={openModal}>Ver más</MoreButton>
+        </div>
+        <div className={styles.productImage}>
+          <img src={product?.img_url} alt={product?.nombre} />
+          <Rating promedioValoracion={product ? product.promedioValoracion : 0} />
+        </div>
+      </div>
+      <div className={styles.contCarac}>
+        <div className={styles.productCharacteristics}>
+          {product?.caracteristicas.map((caracteristica, index) => (
+            <div key={index} className={styles.characteristic}>
+              <div className={styles.characteristicItem}>
+                <FaCircle color="#f5e9fc" size={10} />
+                <p>{caracteristica.nombre}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Modal>
+        <GalleryImgs />
+      </Modal>
+      <ToastContainer position="top-center" />
+    </div>
   );
 };
 
 export default DetailProduct;
+

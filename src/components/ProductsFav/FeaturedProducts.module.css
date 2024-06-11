@@ -86,6 +86,13 @@
   color: #ca63d1;
 }
 
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh; /* Altura suficiente para centrar el spinner */
+}
+
 @media only screen and (max-width: 768px) {
   .cardContainer{
     flex-direction: column;

@@ -3,11 +3,13 @@ import { useAuth } from "../AuthContext/AuthContext";
 import ProductCard from "../Card/ProductCard";
 import styles from "./FavoritesList.module.css";
 import { FaStar } from "react-icons/fa";
+import { Spinner } from "@fluentui/react-components";
 
 const FavoritesList = () => {
   const { isAuthenticated, favorites } = useAuth();
   const [allProducts, setAllProducts] = useState([]);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Fetch all products once and store them
@@ -21,6 +23,8 @@ const FavoritesList = () => {
         setAllProducts(data);
       } catch (error) {
         console.error("No se pueden obtener datos:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -46,6 +50,14 @@ const FavoritesList = () => {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className={styles.spinnerContainer}>
+        <Spinner appearance="primary" label="Cargando Favoritos..." />
+      </div>
+    );
+  }
+
   if (favorites.length === 0) {
     return <p className={styles.message}>No hay productos favoritos</p>;
   }
@@ -66,3 +78,4 @@ const FavoritesList = () => {
 };
 
 export default FavoritesList;
+
