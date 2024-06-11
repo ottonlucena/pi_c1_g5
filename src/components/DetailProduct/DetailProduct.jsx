@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FaCircle } from 'react-icons/fa';
 import useDetailProduct from './useDetailProduct';
 import Rating from '../Rating/Rating';
+import { Spinner } from '@fluentui/react-components';
 
 export const MoreButton = styled.button`
   margin-top: 15%;
@@ -39,7 +40,8 @@ const DetailProduct = () => {
 
   useEffect(() => {
     if (isLoading) {
-      toast.info('Cargando...', { autoClose: false, toastId: 'ToastyLoad' });
+      <Spinner appearance='primary' label={'Cargando...'} />;
+      // toast.info('Cargando...', { autoClose: false, toastId: 'ToastyLoad' });
     } else {
       toast.dismiss('ToastyLoad');
     }
