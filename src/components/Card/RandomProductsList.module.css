@@ -8,6 +8,13 @@
     gap: 20px; /* Espacio entre los elementos */
     justify-content: center;
   }
-  
-  
+
+  .spinnerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Altura total de la vista */
+  }
+
+
   
