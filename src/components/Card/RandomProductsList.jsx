@@ -60,4 +60,3 @@ const RandomProductsList = () => {
 };
 
 export default RandomProductsList;
-
