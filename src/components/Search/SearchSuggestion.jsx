@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import {
@@ -7,6 +8,12 @@ import {
   makeStyles,
   Divider,
   Button,
+  useId,
+  Toast,
+  Toaster,
+  ToastTitle,
+  ToastBody,
+  useToastController,
 } from '@fluentui/react-components';
 import { DatePicker } from '@fluentui/react-datepicker-compat';
 import useSearchSuggestion from './useSearchSuggestion';
@@ -18,10 +25,10 @@ const localizedStrings = {
     'Domingo',
     'Lunes',
     'Martes',
-    'Miercoles',
+    'Miércoles',
     'Jueves',
     'Viernes',
-    'Sabado',
+    'Sábado',
   ],
   shortDays: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
   months: [
@@ -38,7 +45,6 @@ const localizedStrings = {
     'Noviembre',
     'Diciembre',
   ],
-
   shortMonths: [
     'Ene',
     'Feb',
@@ -108,6 +114,7 @@ const SearchContainer = styled.div`
 const SuggestionDropdown = styled(Dropdown)`
   margin-top: -20px;
 `;
+
 const ContainerButtons = styled.div`
   display: flex;
   flex-direction: column;
@@ -115,11 +122,20 @@ const ContainerButtons = styled.div`
   align-items: center;
   padding: 20px;
   position: relative;
-  // margin-top: 30px;
-
   @media (max-width: 768px) {
     margin-top: 0;
   }
+`;
+
+const ContainerNote = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  color: #765879;
+  padding: 16 10;
 `;
 
 const useStyles = makeStyles({
@@ -141,15 +157,36 @@ const SearchSuggestion = () => {
   const customStyles = useStyles();
   const [searchTerm, setSearchTerm] = useState('');
   const { suggestions, isLoading } = useSearchSuggestion();
+  const Today = useMemo(new Date(), []);
+  const minDate = new Date(
+    Today.getFullYear(),
+    Today.getMonth(),
+    Today.getDate()
+  );
+  const [showNote, setShowNote] = useState(false);
   const [selectedOption, setSelectedOption] = useState(false);
-  const [initialValue, setInitialValue] = useState(null);
-  const [finishValue, setFinishValue] = useState(null);
+  const [initialDate, setInitialDate] = useState(null);
+  const [finishDate, setFinishDate] = useState(null);
   const initialDateRef = useRef(null);
   const finishDateRef = useRef(null);
+  const toasterId = useId('toaster');
+  const { dispatchToast } = useToastController(toasterId);
+
+  const showErrorToast = useCallback(() => {
+    dispatchToast(
+      <Toast>
+        <ToastTitle>Error al ingresar la data.</ToastTitle>
+        <ToastBody>La fecha de fin debe ser mayor a la de inicio.</ToastBody>
+      </Toast>,
+      { intent: 'error' }
+    );
+  }, [dispatchToast]);
 
   useEffect(() => {
     const dropdown = document.querySelector('.fui-Dropdown');
-    dropdown.style.visibility = 'collapse';
+    if (dropdown) {
+      dropdown.style.visibility = 'collapse';
+    }
   }, []);
 
   const filteredSuggestions = useMemo(() => {
@@ -172,27 +209,69 @@ const SearchSuggestion = () => {
   const handleOptionSelect = (event, data) => {
     setSearchTerm(data.optionValue.toString());
     setSelectedOption(
-      data.optionValue.toString() !== '' ? false : filteredSuggestions > 0
+      data.optionValue.toString() !== ''
+        ? false
+        : filteredSuggestions.length > 0
     );
+    setShowNote(true);
   };
 
   const handleClear = useCallback(() => {
-    setInitialValue(null);
-    setFinishValue(null);
+    setInitialDate(null);
+    setFinishDate(null);
+    if (initialDateRef.current) initialDateRef.current.value = '';
+    if (finishDateRef.current) finishDateRef.current.value = '';
     initialDateRef.current?.focus();
-  }, [setInitialValue, setFinishValue]);
+  }, []);
+
+  const formatDateAMD = (fechaStr) => {
+    const fecha = new Date(fechaStr);
+
+    //if (isNaN(fecha.getTime())) throw new Error('Fecha inválida');
+
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const dia = String(fecha.getDate()).padStart(2, '0');
+
+    return `${año}/${mes}/${dia}`;
+  };
+
+  const dateNote = useCallback(
+    (date) => {
+      return date < formatDateAMD(Today) ? '' : date;
+    },
+    [Today]
+  );
 
   const handleSearch = useCallback(() => {
     const sendToPost = {
-      selectedOption: selectedOption,
-      initialValue: initialValue,
-      finishValue: finishValue,
+      searchCriteria: searchTerm,
+      dateInitial: dateNote(formatDateAMD(initialDate)),
+      dateFinish: /Invalid|NaN/.test(
+        dateNote(formatDateAMD(finishDate).toString())
+      )
+        ? ''
+        : dateNote(formatDateAMD(finishDate)),
     };
     console.log(
       'lo que se necesita enviar a el endpoint sendToPost',
       sendToPost
     );
-  }, [finishValue, initialValue, selectedOption]);
+  }, [initialDate, finishDate, searchTerm, dateNote]);
+
+  const isDateDisabled = (date) => {
+    return date < minDate;
+  };
+
+  const validateDate = (date) => {
+    if (initialDate && date < initialDate) {
+      showErrorToast();
+      setFinishDate(dateNote(formatDateAMD(finishDate)));
+      return '';
+    }
+    return date;
+  };
+
   return (
     <>
       <ContainerText>
@@ -204,6 +283,7 @@ const SearchSuggestion = () => {
       </ContainerText>
       <Divider alignContent='center' appearance='center' />
       <Container>
+        <Toaster toasterId={toasterId} position='top' />
         <SearchContainer>
           <SearchBox
             className={customStyles.root}
@@ -226,8 +306,10 @@ const SearchSuggestion = () => {
         </SearchContainer>
         <DatePicker
           ref={initialDateRef}
-          onSelectDate={setInitialValue}
-          value={initialValue}
+          onSelectDate={(date) => setInitialDate(date)}
+          value={initialDate}
+          isDateDisabled={isDateDisabled}
+          minDate={minDate}
           strings={localizedStrings}
           className={customStyles.control}
           formatDate={onFormatDate}
@@ -235,8 +317,10 @@ const SearchSuggestion = () => {
         />
         <DatePicker
           ref={finishDateRef}
-          onSelectDate={setFinishValue}
-          value={finishValue}
+          onSelectDate={(date) => setFinishDate(validateDate(date))}
+          value={finishDate}
+          isDateDisabled={isDateDisabled}
+          minDate={minDate}
           strings={localizedStrings}
           className={customStyles.control}
           formatDate={onFormatDate}
@@ -261,6 +345,12 @@ const SearchSuggestion = () => {
           </Button>
         </ContainerButtons>
       </Container>
+      <Divider alignContent='center' appearance='center' />
+      {showNote && (
+        <ContainerNote>
+          {`La consulta busca el juego/s en una fecha o rango de fechas, el resultado será:  el juego o juegos que estan disponibles para arriendo`}
+        </ContainerNote>
+      )}
     </>
   );
 };
