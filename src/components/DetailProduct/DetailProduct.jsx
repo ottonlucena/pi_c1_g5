@@ -15,45 +15,23 @@ import Rating from '../Rating/Rating';
 import Politicas from '../Politicas/Politicas';
 import usePoliticasStore from '../Politicas/usePoliticasStore';
 
-export const MoreButton = styled.button`
+export const Button = styled.button`
   margin-top: 15%;
   padding: 10px 20px;
-  background-color: #795af6;
-  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-
-  @media (min-width: 769px) {
-    bottom: -60px;
-    right: 0;
-  }
-
-  @media (max-width: 768px) {
-    position: static;
-    margin: 20px auto 0;
-  }
 `;
 
-export const PoliticasButton = styled.button`
-  margin-top: 15%;
-  margin-left: 5px;
-  padding: 10px 20px;
+export const MoreButton = styled(Button)`
+  background-color: #795af6;
+  color: #fff;
+`;
+
+export const PoliticasButton = styled(Button)`
   background-color: orange;
   color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-
-  @media (min-width: 769px) {
-    bottom: -60px;
-    right: 0;
-  }
-
-  @media (max-width: 768px) {
-    position: static;
-    margin: 20px auto 0;
-  }
+  margin-left: 5px;
 `;
 
 const DetailProduct = () => {
@@ -69,14 +47,6 @@ const DetailProduct = () => {
     }
   }, [error]);
 
-  if (isLoading) {
-    return (
-      <div className={styles.spinnerContainer}>
-        <Spinner appearance="primary" label="Cargando detalle..." />
-      </div>
-    );
-  }
-
   useEffect(() => {
     if (isPoliticasOpen) {
       fetch(`http://localhost:8080/api/politicas/juego/${id}`)
@@ -88,6 +58,14 @@ const DetailProduct = () => {
         });
     }
   }, [isPoliticasOpen, id]);
+
+  if (isLoading) {
+    return (
+      <div className={styles.spinnerContainer}>
+        <Spinner appearance="primary" label="Cargando detalle..." />
+      </div>
+    );
+  }
 
   if (!product) {
     return null;
@@ -105,17 +83,12 @@ const DetailProduct = () => {
         <div className={styles.productDescription}>
           <p>{product?.descripcion}</p>
           <MoreButton onClick={openModal}>Ver más</MoreButton>
+          <PoliticasButton onClick={openPoliticas}>Ver políticas</PoliticasButton>
         </div>
-        <div className={styles.productBody}>
-          <div className={styles.productDescription}>
-            <p>{product?.descripcion}</p>
-            <MoreButton onClick={openModal}>Ver más</MoreButton>
-            <PoliticasButton onClick={openPoliticas}>Ver políticas</PoliticasButton>
-          </div>
-          <div className={styles.productImage}>
-            <img src={product?.img_url} alt={product?.nombre} />
-            <Rating promedioValoracion={product ? product.promedioValoracion : 0} />
-          </div>
+        <div className={styles.productImage}>
+          <img src={product?.img_url} alt={product?.nombre} />
+          <Rating promedioValoracion={product ? product.promedioValoracion : 0} />
+        </div>
       </div>
       <div className={styles.contCarac}>
         <div className={styles.productCharacteristics}>
@@ -142,7 +115,6 @@ const DetailProduct = () => {
           ) : (
             'Cargando políticas...'
           )}
-          </div>
         </Politicas>
       </div>
 
@@ -155,4 +127,5 @@ const DetailProduct = () => {
 };
 
 export default DetailProduct;
+
 
