@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import styles from './RandomProductsList.module.css';
 import PaginationProductCard from './PaginationProductCard';
 import CategorySection from '../Categorias/CategorySection';
-import { useQuery } from 'react-query';
 import { Spinner } from '@fluentui/react-components';
+import { obtenerProductos } from '../../data/juegos'; // Asegúrate de que la ruta sea correcta
 
 const RandomProductsList = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const filterByTypos = (arr, selectedCategories = []) => {
     if (selectedCategories.length === 0) {
@@ -17,37 +18,39 @@ const RandomProductsList = () => {
     return arr.filter((item) => selectedCategories.includes(item.tipo.title));
   };
 
-  const { data, error, isFetching } = useQuery('productos', fetchProducts);
+  const loadProducts = async () => {
+    try {
+      setIsLoading(true);
+      const productos = await obtenerProductos();
+      setAllProducts(productos);
+      setFilteredProducts(filterByTypos(productos, selectedCategories));
+    } catch (error) {
+      console.error('Error al cargar productos:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (data) {
-      setAllProducts(data);
-      setFilteredProducts(filterByTypos(data, selectedCategories));
-    }
-  }, [data, selectedCategories]);
+    loadProducts();
+  }, []);
 
-  async function fetchProducts() {
-    const response = await fetch('http://localhost:8080/api/juegos');
-    if (!response.ok) {
-      throw new Error('No hay conexión');
-    }
-    return response.json();
-  }
+  useEffect(() => {
+    setFilteredProducts(filterByTypos(allProducts, selectedCategories));
+  }, [selectedCategories, allProducts]);
 
-  if (isFetching) {
+  const handleCategorySelect = (categories) => {
+    setSelectedCategories(categories);
+    setFilteredProducts(filterByTypos(allProducts, categories));
+  };
+
+  if (isLoading) {
     return (
       <div className={styles.spinnerContainer}>
         <Spinner appearance='primary' label={'Cargando Juegos...'} />
       </div>
     );
   }
-
-  if (error) return 'Ha ocurrido un error: ' + error.message;
-
-  const handleCategorySelect = (categories) => {
-    setSelectedCategories(categories);
-    setFilteredProducts(filterByTypos(allProducts, categories));
-  };
 
   return (
     <div>
