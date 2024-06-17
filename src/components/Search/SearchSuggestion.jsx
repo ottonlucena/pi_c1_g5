@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
-import styled from "styled-components";
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import styled from 'styled-components';
 import {
   SearchBox,
   Dropdown,
@@ -8,65 +8,63 @@ import {
   makeStyles,
   Divider,
   Button,
-  Dialog,
-  DialogSurface,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogTrigger,
-  DialogBody,
-} from "@fluentui/react-components";
-import { DatePicker } from "@fluentui/react-datepicker-compat";
-import useSearchSuggestion from "./useSearchSuggestion";
-import { TbEyeSearch } from "react-icons/tb";
-import { MdOutlineAutoDelete } from "react-icons/md";
-import { verificarDisponibilidad } from "../../data/juegos";
+  useId,
+  Toast,
+  Toaster,
+  ToastTitle,
+  ToastBody,
+  useToastController,
+} from '@fluentui/react-components';
+import { DatePicker } from '@fluentui/react-datepicker-compat';
+import useSearchSuggestion from './useSearchSuggestion';
+import { TbEyeSearch } from 'react-icons/tb';
+import { MdOutlineAutoDelete } from 'react-icons/md';
 
 const localizedStrings = {
   days: [
-    "Domingo",
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
+    'Domingo',
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sábado',
   ],
-  shortDays: ["D", "L", "M", "M", "J", "V", "S"],
+  shortDays: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
   months: [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
   ],
   shortMonths: [
-    "Ene",
-    "Feb",
-    "Mar",
-    "Abr",
-    "May",
-    "Jun",
-    "Jul",
-    "Ago",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dic",
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dic',
   ],
-  goToToday: "Ir a hoy",
+  goToToday: 'Ir a hoy',
 };
 
 const onFormatDate = (date) => {
   return !date
-    ? ""
+    ? ''
     : `${
         localizedStrings.months[date.getMonth()]
       } ${date.getDate()}, ${date.getFullYear()}`;
@@ -88,7 +86,7 @@ const ContainerText = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   padding: 16px;
 `;
 
@@ -124,48 +122,70 @@ const ContainerButtons = styled.div`
   align-items: center;
   padding: 20px;
   position: relative;
-
   @media (max-width: 768px) {
     margin-top: 0;
   }
 `;
 
+const ContainerNote = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  color: #765879;
+  padding: 16 10;
+`;
+
 const useStyles = makeStyles({
   root: {
-    width: "100%",
+    width: '100%',
   },
   control: {
-    maxWidth: "300px",
-    marginTop: "-3px",
-    padding: "4px",
+    maxWidth: '300px',
+    marginTop: '-3px',
+    padding: '4px',
   },
   clearButton: {
-    marginBottom: "5px",
-    marginTop: "2px",
+    marginBottom: '5px',
+    marginTop: '2px',
   },
 });
 
-const formatDateToISO = (date) => {
-  if (!date) return "";
-  return date.toISOString().split("T")[0];
-};
-
 const SearchSuggestion = () => {
   const customStyles = useStyles();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const { suggestions, isLoading } = useSearchSuggestion();
+  const Today = useMemo(new Date(), []);
+  const minDate = new Date(
+    Today.getFullYear(),
+    Today.getMonth(),
+    Today.getDate()
+  );
+  const [showNote, setShowNote] = useState(false);
   const [selectedOption, setSelectedOption] = useState(false);
-  const [initialValue, setInitialValue] = useState(null);
-  const [finishValue, setFinishValue] = useState(null);
-  const [searchResult, setSearchResult] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [initialDate, setInitialDate] = useState(null);
+  const [finishDate, setFinishDate] = useState(null);
   const initialDateRef = useRef(null);
   const finishDateRef = useRef(null);
+  const toasterId = useId('toaster');
+  const { dispatchToast } = useToastController(toasterId);
+
+  const showErrorToast = useCallback(() => {
+    dispatchToast(
+      <Toast>
+        <ToastTitle>Error al ingresar la data.</ToastTitle>
+        <ToastBody>La fecha de fin debe ser mayor a la de inicio.</ToastBody>
+      </Toast>,
+      { intent: 'error' }
+    );
+  }, [dispatchToast]);
 
   useEffect(() => {
-    const dropdown = document.querySelector(".fui-Dropdown");
+    const dropdown = document.querySelector('.fui-Dropdown');
     if (dropdown) {
-      dropdown.style.visibility = "collapse";
+      dropdown.style.visibility = 'collapse';
     }
   }, []);
 
@@ -179,44 +199,78 @@ const SearchSuggestion = () => {
 
   const handleSearchChange = (event, newValue) => {
     if (newValue !== undefined && newValue !== null) {
-      setSelectedOption(newValue.value.toString() !== "");
+      setSelectedOption(newValue.value.toString() !== '');
       setSearchTerm(newValue.value.toString());
     } else {
-      setSearchTerm("");
+      setSearchTerm('');
     }
   };
 
   const handleOptionSelect = (event, data) => {
     setSearchTerm(data.optionValue.toString());
     setSelectedOption(
-      data.optionValue.toString() !== ""
+      data.optionValue.toString() !== ''
         ? false
         : filteredSuggestions.length > 0
     );
+    setShowNote(true);
   };
 
   const handleClear = useCallback(() => {
-    setInitialValue(null);
-    setFinishValue(null);
+    setInitialDate(null);
+    setFinishDate(null);
+    if (initialDateRef.current) initialDateRef.current.value = '';
+    if (finishDateRef.current) finishDateRef.current.value = '';
     initialDateRef.current?.focus();
   }, []);
 
-  const handleSearch = useCallback(async () => {
-    const datosReserva = {
-      nombreJuego: searchTerm,
-      fechaInicio: formatDateToISO(initialValue),
-      fechaFin: formatDateToISO(finishValue),
-    };
+  const formatDateAMD = (fechaStr) => {
+    const fecha = new Date(fechaStr);
 
-    try {
-      const disponibilidad = await verificarDisponibilidad(datosReserva);
-      setSearchResult(disponibilidad);
-      setOpenDialog(true); // Show the dialog when search result is set
-      console.log("Disponibilidad:", disponibilidad);
-    } catch (error) {
-      console.error("Error al verificar la disponibilidad:", error);
+    //if (isNaN(fecha.getTime())) throw new Error('Fecha inválida');
+
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const dia = String(fecha.getDate()).padStart(2, '0');
+
+    return `${año}/${mes}/${dia}`;
+  };
+
+  const dateNote = useCallback(
+    (date) => {
+      return date < formatDateAMD(Today) ? '' : date;
+    },
+    [Today]
+  );
+
+  const handleSearch = useCallback(() => {
+    const sendToPost = {
+      searchCriteria: searchTerm,
+      dateInitial: dateNote(formatDateAMD(initialDate)),
+      dateFinish: /Invalid|NaN/.test(
+        dateNote(formatDateAMD(finishDate).toString())
+      )
+        ? ''
+        : dateNote(formatDateAMD(finishDate)),
+    };
+    console.log(
+      'lo que se necesita enviar a el endpoint sendToPost',
+      sendToPost
+    );
+  }, [initialDate, finishDate, searchTerm, dateNote]);
+
+  const isDateDisabled = (date) => {
+    return date < minDate;
+  };
+
+  const validateDate = (date) => {
+    if (initialDate && date < initialDate) {
+      showErrorToast();
+      setFinishDate(dateNote(formatDateAMD(finishDate)));
+      return '';
     }
-  }, [searchTerm, initialValue, finishValue]);
+    return date;
+  };
 
   return (
     <>
@@ -227,21 +281,22 @@ const SearchSuggestion = () => {
           de fechas.
         </Subtitle>
       </ContainerText>
-      <Divider alignContent="center" appearance="center" />
+      <Divider alignContent='center' appearance='center' />
       <Container>
+        <Toaster toasterId={toasterId} position='top' />
         <SearchContainer>
           <SearchBox
             className={customStyles.root}
-            placeholder="Buscar..."
+            placeholder='Buscar...'
             value={searchTerm}
             onChange={(e, newValue) => handleSearchChange(e, newValue)}
           />
           <SuggestionDropdown
             className={`${customStyles.root}`}
-            size="small"
-            appearance="underline"
+            size='small'
+            appearance='underline'
             disabled={!searchTerm || isLoading}
-            open={searchTerm !== "" && selectedOption}
+            open={searchTerm !== '' && selectedOption}
             onOptionSelect={handleOptionSelect}
           >
             {filteredSuggestions.map((option) => (
@@ -251,26 +306,30 @@ const SearchSuggestion = () => {
         </SearchContainer>
         <DatePicker
           ref={initialDateRef}
-          onSelectDate={setInitialValue}
-          value={initialValue}
+          onSelectDate={(date) => setInitialDate(date)}
+          value={initialDate}
+          isDateDisabled={isDateDisabled}
+          minDate={minDate}
           strings={localizedStrings}
           className={customStyles.control}
           formatDate={onFormatDate}
-          placeholder="Selecciona una fecha..."
+          placeholder='Selecciona una fecha...'
         />
         <DatePicker
           ref={finishDateRef}
-          onSelectDate={setFinishValue}
-          value={finishValue}
+          onSelectDate={(date) => setFinishDate(validateDate(date))}
+          value={finishDate}
+          isDateDisabled={isDateDisabled}
+          minDate={minDate}
           strings={localizedStrings}
           className={customStyles.control}
           formatDate={onFormatDate}
-          placeholder="Selecciona una fecha..."
+          placeholder='Selecciona una fecha...'
         />
         <ContainerButtons>
           <Button
             onClick={handleClear}
-            appearance="primary"
+            appearance='primary'
             className={customStyles.clearButton}
             icon={<MdOutlineAutoDelete />}
           >
@@ -278,7 +337,7 @@ const SearchSuggestion = () => {
           </Button>
           <Button
             onClick={handleSearch}
-            appearance="primary"
+            appearance='primary'
             className={customStyles.clearButton}
             icon={<TbEyeSearch />}
           >
@@ -286,67 +345,12 @@ const SearchSuggestion = () => {
           </Button>
         </ContainerButtons>
       </Container>
-      {/* Dialog to display search result */}
-      <Dialog
-        open={openDialog}
-        onOpenChange={(event, data) => {
-          setOpenDialog(data.open);
-        }}
-      >
-        <DialogSurface>
-          <DialogBody>
-            <DialogTitle>
-              {searchResult && searchResult.length > 0
-                ? searchResult[0].nombre
-                : "Resultado de la búsqueda"}
-            </DialogTitle>
-            <DialogContent>
-              {searchResult && searchResult.length > 0 ? (
-                <>
-                  <p>{searchResult[0].descripcion}</p>
-                  <p>Altura: {searchResult[0].altura}</p>
-                  <p>Ancho: {searchResult[0].ancho}</p>
-                  <p>Cantidad: {searchResult[0].cantidad}</p>
-                  <p>Capacidad: {searchResult[0].capacidad}</p>
-                  <p>Valor de arriendo: {searchResult[0].valorArriendo}</p>
-                  <img
-                    src={searchResult[0].img_url}
-                    alt={searchResult[0].nombre}
-                  />
-                  {searchResult[0].tipo && (
-                    <div>
-                      <p>Tipo: {searchResult[0].tipo.title}</p>
-                      <p>{searchResult[0].tipo.description}</p>
-                    </div>
-                  )}
-                  {searchResult[0].caracteristicas && (
-                    <div>
-                      <p>Características:</p>
-                      <ul>
-                        {searchResult[0].caracteristicas.map(
-                          (caracteristica) => (
-                            <li key={caracteristica.id}>
-                              {caracteristica.nombre}
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <p>No se encontraron resultados.</p>
-              )}
-            </DialogContent>
-
-            <DialogActions>
-              <DialogTrigger disableButtonEnhancement>
-                <Button appearance="secondary">Cerrar</Button>
-              </DialogTrigger>
-            </DialogActions>
-          </DialogBody>
-        </DialogSurface>
-      </Dialog>
+      <Divider alignContent='center' appearance='center' />
+      {showNote && (
+        <ContainerNote>
+          {`La consulta busca el juego/s en una fecha o rango de fechas, el resultado será:  el juego o juegos que estan disponibles para arriendo`}
+        </ContainerNote>
+      )}
     </>
   );
 };
