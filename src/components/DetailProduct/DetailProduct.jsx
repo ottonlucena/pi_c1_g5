@@ -37,7 +37,8 @@ export const PoliticasButton = styled(Button)`
 const DetailProduct = () => {
   const { id } = useParams();
   const { isModalOpen, openModal, closeModal } = useModalStore();
-  const { isPoliticasOpen, openPoliticas, closePoliticas } = usePoliticasStore();
+  const { isPoliticasOpen, openPoliticas, closePoliticas } =
+    usePoliticasStore();
   const { data: product, isLoading, error } = useDetailProduct(id);
   const [politicas, setPoliticas] = useState([]);
 
@@ -50,9 +51,9 @@ const DetailProduct = () => {
   useEffect(() => {
     if (isPoliticasOpen) {
       fetch(`http://localhost:8080/api/politicas/juego/${id}`)
-        .then(response => response.json())
-        .then(data => setPoliticas(data))
-        .catch(error => {
+        .then((response) => response.json())
+        .then((data) => setPoliticas(data))
+        .catch((error) => {
           console.error('Error fetching politicas:', error);
           toast.error('Error al cargar las políticas');
         });
@@ -62,7 +63,7 @@ const DetailProduct = () => {
   if (isLoading) {
     return (
       <div className={styles.spinnerContainer}>
-        <Spinner appearance="primary" label="Cargando detalle..." />
+        <Spinner appearance='primary' label='Cargando detalle...' />
       </div>
     );
   }
@@ -75,19 +76,23 @@ const DetailProduct = () => {
     <div className={styles.detailContainer}>
       <div className={styles.productHeader}>
         <h1 className={styles.productTitle}>{product?.nombre}</h1>
-        <Link to="/" className={styles.goBack}>
-          <IoIosArrowBack color="white" size={40} />
+        <Link to='/' className={styles.goBack}>
+          <IoIosArrowBack color='white' size={40} />
         </Link>
       </div>
       <div className={styles.productBody}>
         <div className={styles.productDescription}>
           <p>{product?.descripcion}</p>
           <MoreButton onClick={openModal}>Ver más</MoreButton>
-          <PoliticasButton onClick={openPoliticas}>Ver políticas</PoliticasButton>
+          <PoliticasButton onClick={openPoliticas}>
+            Ver políticas
+          </PoliticasButton>
         </div>
         <div className={styles.productImage}>
           <img src={product?.img_url} alt={product?.nombre} />
-          <Rating promedioValoracion={product ? product.promedioValoracion : 0} />
+          <Rating
+            promedioValoracion={product ? product.promedioValoracion : 0}
+          />
         </div>
       </div>
       <div className={styles.contCarac}>
@@ -95,7 +100,7 @@ const DetailProduct = () => {
           {product?.caracteristicas.map((caracteristica, index) => (
             <div key={index} className={styles.characteristic}>
               <div className={styles.characteristicItem}>
-                <FaCircle color="#f5e9fc" size={10} />
+                <FaCircle color='#f5e9fc' size={10} />
                 <p>{caracteristica.nombre}</p>
               </div>
             </div>
@@ -106,9 +111,11 @@ const DetailProduct = () => {
           {politicas.length > 0 ? (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               {politicas.map((politica, index) => (
-                <div className="policy-column" key={index}>
+                <div className='policy-column' key={index}>
                   <h4>{politica.titulo}</h4>
-                  <div dangerouslySetInnerHTML={{ __html: politica.descripcion }} />
+                  <div
+                    dangerouslySetInnerHTML={{ __html: politica.descripcion }}
+                  />
                 </div>
               ))}
             </div>
@@ -121,11 +128,9 @@ const DetailProduct = () => {
       <Modal>
         <GalleryImgs />
       </Modal>
-      <ToastContainer position="top-center" />
+      <ToastContainer position='top-center' />
     </div>
   );
 };
 
 export default DetailProduct;
-
-

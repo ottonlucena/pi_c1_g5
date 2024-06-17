@@ -356,3 +356,5 @@ const SearchSuggestion = () => {
 };
 
 export default SearchSuggestion;
+
+export default SearchSuggestion;
