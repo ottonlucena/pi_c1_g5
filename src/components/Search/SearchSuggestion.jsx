@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
-import styled from "styled-components";
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import styled from 'styled-components';
 import {
   SearchBox,
   Dropdown,
@@ -15,58 +15,58 @@ import {
   DialogActions,
   DialogTrigger,
   DialogBody,
-} from "@fluentui/react-components";
-import { DatePicker } from "@fluentui/react-datepicker-compat";
-import useSearchSuggestion from "./useSearchSuggestion";
-import { TbEyeSearch } from "react-icons/tb";
-import { MdOutlineAutoDelete } from "react-icons/md";
-import { verificarDisponibilidad } from "../../data/juegos";
+} from '@fluentui/react-components';
+import { DatePicker } from '@fluentui/react-datepicker-compat';
+import useSearchSuggestion from './useSearchSuggestion';
+import { TbEyeSearch } from 'react-icons/tb';
+import { MdOutlineAutoDelete } from 'react-icons/md';
+import { verificarDisponibilidad } from '../../data/juegos';
 
 const localizedStrings = {
   days: [
-    "Domingo",
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
+    'Domingo',
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sábado',
   ],
-  shortDays: ["D", "L", "M", "M", "J", "V", "S"],
+  shortDays: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
   months: [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
   ],
   shortMonths: [
-    "Ene",
-    "Feb",
-    "Mar",
-    "Abr",
-    "May",
-    "Jun",
-    "Jul",
-    "Ago",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dic",
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dic',
   ],
-  goToToday: "Ir a hoy",
+  goToToday: 'Ir a hoy',
 };
 
 const onFormatDate = (date) => {
   return !date
-    ? ""
+    ? ''
     : `${
         localizedStrings.months[date.getMonth()]
       } ${date.getDate()}, ${date.getFullYear()}`;
@@ -88,7 +88,7 @@ const ContainerText = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   padding: 16px;
 `;
 
@@ -132,28 +132,34 @@ const ContainerButtons = styled.div`
 
 const useStyles = makeStyles({
   root: {
-    width: "100%",
+    width: '100%',
   },
   control: {
-    maxWidth: "300px",
-    marginTop: "-3px",
-    padding: "4px",
+    maxWidth: '300px',
+    marginTop: '-3px',
+    padding: '4px',
   },
   clearButton: {
-    marginBottom: "5px",
-    marginTop: "2px",
+    marginBottom: '5px',
+    marginTop: '2px',
   },
 });
 
 const formatDateToISO = (date) => {
-  if (!date) return "";
-  return date.toISOString().split("T")[0];
+  if (!date) return '';
+  return date.toISOString().split('T')[0];
 };
 
 const SearchSuggestion = () => {
   const customStyles = useStyles();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const { suggestions, isLoading } = useSearchSuggestion();
+  const Today = new Date();
+  const minDate = new Date(
+    Today.getFullYear(),
+    Today.getMonth(),
+    Today.getDate()
+  );
   const [selectedOption, setSelectedOption] = useState(false);
   const [initialValue, setInitialValue] = useState(null);
   const [finishValue, setFinishValue] = useState(null);
@@ -163,9 +169,9 @@ const SearchSuggestion = () => {
   const finishDateRef = useRef(null);
 
   useEffect(() => {
-    const dropdown = document.querySelector(".fui-Dropdown");
+    const dropdown = document.querySelector('.fui-Dropdown');
     if (dropdown) {
-      dropdown.style.visibility = "collapse";
+      dropdown.style.visibility = 'collapse';
     }
   }, []);
 
@@ -179,17 +185,17 @@ const SearchSuggestion = () => {
 
   const handleSearchChange = (event, newValue) => {
     if (newValue !== undefined && newValue !== null) {
-      setSelectedOption(newValue.value.toString() !== "");
+      setSelectedOption(newValue.value.toString() !== '');
       setSearchTerm(newValue.value.toString());
     } else {
-      setSearchTerm("");
+      setSearchTerm('');
     }
   };
 
   const handleOptionSelect = (event, data) => {
     setSearchTerm(data.optionValue.toString());
     setSelectedOption(
-      data.optionValue.toString() !== ""
+      data.optionValue.toString() !== ''
         ? false
         : filteredSuggestions.length > 0
     );
@@ -212,9 +218,9 @@ const SearchSuggestion = () => {
       const disponibilidad = await verificarDisponibilidad(datosReserva);
       setSearchResult(disponibilidad);
       setOpenDialog(true); // Show the dialog when search result is set
-      console.log("Disponibilidad:", disponibilidad);
+      console.log('Disponibilidad:', disponibilidad);
     } catch (error) {
-      console.error("Error al verificar la disponibilidad:", error);
+      console.error('Error al verificar la disponibilidad:', error);
     }
   }, [searchTerm, initialValue, finishValue]);
 
@@ -227,21 +233,21 @@ const SearchSuggestion = () => {
           de fechas.
         </Subtitle>
       </ContainerText>
-      <Divider alignContent="center" appearance="center" />
+      <Divider alignContent='center' appearance='center' />
       <Container>
         <SearchContainer>
           <SearchBox
             className={customStyles.root}
-            placeholder="Buscar..."
+            placeholder='Buscar...'
             value={searchTerm}
             onChange={(e, newValue) => handleSearchChange(e, newValue)}
           />
           <SuggestionDropdown
             className={`${customStyles.root}`}
-            size="small"
-            appearance="underline"
+            size='small'
+            appearance='underline'
             disabled={!searchTerm || isLoading}
-            open={searchTerm !== "" && selectedOption}
+            open={searchTerm !== '' && selectedOption}
             onOptionSelect={handleOptionSelect}
           >
             {filteredSuggestions.map((option) => (
@@ -256,7 +262,7 @@ const SearchSuggestion = () => {
           strings={localizedStrings}
           className={customStyles.control}
           formatDate={onFormatDate}
-          placeholder="Selecciona una fecha..."
+          placeholder='Selecciona una fecha...'
         />
         <DatePicker
           ref={finishDateRef}
@@ -265,12 +271,12 @@ const SearchSuggestion = () => {
           strings={localizedStrings}
           className={customStyles.control}
           formatDate={onFormatDate}
-          placeholder="Selecciona una fecha..."
+          placeholder='Selecciona una fecha...'
         />
         <ContainerButtons>
           <Button
             onClick={handleClear}
-            appearance="primary"
+            appearance='primary'
             className={customStyles.clearButton}
             icon={<MdOutlineAutoDelete />}
           >
@@ -278,7 +284,7 @@ const SearchSuggestion = () => {
           </Button>
           <Button
             onClick={handleSearch}
-            appearance="primary"
+            appearance='primary'
             className={customStyles.clearButton}
             icon={<TbEyeSearch />}
           >
@@ -298,7 +304,7 @@ const SearchSuggestion = () => {
             <DialogTitle>
               {searchResult && searchResult.length > 0
                 ? searchResult[0].nombre
-                : "Resultado de la búsqueda"}
+                : 'Resultado de la búsqueda'}
             </DialogTitle>
             <DialogContent>
               {searchResult && searchResult.length > 0 ? (
@@ -341,7 +347,7 @@ const SearchSuggestion = () => {
 
             <DialogActions>
               <DialogTrigger disableButtonEnhancement>
-                <Button appearance="secondary">Cerrar</Button>
+                <Button appearance='secondary'>Cerrar</Button>
               </DialogTrigger>
             </DialogActions>
           </DialogBody>
