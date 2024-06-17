@@ -114,6 +114,23 @@ const enviarValoracion = async (juegoId, valoracionData) => {
   return response.json();
 };
 
+const verificarDisponibilidad = async (datosReserva) => {
+  const response = await fetch('http://localhost:8080/api/reservas/disponibles', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(datosReserva),
+  });
+
+  if (!response.ok) {
+    throw new Error('Error al verificar la disponibilidad');
+  }
+
+  return response.json();
+};
+
+
 export {
   obtenerProductos,
   agregarProducto,
@@ -123,4 +140,5 @@ export {
   fetchSuggestions,
   getValoraciones,
   enviarValoracion,
+  verificarDisponibilidad,
 };
