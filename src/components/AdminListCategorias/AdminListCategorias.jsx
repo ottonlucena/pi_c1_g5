@@ -81,7 +81,7 @@ const AdminListCategorias = () => {
       toast.success("Categoría eliminada correctamente");
     } catch (error) {
       console.error("Error al eliminar la categoría:", error.message);
-      toast.error("Error al eliminar la categoría.");
+      toast.error("No se puede eliminar la catgoria, la misma se encuentra asignada a un Juego");
     } finally {
       toggleDeleteModal();
     }

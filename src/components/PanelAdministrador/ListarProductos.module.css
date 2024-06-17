@@ -1,3 +1,4 @@
+
 /* ListarProductos.module.css */
 
 /* ListarProductos.module.css */
@@ -13,10 +14,12 @@
 }
 
 .mobileOverlay {
-  position: absolute;
-  height: 100vh;
-  width: 440px;
-  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  height: 100vh; 
+  width: 100vw; 
+  background-color: rgba(255, 255, 255, 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,8 +43,9 @@
 }
 
 .msj {
-  width: 100%;
-  margin-top: 20px;
+  font-size: 20px;
+  color: #795af6;
+  padding: 3rem;
   
 }
 

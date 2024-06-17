@@ -24,7 +24,7 @@ import {
 import useAdminListProd from './useAdminListProd';
 import { eliminarProducto } from '../../data/juegos';
 import EditProductForm from './EditProductForm';
-import { Spinner } from '@fluentui/react-components';
+
 
 const AdminListProd = () => {
   const [datos, setDatos] = useState([]);
@@ -38,8 +38,7 @@ const AdminListProd = () => {
 
   useEffect(() => {
     if (isLoading) {
-      <Spinner appearance='primary' label={'Cargando...'} />;
-      // toast.info("Cargando...", { autoClose: false, toastId: "ToastyLoad" });
+      toast.info("Cargando...", { autoClose: false, toastId: "ToastyLoad" });
     } else {
       toast.dismiss('ToastyLoad');
     }

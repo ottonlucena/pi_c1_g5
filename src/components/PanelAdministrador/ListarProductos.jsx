@@ -1,19 +1,36 @@
 import { useState, useEffect } from "react";
 import RegistrarProducto from "./RegistrarProducto";
-import AdminListPropd from "../AdminListProd/AdminListProd";
+import AdminListProd from "../AdminListProd/AdminListProd";
 import RegistrarCategoria from "./RegistrarCategoria";
-import styles from "./ListarProductos.module.css";
 import AdminListCategorias from "../AdminListCategorias/AdminListCategorias";
 import AdminListUser from "../AdminListUser/AdminListUser";
 import AdminListCaracteristicas from "../AdminListCarac/AdminListCaracteristicas";
+import { makeStyles, Tab, TabList } from "@fluentui/react-components";
+import styles from "./ListarProductos.module.css";
+
+const useFluentStyles = makeStyles({
+  root: {
+    alignItems: "flex-start",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    padding: "50px 20px",
+    rowGap: "20px",
+  },
+  tab: {
+    marginBottom: "20px", // Añade espacio entre los tabs
+  },
+});
 
 const ListarProductos = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [selectedComponent, setSelectedComponent] = useState("panel");
+
+  const fluentStyles = useFluentStyles();
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 1200);
     };
 
     checkIsMobile();
@@ -50,81 +67,30 @@ const ListarProductos = () => {
             className={styles.logo}
           />
           {!isMobile && (
-            <>
-              <button
-                className={`${styles.btnAgregar} ${
-                  selectedComponent === null && styles.selected
-                }`}
-                onClick={() => handleComponentChange(null)}
+            <div className={fluentStyles.root}>
+              <TabList
+                defaultSelectedValue="panel"
+                vertical
+                onTabSelect={(e, { value }) => handleComponentChange(value)}
               >
-                Panel
-              </button>
-              <button
-                className={`${styles.btnAgregar} ${
-                  selectedComponent === "RegistrarProducto" && styles.selected
-                }`}
-                onClick={() => handleComponentChange("RegistrarProducto")}
-              >
-                Agregar Producto
-              </button>
-
-              <button
-                className={`${styles.btnAgregar} ${
-                  selectedComponent === "AdminListProd" && styles.selected
-                }`}
-                onClick={() => handleComponentChange("AdminListProd")}
-              >
-                Listar productos
-              </button>
-              <button
-                className={`${styles.btnAgregar} ${
-                  selectedComponent === "RegistrarCategoria" && styles.selected
-                }`}
-                onClick={() => handleComponentChange("RegistrarCategoria")}
-              >
-                Agregar Categoria
-              </button>
-              <button
-                className={`${styles.btnAgregar} ${
-                  selectedComponent === "AdminListCategorias" && styles.selected
-                }`}
-                onClick={() => handleComponentChange("AdminListCategorias")}
-              >
-                Listar Categorías
-              </button>
-              <button
-                className={`${styles.btnAgregar} ${
-                  selectedComponent === "AdminListUser" && styles.selected
-                }`}
-                onClick={() => handleComponentChange("AdminListUser")}
-              >
-                Listar Usuarios
-              </button>
-              <button
-                className={`${styles.btnAgregar} ${
-                  selectedComponent === "AdminListCaracteristicas" && styles.selected
-                }`}
-                onClick={() => handleComponentChange("AdminListCaracteristicas")}
-              >
-                Listar Caracteristicas
-              </button>
-            </>
+                <Tab value="panel" className={fluentStyles.tab}>Panel</Tab>
+                <Tab value="RegistrarProducto" className={fluentStyles.tab}>Agregar Producto</Tab>
+                <Tab value="AdminListProd" className={fluentStyles.tab}>Listar productos</Tab>
+                <Tab value="RegistrarCategoria" className={fluentStyles.tab}>Agregar Categoria</Tab>
+                <Tab value="AdminListCategorias" className={fluentStyles.tab}>Listar Categorías</Tab>
+                <Tab value="AdminListUser" className={fluentStyles.tab}>Listar Usuarios</Tab>
+                <Tab value="AdminListCaracteristicas" className={fluentStyles.tab}>Listar Caracteristicas</Tab>
+              </TabList>
+            </div>
           )}
         </div>
       </div>
       <div className={styles.content2}>
         {!isMobile && (
           <>
-            {selectedComponent === null && ( // Renderizar el panel si no se ha seleccionado ningún componente
+            {selectedComponent === "panel" && (
               <div className={styles.panelContainer} onClick={handlePanelClick}>
-                {/*    <div className={styles.panel}>
-                  <div className={styles.cuadrante}>Cuadrante 1</div>
-                  <div className={styles.cuadrante}>Cuadrante 2</div>
-                </div> */}
-                {/*  <div className={styles.panel}>
-                  <div className={styles.cuadrante}>Cuadrante 3</div>
-                  <div className={styles.cuadrante}>Cuadrante 4</div>
-                </div> */}
+                {/* Panel content here */}
               </div>
             )}
             <div className={styles.componentContainer}>
@@ -133,7 +99,7 @@ const ListarProductos = () => {
               )}
             </div>
             <div className={styles.componentContainer}>
-              {selectedComponent === "AdminListProd" && <AdminListPropd />}
+              {selectedComponent === "AdminListProd" && <AdminListProd />}
             </div>
             <div className={styles.componentContainer}>
               {selectedComponent === "RegistrarCategoria" && (
@@ -146,13 +112,11 @@ const ListarProductos = () => {
               )}
             </div>
             <div className={styles.componentContainer}>
-              {selectedComponent === "AdminListUser" && (
-                <AdminListUser/>
-              )}
+              {selectedComponent === "AdminListUser" && <AdminListUser />}
             </div>
             <div className={styles.componentContainer}>
               {selectedComponent === "AdminListCaracteristicas" && (
-                <AdminListCaracteristicas/>
+                <AdminListCaracteristicas />
               )}
             </div>
           </>
@@ -163,3 +127,6 @@ const ListarProductos = () => {
 };
 
 export default ListarProductos;
+
+
+
