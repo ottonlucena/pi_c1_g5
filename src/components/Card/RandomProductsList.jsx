@@ -3,7 +3,7 @@ import styles from './RandomProductsList.module.css';
 import PaginationProductCard from './PaginationProductCard';
 import CategorySection from '../Categorias/CategorySection';
 import { Spinner } from '@fluentui/react-components';
-import { obtenerProductos } from '../../data/juegos'; // Asegúrate de que la ruta sea correcta
+import { obtenerProductos } from '../../data/juegos';
 
 const RandomProductsList = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -11,19 +11,24 @@ const RandomProductsList = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const filterByTypos = (arr, selectedCategories = []) => {
-    if (selectedCategories.length === 0) {
-      return arr;
+  // Función para filtrar productos por categorías seleccionadas
+  const filterProductsByCategories = (productos, categories) => {
+    if (categories.length === 0) {
+      return productos; // Devuelve todos los productos si no hay categorías seleccionadas
     }
-    return arr.filter((item) => selectedCategories.includes(item.tipo.title));
+    return productos.filter(producto =>
+      categories.includes(producto.tipo.filtro)
+    );
   };
 
+  // Cargar productos al inicio
   const loadProducts = async () => {
     try {
       setIsLoading(true);
       const productos = await obtenerProductos();
+      console.log('Productos cargados:', productos);
       setAllProducts(productos);
-      setFilteredProducts(filterByTypos(productos, selectedCategories));
+      setFilteredProducts(filterProductsByCategories(productos, selectedCategories));
     } catch (error) {
       console.error('Error al cargar productos:', error);
     } finally {
@@ -31,27 +36,40 @@ const RandomProductsList = () => {
     }
   };
 
+  // Cargar productos al montar el componente
   useEffect(() => {
     loadProducts();
   }, []);
 
+  // Actualizar productos filtrados cuando cambian las categorías seleccionadas o los productos cargados
   useEffect(() => {
-    setFilteredProducts(filterByTypos(allProducts, selectedCategories));
+    console.log('Categorías seleccionadas:', selectedCategories);
+    setFilteredProducts(filterProductsByCategories(allProducts, selectedCategories));
   }, [selectedCategories, allProducts]);
 
+  // Manejar la selección de categorías desde CategorySection
   const handleCategorySelect = (categories) => {
+    console.log('Categorías recibidas de CategorySection:', categories);
     setSelectedCategories(categories);
-    setFilteredProducts(filterByTypos(allProducts, categories));
+
+    // Verificar si "Todos" está en las categorías seleccionadas
+    if (categories.includes('Todos')) {
+      setFilteredProducts(allProducts); // Mostrar todos los productos si se selecciona "Todos"
+    } else {
+      setFilteredProducts(filterProductsByCategories(allProducts, categories));
+    }
   };
 
+  // Mostrar spinner de carga si aún se están cargando los productos
   if (isLoading) {
     return (
       <div className={styles.spinnerContainer}>
-        <Spinner appearance='primary' label={'Cargando Juegos...'} />
+        <Spinner appearance="primary" label={'Cargando Juegos...'} />
       </div>
     );
   }
 
+  // Renderizar la lista de productos filtrados después de cargar
   return (
     <div>
       <CategorySection onCategoryClick={handleCategorySelect} />

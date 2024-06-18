@@ -50,12 +50,12 @@ const CategorySection = ({ onCategoryClick }) => {
         }
         const data = await response.json();
 
-        // Agregar manualmente la categoría "TODOS" al final de la lista
+        // Agregar la categoría "Todos" al final de las categorías obtenidas
         const allCategory = {
           id: 0,
           title: 'TODOS',
           description: 'Mostrar todos los productos.',
-          img_url: '../public/assets/todos.jpg',
+          img_url: 'https://tackletrading.com/wp-content/uploads/2015/09/Detective-1920px-min2-1024x791.jpg', // URL válida para la imagen de "TODOS"
         };
 
         setCategories([...data, allCategory]);
@@ -67,21 +67,32 @@ const CategorySection = ({ onCategoryClick }) => {
     fetchCategories();
   }, []);
 
-  const handleCategoryClick = (category) => {
-    let updatedCategories = [...selectedCategories];
-    if (category.title === 'TODOS') {
+ const handleCategoryClick = (category) => {
+  let updatedCategories = [...selectedCategories];
+  if (category.title === 'TODOS') {
+    if (updatedCategories.length === titleMapping.length - 1) {
+      // Si ya están seleccionadas todas las categorías excepto "TODOS", deseleccionar todas
       updatedCategories = [];
     } else {
-      const index = selectedCategories.indexOf(category.title);
-      if (index !== -1) {
-        updatedCategories.splice(index, 1);
-      } else {
-        updatedCategories.push(category.title);
-      }
+      // Seleccionar todas las categorías excepto "TODOS"
+      updatedCategories = titleMapping.map(category => category.nombreFiltro).filter(category => category !== 'Todos');
     }
-    setSelectedCategories(updatedCategories);
-    onCategoryClick(updatedCategories);
-  };
+  } else {
+    const index = selectedCategories.indexOf(category.title);
+    if (index !== -1) {
+      updatedCategories.splice(index, 1);
+    } else {
+      updatedCategories.push(category.title);
+    }
+    // Si TODOS estaba seleccionado, quitarlo
+    const todosIndex = updatedCategories.indexOf('Todos');
+    if (todosIndex !== -1) {
+      updatedCategories.splice(todosIndex, 1);
+    }
+  }
+  setSelectedCategories(updatedCategories);
+  onCategoryClick(updatedCategories);
+};
 
   return (
     <div className={styles.categorySection}>
@@ -91,7 +102,7 @@ const CategorySection = ({ onCategoryClick }) => {
           <CategoryCard
             key={index}
             categoryName={nombreFiltro}
-            categoryDescription={''} // You can add a description if needed
+            categoryDescription={''} // Aquí podrías agregar una descripción si la tuvieras disponible
             categoryImageUrl={imagenFiltro}
             isSelected={selectedCategories.includes(nombreFiltro)}
             onClick={() => handleCategoryClick({ title: nombreFiltro })}
