@@ -11,10 +11,12 @@ const Footer = () => {
       <p className='footerText'>© 2024- Todos los derechos reservados G5</p>
       <ul className='social-icons'>
         <li>
-          <FaInstagram color='#6743dd' />
+        <a href={"https://www.instagram.com/festivall.vivelaemocion/"} target='_blank' rel='noopener noreferrer'>
+            <FaInstagram color='#6743dd' />
+          </a>
         </li>
         <li>
-          <FaFacebookSquare color='#6743dd' />
+          {/* <FaFacebookSquare color='#6743dd' /> */}
         </li>
       </ul>
     </footer>
