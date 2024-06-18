@@ -1,0 +1,50 @@
+/* src/components/Nosotros/Nosotros.css */
+
+.nosotros {
+    text-align: center;
+    padding: 20px;
+    background-color: rgb(245, 244, 242);
+    display: ;
+
+}
+
+.nosotros h1{
+    font-family: 'Segoe UI';
+    font-size: 40px;
+    font-weight: bold;
+    background-repeat: repeat;
+    height: 15%;
+}
+
+.team-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.team-member {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 50px;
+    text-align: center;
+}
+
+.memberPhoto {
+    width: 100px;
+    border-radius: 50%;
+    height: 100px;
+    object-fit: cover;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: 10px 0 5px;
+}
+
+p {
+    font-size: 1em;
+    color: #666;
+}
