@@ -10,7 +10,8 @@ import {
   Input,
   Label,
   makeStyles,
-} from '@fluentui/react-components'; // Ajusta las importaciones según tu librería de componentes
+} from '@fluentui/react-components';
+import { DatePicker } from '@fluentui/react-datepicker-compat';
 
 const useStyles = makeStyles({
   content: {
@@ -25,17 +26,27 @@ const DialogEvent = ({ dialogData, setIsDialogOpen, handleDialogSubmit }) => {
   const [title, setTitle] = React.useState(dialogData.title);
   const [start, setStart] = React.useState(dialogData.start);
   const [end, setEnd] = React.useState(dialogData.end);
+  const Today = new Date();
+  const minDate = new Date(
+    Today.getFullYear(),
+    Today.getMonth(),
+    Today.getDate()
+  );
 
-  const handleSubmit = (ev) => {
-    ev.preventDefault();
-    handleDialogSubmit({ title, start, end });
+  // Función para deshabilitar fechas anteriores al día actual
+  const isDateDisabled = (date) => {
+    return date < new Date(new Date().setHours(0, 0, 0, 0));
   };
 
   const handleClose = () => {
     setIsDialogOpen(false);
   };
 
-  // Actualiza los estados cuando se cambian los datos del evento
+  const handleAdd = (ev) => {
+    ev.preventDefault();
+    handleDialogSubmit({ title, start, end });
+  };
+
   React.useEffect(() => {
     setTitle(dialogData.title);
     setStart(dialogData.start);
@@ -45,9 +56,9 @@ const DialogEvent = ({ dialogData, setIsDialogOpen, handleDialogSubmit }) => {
   return (
     <Dialog open={true} onDismiss={handleClose} modalType='non-modal'>
       <DialogSurface aria-describedby={undefined}>
-        <form onSubmit={handleSubmit}>
+        <form>
           <DialogBody>
-            <DialogTitle>Agregar Evento</DialogTitle>
+            <DialogTitle>Solicitud de Arriendo</DialogTitle>
             <DialogContent className={styles.content}>
               <Label required htmlFor='title-input'>
                 Título
@@ -62,29 +73,31 @@ const DialogEvent = ({ dialogData, setIsDialogOpen, handleDialogSubmit }) => {
               <Label required htmlFor='start-input'>
                 Fecha de Inicio
               </Label>
-              <Input
-                required
-                type='datetime-local'
-                id='start-input'
-                value={start ? start.toISOString().slice(0, 16) : ''}
-                onChange={(e) => setStart(new Date(e.target.value))}
+              {/* DatePicker para la fecha de inicio */}
+              <DatePicker
+                onSelectDate={(date) => setStart(date)}
+                value={start}
+                ariaLabel='Seleccione una fecha de inicio'
+                isDateDisabled={isDateDisabled}
+                minDate={minDate}
               />
               <Label required htmlFor='end-input'>
                 Fecha de Fin
               </Label>
-              <Input
-                required
-                type='datetime-local'
-                id='end-input'
-                value={end ? end.toISOString().slice(0, 16) : ''}
-                onChange={(e) => setEnd(new Date(e.target.value))}
+              {/* DatePicker para la fecha de fin */}
+              <DatePicker
+                onSelectDate={(date) => setEnd(date)}
+                value={end}
+                ariaLabel='Seleccione una fecha de fin'
+                isDateDisabled={isDateDisabled}
+                minDate={minDate}
               />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose} appearance='secondary'>
                 Cerrar
               </Button>
-              <Button type='submit' appearance='primary'>
+              <Button onClick={handleAdd} appearance='primary'>
                 Agregar
               </Button>
             </DialogActions>

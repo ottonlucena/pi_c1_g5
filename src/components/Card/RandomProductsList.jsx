@@ -16,7 +16,7 @@ const RandomProductsList = () => {
     if (categories.length === 0) {
       return productos; // Devuelve todos los productos si no hay categorías seleccionadas
     }
-    return productos.filter(producto =>
+    return productos.filter((producto) =>
       categories.includes(producto.tipo.filtro)
     );
   };
@@ -26,9 +26,10 @@ const RandomProductsList = () => {
     try {
       setIsLoading(true);
       const productos = await obtenerProductos();
-      console.log('Productos cargados:', productos);
       setAllProducts(productos);
-      setFilteredProducts(filterProductsByCategories(productos, selectedCategories));
+      setFilteredProducts(
+        filterProductsByCategories(productos, selectedCategories)
+      );
     } catch (error) {
       console.error('Error al cargar productos:', error);
     } finally {
@@ -43,8 +44,9 @@ const RandomProductsList = () => {
 
   // Actualizar productos filtrados cuando cambian las categorías seleccionadas o los productos cargados
   useEffect(() => {
-    console.log('Categorías seleccionadas:', selectedCategories);
-    setFilteredProducts(filterProductsByCategories(allProducts, selectedCategories));
+    setFilteredProducts(
+      filterProductsByCategories(allProducts, selectedCategories)
+    );
   }, [selectedCategories, allProducts]);
 
   // Manejar la selección de categorías desde CategorySection
@@ -64,7 +66,7 @@ const RandomProductsList = () => {
   if (isLoading) {
     return (
       <div className={styles.spinnerContainer}>
-        <Spinner appearance="primary" label={'Cargando Juegos...'} />
+        <Spinner appearance='primary' label={'Cargando Juegos...'} />
       </div>
     );
   }
