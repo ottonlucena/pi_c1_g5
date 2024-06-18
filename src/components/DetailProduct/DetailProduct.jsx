@@ -14,6 +14,7 @@ import { Spinner } from '@fluentui/react-components';
 import Rating from '../Rating/Rating';
 import Politicas from '../Politicas/Politicas';
 import usePoliticasStore from '../Politicas/usePoliticasStore';
+import Scheduler from '../Calendar/Scheduler';
 
 export const Button = styled.button`
   margin-top: 15%;
@@ -74,6 +75,7 @@ const DetailProduct = () => {
 
   return (
     <div className={styles.detailContainer}>
+      <Scheduler />
       <div className={styles.productHeader}>
         <h1 className={styles.productTitle}>{product?.nombre}</h1>
         <Link to='/' className={styles.goBack}>

@@ -157,7 +157,7 @@ const SearchSuggestion = () => {
   const customStyles = useStyles();
   const [searchTerm, setSearchTerm] = useState('');
   const { suggestions, isLoading } = useSearchSuggestion();
-  const Today = useMemo(new Date(), []);
+  const Today = new Date();
   const minDate = new Date(
     Today.getFullYear(),
     Today.getMonth(),
@@ -356,5 +356,3 @@ const SearchSuggestion = () => {
 };
 
 export default SearchSuggestion;
-
-

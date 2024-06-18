@@ -59,6 +59,9 @@ importers:
       framer-motion:
         specifier: ^11.1.9
         version: 11.1.9(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      globalize:
+        specifier: ^1.7.0
+        version: 1.7.0
       moment:
         specifier: ^2.30.1
         version: 2.30.1
@@ -2375,6 +2378,9 @@ packages:
   classnames@2.5.1:
     resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
+  cldrjs@0.5.5:
+    resolution: {integrity: sha512-KDwzwbmLIPfCgd8JERVDpQKrUUM1U4KpFJJg2IROv89rF172lLufoJnqJ/Wea6fXL5bO6WjuLMzY8V52UWPvkA==}
+
   clsx@1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
     engines: {node: '>=6'}
@@ -2779,6 +2785,9 @@ packages:
 
   globalize@0.1.1:
     resolution: {integrity: sha512-5e01v8eLGfuQSOvx2MsDMOWS0GFtCx1wPzQSmcHw4hkxFzrQDBO3Xwg/m8Hr/7qXMrHeOIE29qWVzyv06u1TZA==}
+
+  globalize@1.7.0:
+    resolution: {integrity: sha512-faR46vTIbFCeAemyuc9E6/d7Wrx9k2ae2L60UhakztFg6VuE42gENVJNuPFtt7Sdjrk9m2w8+py7Jj+JTNy59w==}
 
   globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
@@ -7566,6 +7575,8 @@ snapshots:
 
   classnames@2.5.1: {}
 
+  cldrjs@0.5.5: {}
+
   clsx@1.2.1: {}
 
   clsx@2.1.1: {}
@@ -8071,6 +8082,10 @@ snapshots:
       path-is-absolute: 1.0.1
 
   globalize@0.1.1: {}
+
+  globalize@1.7.0:
+    dependencies:
+      cldrjs: 0.5.5
 
   globals@11.12.0: {}
 
