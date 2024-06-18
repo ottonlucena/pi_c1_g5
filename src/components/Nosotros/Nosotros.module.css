@@ -20,6 +20,7 @@
     padding: 50px;
     gap: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
 }
 
 .info h1{
@@ -46,12 +47,10 @@
 
 .teamContainer {
     display: flex;
-  
+  flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-   
-
-}
+   }
 
 .teamContainer h2{
  margin-top: 10px;
@@ -63,6 +62,7 @@
 .teamContainer p{
   margin-top: 10px;
     text-align: center;
+   
    
 }
 .teamMember {
@@ -103,6 +103,7 @@
     .teamContainer {
         width: 100%; 
         flex-direction: column;
+    
     }
 
     .teamMember {
