@@ -12,13 +12,16 @@ import EmailForm from './components/SendEmail/EmailForm.jsx';
 import ShareSocial from './components/ShareSocial/ShareSocial.jsx';
 import { AuthProvider } from './components/AuthContext/AuthContext.jsx';
 import FavoritesList from './components/FavoriteList/FavoritesList.jsx';
+import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import Contact from "./components/Contact/Contact.jsx";
 // import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
 /* import AdminListPropd from './components/AdminListProd/AdminListProd.jsx'; */
 import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx';
 
-const menuItems = ['Nosotros', 'Servicios', 'Contacto', 'Galería'];
+const menuItems = ['Nosotros', 'Servicios', <Link to="/contacto">Contacto</Link>,, 'Galería'];
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
@@ -51,6 +54,7 @@ const App = () => {
           <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
           <Route path='/admin' element={<ListarProductos />} />
           <Route path='/emailTest' element={<EmailForm />} />
+          <Route path="/contacto" element={<Contact />} />
           <Route path='/share' element={<ShareSocial />} />
           <Route path='/favoritos' element={<FavoritesList />} />
         </Routes>
