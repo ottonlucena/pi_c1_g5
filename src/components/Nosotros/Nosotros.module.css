@@ -1,34 +1,54 @@
-/* src/components/Nosotros/Nosotros.css */
 
 .nosotros {
+    display: flex;
     text-align: center;
     padding: 20px;
-    background-color: rgb(245, 244, 242);
-    display: ;
-
+    background-color: rgb(247, 247, 247);   
+    height: 80%;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
 }
 
 .nosotros h1{
     font-family: 'Segoe UI';
     font-size: 40px;
-    font-weight: bold;
-    background-repeat: repeat;
-    height: 15%;
+    font-weight: 400;
+    margin-bottom: 30px;
 }
 
-.team-container {
+.nosotros p{
+    font-family: 'Segoe UI';
+    font-weight: 400;
+    justify-content: center;
+}
+
+.container1{
+    text-align: center;
+    width: 40%;
+}
+
+.teamContainer {
     display: flex;
     flex-wrap: wrap;
+    width: 600px;
     justify-content: center;
     gap: 20px;
+
 }
 
-.team-member {
+.teamContainer h2{
+ margin-top: 10px;
+    font-family: 'Segoe UI';
+    font-weight: 300, bold;
+    font-size: 20px;
+}
+.teamMember {
     background-color: white;
     border-radius: 10px;
     padding: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 50px;
+    width: 150px;
     text-align: center;
 }
 
@@ -39,12 +59,24 @@
     object-fit: cover;
 }
 
-h2 {
-    font-size: 1.5em;
-    margin: 10px 0 5px;
+
+@media (max-width: 768px) {
+    .nosotros {
+        flex-direction: column; 
+        height: auto; 
+    }
+
+    .nosotros h1{
+        line-height: 1;
+    }
+
+    .container1 {
+        width: 100%; 
+        margin-bottom: 20px; 
+    }
+
+    .teamContainer {
+        width: 100%; 
+    }
 }
 
-p {
-    font-size: 1em;
-    color: #666;
-}
