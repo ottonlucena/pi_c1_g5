@@ -21,11 +21,18 @@ const useStyles = makeStyles({
   },
 });
 
-const DialogEvent = ({ dialogData, setIsDialogOpen, handleDialogSubmit }) => {
+const DialogEvent = ({
+  eventToEdit,
+  setIsDialogOpen,
+  handleDialogSubmit,
+  isNewEvent,
+  currentUser,
+  events,
+}) => {
   const styles = useStyles();
-  const [title, setTitle] = React.useState(dialogData.title);
-  const [start, setStart] = React.useState(dialogData.start);
-  const [end, setEnd] = React.useState(dialogData.end);
+  const [title, setTitle] = React.useState(eventToEdit?.title || '');
+  const [start, setStart] = React.useState(eventToEdit?.start || null);
+  const [end, setEnd] = React.useState(eventToEdit?.end || null);
   const Today = new Date();
   const minDate = new Date(
     Today.getFullYear(),
@@ -33,25 +40,47 @@ const DialogEvent = ({ dialogData, setIsDialogOpen, handleDialogSubmit }) => {
     Today.getDate()
   );
 
-  // Función para deshabilitar fechas anteriores al día actual
   const isDateDisabled = (date) => {
     return date < new Date(new Date().setHours(0, 0, 0, 0));
   };
+
+  React.useEffect(() => {
+    setTitle(eventToEdit?.title || '');
+    setStart(eventToEdit?.start || null);
+    setEnd(eventToEdit?.end || null);
+  }, [eventToEdit]);
 
   const handleClose = () => {
     setIsDialogOpen(false);
   };
 
-  const handleAdd = (ev) => {
+  const handleSubmit = (ev) => {
     ev.preventDefault();
-    handleDialogSubmit({ title, start, end });
-  };
+    const eventData = { title, start, end };
+    const newEvent = isNewEvent
+      ? { ...eventData, id: Date.now() }
+      : { ...eventToEdit, ...eventData };
 
-  React.useEffect(() => {
-    setTitle(dialogData.title);
-    setStart(dialogData.start);
-    setEnd(dialogData.end);
-  }, [dialogData]);
+    const updatedEvents = isNewEvent
+      ? [...events, newEvent]
+      : events.map((event) => (event.id === eventToEdit.id ? newEvent : event));
+    const userEvents = {
+      userId: currentUser.userId,
+      name: currentUser.name,
+      email: currentUser.email,
+      events: updatedEvents.map((event) => ({
+        eventId: event.id,
+        title: event.title,
+        start: event.start,
+        end: event.end,
+      })),
+    };
+
+    console.log('User Events:', userEvents);
+
+    handleDialogSubmit(newEvent);
+    setIsDialogOpen(false);
+  };
 
   return (
     <Dialog open={true} onDismiss={handleClose} modalType='non-modal'>
@@ -73,7 +102,6 @@ const DialogEvent = ({ dialogData, setIsDialogOpen, handleDialogSubmit }) => {
               <Label required htmlFor='start-input'>
                 Fecha de Inicio
               </Label>
-              {/* DatePicker para la fecha de inicio */}
               <DatePicker
                 onSelectDate={(date) => setStart(date)}
                 value={start}
@@ -84,7 +112,6 @@ const DialogEvent = ({ dialogData, setIsDialogOpen, handleDialogSubmit }) => {
               <Label required htmlFor='end-input'>
                 Fecha de Fin
               </Label>
-              {/* DatePicker para la fecha de fin */}
               <DatePicker
                 onSelectDate={(date) => setEnd(date)}
                 value={end}
@@ -97,8 +124,8 @@ const DialogEvent = ({ dialogData, setIsDialogOpen, handleDialogSubmit }) => {
               <Button onClick={handleClose} appearance='secondary'>
                 Cerrar
               </Button>
-              <Button onClick={handleAdd} appearance='primary'>
-                Agregar
+              <Button onClick={handleSubmit} appearance='primary'>
+                {isNewEvent ? 'Agregar' : 'Actualizar'}
               </Button>
             </DialogActions>
           </DialogBody>
