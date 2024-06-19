@@ -39,7 +39,6 @@ const Scheduler = () => {
   };
 
   const handleDialogSubmit = (data) => {
-    console.log('Nuevo evento:', data);
     if (selectedEvent) {
       const updatedEvents = events.map((event) =>
         event.id === selectedEvent.id ? { ...event, ...data } : event
