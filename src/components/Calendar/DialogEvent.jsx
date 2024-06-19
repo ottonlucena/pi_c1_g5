@@ -12,6 +12,8 @@ import {
   makeStyles,
 } from '@fluentui/react-components';
 import { DatePicker } from '@fluentui/react-datepicker-compat';
+import { useAtom } from 'jotai';
+import { calendarEventsAtom } from '../../data/Store/eventStore';
 
 const useStyles = makeStyles({
   content: {
@@ -54,6 +56,13 @@ const DialogEvent = ({
     setIsDialogOpen(false);
   };
 
+  const [calendarEvents, setCalendarEvents] = useAtom(calendarEventsAtom);
+
+  const saveToJotai = (userEvents) => {
+    setCalendarEvents([userEvents]);
+    console.log('User Events (Jotai):', userEvents);
+  };
+
   const handleSubmit = (ev) => {
     ev.preventDefault();
     const eventData = { title, start, end };
@@ -64,6 +73,7 @@ const DialogEvent = ({
     const updatedEvents = isNewEvent
       ? [...events, newEvent]
       : events.map((event) => (event.id === eventToEdit.id ? newEvent : event));
+
     const userEvents = {
       userId: currentUser.userId,
       name: currentUser.name,
@@ -76,7 +86,10 @@ const DialogEvent = ({
       })),
     };
 
-    console.log('User Events:', userEvents);
+    console.log('User Events (local):', userEvents);
+    console.log('es un evento nuevo? ', isNewEvent);
+
+    saveToJotai(userEvents); // Actualizar en Jotai al editar un evento existente
 
     handleDialogSubmit(newEvent);
     setIsDialogOpen(false);
