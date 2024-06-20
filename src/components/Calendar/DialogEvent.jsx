@@ -7,13 +7,14 @@ import {
   DialogBody,
   DialogActions,
   Button,
-  Input,
   Label,
   makeStyles,
 } from '@fluentui/react-components';
+import ComboGames from './ComboGames';
 import { DatePicker } from '@fluentui/react-datepicker-compat';
 import { useAtom } from 'jotai';
 import { calendarEventsAtom } from '../../data/Store/eventStore';
+import { userGamesAtom } from '../../data/Store/gamesStore';
 
 const useStyles = makeStyles({
   content: {
@@ -29,10 +30,8 @@ const DialogEvent = ({
   handleDialogSubmit,
   isNewEvent,
   currentUser,
-  events,
 }) => {
   const styles = useStyles();
-  const [title, setTitle] = React.useState(eventToEdit?.title || '');
   const [start, setStart] = React.useState(eventToEdit?.start || null);
   const [end, setEnd] = React.useState(eventToEdit?.end || null);
   const Today = new Date();
@@ -45,9 +44,9 @@ const DialogEvent = ({
   const isDateDisabled = (date) => {
     return date < new Date(new Date().setHours(0, 0, 0, 0));
   };
+  const [userGames] = useAtom(userGamesAtom);
 
   React.useEffect(() => {
-    setTitle(eventToEdit?.title || '');
     setStart(eventToEdit?.start || null);
     setEnd(eventToEdit?.end || null);
   }, [eventToEdit]);
@@ -60,58 +59,81 @@ const DialogEvent = ({
 
   const saveToJotai = (userEvents) => {
     setCalendarEvents([userEvents]);
-    console.log('User Events (Jotai):', userEvents);
+  };
+
+  const generateEventsFromUserGames = () => {
+    const events = [];
+
+    userGames.forEach((game) => {
+      const eventId = isNewEvent ? Date.now() : eventToEdit.id;
+      const newEvent = isNewEvent
+        ? {
+            title: game.optionValue,
+            start,
+            end,
+            gameid: game.optionText,
+            eventid: eventId,
+          }
+        : {
+            ...eventToEdit,
+            title: game.optionValue,
+            start,
+            end,
+            gameid: game.optionText,
+          };
+
+      events.push(newEvent);
+    });
+
+    return events;
   };
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    const eventData = { title, start, end };
-    const newEvent = isNewEvent
-      ? { ...eventData, id: Date.now() }
-      : { ...eventToEdit, ...eventData };
 
-    const updatedEvents = isNewEvent
-      ? [...events, newEvent]
-      : events.map((event) => (event.id === eventToEdit.id ? newEvent : event));
+    const updatedEvents = [];
+
+    userGames.forEach((game) => {
+      const eventId = isNewEvent ? Date.now() : eventToEdit.id;
+      const event = {
+        eventid: eventId,
+        title: game.optionValue,
+        start: start,
+        end: end,
+        gameid: game.optionText,
+      };
+      updatedEvents.push(event);
+    });
 
     const userEvents = {
       userId: currentUser.userId,
       name: currentUser.name,
       email: currentUser.email,
       events: updatedEvents.map((event) => ({
-        eventId: event.id,
+        eventId: event.eventid,
         title: event.title,
         start: event.start,
         end: event.end,
+        gameId: event.gameid,
       })),
     };
 
-    console.log('User Events (local):', userEvents);
-    console.log('es un evento nuevo? ', isNewEvent);
+    saveToJotai(userEvents);
 
-    saveToJotai(userEvents); // Actualizar en Jotai al editar un evento existente
+    const newEvents = generateEventsFromUserGames();
+    handleDialogSubmit(newEvents);
 
-    handleDialogSubmit(newEvent);
     setIsDialogOpen(false);
   };
 
   return (
-    <Dialog open={true} onDismiss={handleClose} modalType='non-modal'>
+    <Dialog open={true} onClose={() => handleClose()}>
       <DialogSurface aria-describedby={undefined}>
         <form>
           <DialogBody>
             <DialogTitle>Solicitud de Arriendo</DialogTitle>
             <DialogContent className={styles.content}>
-              <Label required htmlFor='title-input'>
-                Título
-              </Label>
-              <Input
-                required
-                type='text'
-                id='title-input'
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
+              <ComboGames />
               <Label required htmlFor='start-input'>
                 Fecha de Inicio
               </Label>
