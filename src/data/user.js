@@ -85,3 +85,17 @@ export const getUserIdByEmail = async (email) => {
     throw error;
   }
 };
+
+export const getUserById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}?email=${id}`);
+    if (!response.ok) {
+      throw new Error('Error al obtener el ID del usuario');
+    }
+    const user = await response.json();
+    return user.id;
+  } catch (error) {
+    console.error('Error al obtener el ID del usuario:', error);
+    throw error;
+  }
+};

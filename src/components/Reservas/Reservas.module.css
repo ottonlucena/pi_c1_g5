@@ -1,0 +1,28 @@
+.granContenedor{
+    height: 100%;
+    width: 100%;
+    border: 1px red solid;
+}
+
+h1{
+    color: #549AD9;
+    font-family: 'Segoe UI';
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px;
+    text-align: center;
+}
+
+.info{ 
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(247, 247, 247);
+    width: 90%; 
+    max-width: 1200px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    gap: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    padding: 20px;
+}

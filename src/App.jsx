@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import Contact from './components/Contact/Contact.jsx';
 import Nosotros from './components/Nosotros/Nosotros.jsx';
+import Reservas from './components/Reservas/Reservas.jsx'
 // import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
 /* import AdminListPropd from './components/AdminListProd/AdminListProd.jsx'; */
@@ -59,6 +60,7 @@ const App = () => {
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path='/share' element={<ShareSocial />} />
           <Route path='/favoritos' element={<FavoritesList />} />
+          <Route path='/reservas' element={<Reservas />} />
         </Routes>
         <Footer />
       </BrowserRouter>

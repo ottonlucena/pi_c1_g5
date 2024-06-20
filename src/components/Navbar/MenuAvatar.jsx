@@ -78,6 +78,9 @@ const { logout } = useAuth();
       <MenuItem>
       <Link to='/favoritos' style={{ textDecoration: 'none', color: 'inherit' }}>Favoritos</Link>
       </MenuItem>
+      <MenuItem>
+      <Link to='/reservas' style={{ textDecoration: 'none', color: 'inherit' }}>Mis reservas</Link>
+      </MenuItem>
       <MenuDivider />
       <MenuItem onClick={() => logout()}>LogOut</MenuItem>
     </Menu>
