@@ -61,13 +61,13 @@ export const actualizarCaracteristica = async (id, nombre) => {
 // Eliminar un juego
 export const eliminarCaracteristica = async (id) => {
   const response = await fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
   });
 
   if (!response.ok) {
     throw new Error(`Error al eliminar la caracteristica con id ${id}`);
   }
 
-  console.log(`Caracteristica con id ${id} eliminado.`);
+  `Caracteristica con id ${id} eliminado.`;
   return id;
 };

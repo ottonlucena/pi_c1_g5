@@ -30,7 +30,7 @@ const agregarProducto = async (nuevoProducto) => {
   }
 
   const data = await response.json();
-  console.log('Producto agregado:', data);
+  'Producto agregado:', data;
   return data;
 };
 
@@ -48,7 +48,7 @@ const actualizarProducto = async (nuevoProducto) => {
   }
 
   const data = await response.json();
-  console.log('Producto actualizado:', data);
+  'Producto actualizado:', data;
   return data;
 };
 
@@ -69,7 +69,7 @@ const eliminarProducto = async (id) => {
     throw new Error(`Error al eliminar el producto con id ${id}`);
   }
 
-  console.log(`Producto con id ${id} eliminado.`);
+  `Producto con id ${id} eliminado.`;
   return id;
 };
 
@@ -115,13 +115,16 @@ const enviarValoracion = async (juegoId, valoracionData) => {
 };
 
 const verificarDisponibilidad = async (datosReserva) => {
-  const response = await fetch('http://localhost:8080/api/reservas/disponibles', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(datosReserva),
-  });
+  const response = await fetch(
+    'http://localhost:8080/api/reservas/disponibles',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(datosReserva),
+    }
+  );
 
   if (!response.ok) {
     throw new Error('Error al verificar la disponibilidad');
@@ -129,7 +132,6 @@ const verificarDisponibilidad = async (datosReserva) => {
 
   return response.json();
 };
-
 
 export {
   obtenerProductos,

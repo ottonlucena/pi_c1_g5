@@ -13,7 +13,7 @@ const Contacto = () => {
         'ZAPktphb4_mUEdgNy'
       )
       .then((response) => {
-        console.log('Email enviado:', response);
+        'Email enviado:', response;
         alert('¡Tu mensaje se ha enviado correctamente!');
       })
       .catch((error) => {

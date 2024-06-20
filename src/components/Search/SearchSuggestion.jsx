@@ -253,7 +253,7 @@ const SearchSuggestion = () => {
         ? ''
         : dateNote(formatDateAMD(finishDate)),
     };
-    console.log(
+    (
       'lo que se necesita enviar a el endpoint sendToPost',
       sendToPost
     );

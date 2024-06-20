@@ -51,7 +51,7 @@ const RandomProductsList = () => {
 
   // Manejar la selección de categorías desde CategorySection
   const handleCategorySelect = (categories) => {
-    console.log('Categorías recibidas de CategorySection:', categories);
+    'Categorías recibidas de CategorySection:', categories;
     setSelectedCategories(categories);
 
     // Verificar si "Todos" está en las categorías seleccionadas
