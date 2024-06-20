@@ -48,7 +48,7 @@ const Reservas = ({ userId }) => {
           {userData.reservaJuegos.map((reserva) => (
             <div key={reserva.id} className={Styles.reserva}>
               <h3>{reserva.juego.nombre}</h3>
-              <p>Fecha de inicio: {reserva.fecha}</p>
+              {/* <p>Fecha de inicio: {reserva.fecha}</p> */}
               {/* <p>Fecha de fin: {reserva.fechaFin}</p> */}
               <p>Cantidad: {reserva.cantidadJuego}</p>
               <p>Valor: {reserva.juego.total}</p>
