@@ -233,7 +233,7 @@ const SearchSuggestion = () => {
     const mes = String(fecha.getMonth() + 1).padStart(2, '0');
     const dia = String(fecha.getDate()).padStart(2, '0');
 
-    return `${año}/${mes}/${dia}`;
+    return `${año}-${mes}-${dia}`;
   };
 
   const dateNote = useCallback(
@@ -246,17 +246,14 @@ const SearchSuggestion = () => {
   const handleSearch = useCallback(() => {
     const sendToPost = {
       searchCriteria: searchTerm,
-      dateInitial: dateNote(formatDateAMD(initialDate)),
+      dateInitial: dateNote(formatDateAMD(initialDate).toString()),
       dateFinish: /Invalid|NaN/.test(
         dateNote(formatDateAMD(finishDate).toString())
       )
         ? ''
-        : dateNote(formatDateAMD(finishDate)),
+        : dateNote(formatDateAMD(finishDate).toString()),
     };
-    (
-      'lo que se necesita enviar a el endpoint sendToPost',
-      sendToPost
-    );
+    'lo que se necesita enviar a el endpoint sendToPost', sendToPost;
   }, [initialDate, finishDate, searchTerm, dateNote]);
 
   const isDateDisabled = (date) => {
