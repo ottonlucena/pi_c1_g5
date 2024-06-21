@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import Contact from './components/Contact/Contact.jsx';
 import Nosotros from './components/Nosotros/Nosotros.jsx';
+import Reservas from './components/Reservas/Reservas.jsx'
 // import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
 /* import AdminListPropd from './components/AdminListProd/AdminListProd.jsx'; */
@@ -54,28 +55,22 @@ const App = () => {
             setShowModal={setShowModal}
           />
 
-          <Routes>
-            <Route
-              path='/'
-              element={
-                <div>
-                  <RandomProductsList />
-                  <FeaturedProducts />
-                </div>
-              }
-            />
-            <Route path='/detalle/:id' element={<DetailProduct />} />
-            <Route path='/product/:id' element={<ProductCard />} />
-            <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
-            <Route path='/admin' element={<ListarProductos />} />
-            <Route path='/emailTest' element={<EmailForm />} />
-            <Route path='/contacto' element={<Contact />} />
-            <Route path='/nosotros' element={<Nosotros />} />
-            <Route path='/share' element={<ShareSocial />} />
-            <Route path='/favoritos' element={<FavoritesList />} />
-          </Routes>
-          <Footer />
-        </BrowserRouter>
+          <Route path='/detalle/:id' element={<DetailProduct />} />
+          <Route path='/product/:id' element={<ProductCard />} />
+          <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
+          <Route path='/admin' element={<ListarProductos />} />
+          <Route path='/emailTest' element={<EmailForm />} />
+          <Route path="/contacto" element={<Contact />} />
+          <Route path="/nosotros" element={<Nosotros />} />
+          <Route path='/share' element={<ShareSocial />} />
+          <Route path='/favoritos' element={<FavoritesList />} />
+          <Route path='/reservas' element={<Reservas />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+
+
+
       </AuthProvider>
     </>
   );
