@@ -1,6 +1,5 @@
 const API_URL = 'http://localhost:8080/api/usuarios';
 
-
 export const getUsers = async () => {
   try {
     const response = await fetch(API_URL);
@@ -37,7 +36,6 @@ export const createUser = async (userData) => {
   }
 };
 
-
 export const updateUser = async (userId) => {
   try {
     const response = await fetch(API_URL, {
@@ -57,7 +55,6 @@ export const updateUser = async (userId) => {
     throw error;
   }
 };
-
 
 export const deleteUser = async (userId) => {
   try {
@@ -79,10 +76,6 @@ export const getUserById = async (id) => {
     if (!response.ok) {
       throw new Error('Error al obtener usuario por ID');
     }
-    console.log(
-      "esta es la data del fetch",
-      JSON.stringify(response, null, 2)
-    );
     const user = await response.json();
     return user;
   } catch (error) {
@@ -90,7 +83,6 @@ export const getUserById = async (id) => {
     throw error;
   }
 };
-
 
 export const getUserIdByEmail = async (email) => {
   try {

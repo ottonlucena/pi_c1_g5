@@ -1,8 +1,11 @@
 import { useQuery } from 'react-query';
-import { getUserById} from '../../data/user'
+import { getUserById } from '../../data/user';
 
-const useReservas = (userId) => {
-  return useQuery(['user', userId], () => getUserById(userId));
+export const useReservas = (userId) => {
+  return useQuery(['user', userId], () => getUserById(userId), {
+    enabled: !!userId,
+    onError: (error) => {
+      console.error('Error en useReservas:', error);
+    },
+  });
 };
-
-export default useReservas;
