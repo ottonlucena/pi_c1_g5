@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import DialogEvent from './DialogEvent'; // Importamos el componente DialogEvent
+import DialogEvent from './DialogEvent';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styles from './Scheduler.module.css';
 import 'moment/locale/es';
@@ -22,34 +22,55 @@ const isPastDate = (date) => {
 const Scheduler = () => {
   const [events, setEvents] = useState(initialEvents);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false); // Estado para controlar la apertura del Dialog
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const currentUser = isAuthenticated
+    ? { userId: 1, name: 'John Doe', email: 'john.doe@example.com' }
+    : null;
 
   const handleSelectSlot = ({ start, end }) => {
     const isDisabled = isPastDate(start);
-
     setSelectedDate(start);
-
-    if (!isDisabled) {
-      // Abrir el Dialog cuando se selecciona un slot
+    if (!isDisabled && isAuthenticated) {
       setIsDialogOpen(true);
+      setSelectedEvent(null);
     }
   };
 
   const handleDialogSubmit = (data) => {
-    // Agregar el nuevo evento al array de eventos
-    setEvents([...events, data]);
-    // Cerrar el Dialog después de agregar el evento
+    if (Array.isArray(data)) {
+      const newEvents = data.map((event) => ({
+        ...event,
+        id: Date.now() + Math.random(),
+      }));
+      setEvents([...events, ...newEvents]);
+    } else {
+      const updatedEvents = selectedEvent
+        ? events.map((event) =>
+            event.id === selectedEvent.id ? { ...event, ...data } : event
+          )
+        : [...events, { ...data, id: Date.now() }];
+
+      setEvents(updatedEvents);
+    }
+
     setIsDialogOpen(false);
   };
 
+  const handleSelectEvent = (event) => {
+    setSelectedEvent(event);
+    setIsDialogOpen(true);
+  };
+
   const getEventStyle = (event, index) => {
-    const colors = ['#ffcccc', '#ccffcc', '#ccccff', '#ffffcc', '#ffccff'];
-    const colorIndex = index % colors.length; // Ciclo entre los colores disponibles
+    const colors = ['#FF66B2', '#66CCFF', '#66FF66', '#CC66FF', '#ffccff'];
+    const colorIndex = index % colors.length;
     return {
       className: `event-color-${colorIndex}`,
       style: {
         backgroundColor: colors[colorIndex],
-        color: '#000', // Color de fuente predeterminado
+        color: '#000',
       },
     };
   };
@@ -82,6 +103,7 @@ const Scheduler = () => {
         endAccessor='end'
         selectable
         onSelectSlot={handleSelectSlot}
+        onSelectEvent={handleSelectEvent}
         className={styles.calendar}
         eventPropGetter={(event, start, end, isSelected) =>
           getEventStyle(event, events.indexOf(event))
@@ -104,12 +126,16 @@ const Scheduler = () => {
           noEventsInRange: 'No hay eventos en este rango',
         }}
         dayPropGetter={dayPropGetter}
+        currentUser={currentUser}
       />
       {isDialogOpen && (
         <DialogEvent
-          dialogData={{ start: selectedDate, end: selectedDate, title: '' }} // Pasa los datos al DialogEvent
+          eventToEdit={selectedEvent}
           setIsDialogOpen={setIsDialogOpen}
           handleDialogSubmit={handleDialogSubmit}
+          isNewEvent={!selectedEvent}
+          currentUser={currentUser}
+          events={events}
         />
       )}
     </div>

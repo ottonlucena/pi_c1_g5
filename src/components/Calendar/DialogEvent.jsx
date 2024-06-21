@@ -7,10 +7,14 @@ import {
   DialogBody,
   DialogActions,
   Button,
-  Input,
   Label,
   makeStyles,
-} from '@fluentui/react-components'; // Ajusta las importaciones según tu librería de componentes
+} from '@fluentui/react-components';
+import ComboGames from './ComboGames';
+import { DatePicker } from '@fluentui/react-datepicker-compat';
+import { useAtom } from 'jotai';
+import { calendarEventsAtom } from '../../data/Store/eventStore';
+import { userGamesAtom } from '../../data/Store/gamesStore';
 
 const useStyles = makeStyles({
   content: {
@@ -20,72 +24,143 @@ const useStyles = makeStyles({
   },
 });
 
-const DialogEvent = ({ dialogData, setIsDialogOpen, handleDialogSubmit }) => {
+const DialogEvent = ({
+  eventToEdit,
+  setIsDialogOpen,
+  handleDialogSubmit,
+  isNewEvent,
+  currentUser,
+}) => {
   const styles = useStyles();
-  const [title, setTitle] = React.useState(dialogData.title);
-  const [start, setStart] = React.useState(dialogData.start);
-  const [end, setEnd] = React.useState(dialogData.end);
+  const [start, setStart] = React.useState(eventToEdit?.start || null);
+  const [end, setEnd] = React.useState(eventToEdit?.end || null);
+  const Today = new Date();
+  const minDate = new Date(
+    Today.getFullYear(),
+    Today.getMonth(),
+    Today.getDate()
+  );
 
-  const handleSubmit = (ev) => {
-    ev.preventDefault();
-    handleDialogSubmit({ title, start, end });
+  const isDateDisabled = (date) => {
+    return date < new Date(new Date().setHours(0, 0, 0, 0));
   };
+  const [userGames] = useAtom(userGamesAtom);
+
+  React.useEffect(() => {
+    setStart(eventToEdit?.start || null);
+    setEnd(eventToEdit?.end || null);
+  }, [eventToEdit]);
 
   const handleClose = () => {
     setIsDialogOpen(false);
   };
 
-  // Actualiza los estados cuando se cambian los datos del evento
-  React.useEffect(() => {
-    setTitle(dialogData.title);
-    setStart(dialogData.start);
-    setEnd(dialogData.end);
-  }, [dialogData]);
+  const [calendarEvents, setCalendarEvents] = useAtom(calendarEventsAtom);
+
+  const saveToJotai = (userEvents) => {
+    setCalendarEvents([userEvents]);
+  };
+
+  const generateEventsFromUserGames = () => {
+    const events = [];
+
+    userGames.forEach((game) => {
+      const eventId = isNewEvent ? Date.now() : eventToEdit.id;
+      const newEvent = isNewEvent
+        ? {
+            title: game.optionValue,
+            start,
+            end,
+            gameid: game.optionText,
+            eventid: eventId,
+          }
+        : {
+            ...eventToEdit,
+            title: game.optionValue,
+            start,
+            end,
+            gameid: game.optionText,
+          };
+
+      events.push(newEvent);
+    });
+
+    return events;
+  };
+
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+
+    const updatedEvents = [];
+
+    userGames.forEach((game) => {
+      const eventId = isNewEvent ? Date.now() : eventToEdit.id;
+      const event = {
+        eventid: eventId,
+        title: game.optionValue,
+        start: start,
+        end: end,
+        gameid: game.optionText,
+      };
+      updatedEvents.push(event);
+    });
+
+    const userEvents = {
+      userId: currentUser.userId,
+      name: currentUser.name,
+      email: currentUser.email,
+      events: updatedEvents.map((event) => ({
+        eventId: event.eventid,
+        title: event.title,
+        start: event.start,
+        end: event.end,
+        gameId: event.gameid,
+      })),
+    };
+
+    saveToJotai(userEvents);
+
+    const newEvents = generateEventsFromUserGames();
+    handleDialogSubmit(newEvents);
+
+    setIsDialogOpen(false);
+  };
 
   return (
-    <Dialog open={true} onDismiss={handleClose} modalType='non-modal'>
+    <Dialog open={true} onClose={() => handleClose()}>
       <DialogSurface aria-describedby={undefined}>
-        <form onSubmit={handleSubmit}>
+        <form>
           <DialogBody>
-            <DialogTitle>Agregar Evento</DialogTitle>
+            <DialogTitle>Solicitud de Arriendo</DialogTitle>
             <DialogContent className={styles.content}>
-              <Label required htmlFor='title-input'>
-                Título
-              </Label>
-              <Input
-                required
-                type='text'
-                id='title-input'
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
+              <ComboGames />
               <Label required htmlFor='start-input'>
                 Fecha de Inicio
               </Label>
-              <Input
-                required
-                type='datetime-local'
-                id='start-input'
-                value={start ? start.toISOString().slice(0, 16) : ''}
-                onChange={(e) => setStart(new Date(e.target.value))}
+              <DatePicker
+                onSelectDate={(date) => setStart(date)}
+                value={start}
+                ariaLabel='Seleccione una fecha de inicio'
+                isDateDisabled={isDateDisabled}
+                minDate={minDate}
               />
               <Label required htmlFor='end-input'>
                 Fecha de Fin
               </Label>
-              <Input
-                required
-                type='datetime-local'
-                id='end-input'
-                value={end ? end.toISOString().slice(0, 16) : ''}
-                onChange={(e) => setEnd(new Date(e.target.value))}
+              <DatePicker
+                onSelectDate={(date) => setEnd(date)}
+                value={end}
+                ariaLabel='Seleccione una fecha de fin'
+                isDateDisabled={isDateDisabled}
+                minDate={minDate}
               />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose} appearance='secondary'>
                 Cerrar
               </Button>
-              <Button type='submit' appearance='primary'>
-                Agregar
+              <Button onClick={handleSubmit} appearance='primary'>
+                {isNewEvent ? 'Agregar' : 'Actualizar'}
               </Button>
             </DialogActions>
           </DialogBody>

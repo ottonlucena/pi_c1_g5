@@ -4,31 +4,40 @@ import PaginationProductCard from './PaginationProductCard';
 import CategorySection from '../Categorias/CategorySection';
 import { Spinner } from '@fluentui/react-components';
 import { obtenerProductos } from '../../data/juegos';
+import { useAtom } from "jotai";
+import { availableGamesAtom } from "../../data/Store/availableStore";
 
 const RandomProductsList = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [ availableGames ] = useAtom(availableGamesAtom);
 
+  useEffect(() => {
+    console.log("muestro data en el store" , availableGames);
+  }, [availableGames]);
+  
   // Función para filtrar productos por categorías seleccionadas
   const filterProductsByCategories = (productos, categories) => {
     if (categories.length === 0) {
       return productos; // Devuelve todos los productos si no hay categorías seleccionadas
     }
-    return productos.filter(producto =>
+    return productos.filter((producto) =>
       categories.includes(producto.tipo.filtro)
-    );
-  };
+  );
+};
 
   // Cargar productos al inicio
   const loadProducts = async () => {
     try {
       setIsLoading(true);
       const productos = await obtenerProductos();
-      console.log('Productos cargados:', productos);
-      setAllProducts(productos);
-      setFilteredProducts(filterProductsByCategories(productos, selectedCategories));
+      console.log(availableGames.length);
+      setAllProducts(availableGames.length === 0 ? productos  : availableGames );
+      /* setFilteredProducts(
+        filterProductsByCategories(productos, selectedCategories)
+      );  */
     } catch (error) {
       console.error('Error al cargar productos:', error);
     } finally {
@@ -39,17 +48,20 @@ const RandomProductsList = () => {
   // Cargar productos al montar el componente
   useEffect(() => {
     loadProducts();
-  }, []);
+  }, [availableGames]);
+
+  
 
   // Actualizar productos filtrados cuando cambian las categorías seleccionadas o los productos cargados
   useEffect(() => {
-    console.log('Categorías seleccionadas:', selectedCategories);
-    setFilteredProducts(filterProductsByCategories(allProducts, selectedCategories));
+    setFilteredProducts(
+      filterProductsByCategories(allProducts, selectedCategories)
+    );
   }, [selectedCategories, allProducts]);
 
   // Manejar la selección de categorías desde CategorySection
   const handleCategorySelect = (categories) => {
-    console.log('Categorías recibidas de CategorySection:', categories);
+    'Categorías recibidas de CategorySection:', categories;
     setSelectedCategories(categories);
 
     // Verificar si "Todos" está en las categorías seleccionadas
@@ -64,10 +76,11 @@ const RandomProductsList = () => {
   if (isLoading) {
     return (
       <div className={styles.spinnerContainer}>
-        <Spinner appearance="primary" label={'Cargando Juegos...'} />
+        <Spinner appearance='primary' label={'Cargando Juegos...'} />
       </div>
     );
   }
+
 
   // Renderizar la lista de productos filtrados después de cargar
   return (

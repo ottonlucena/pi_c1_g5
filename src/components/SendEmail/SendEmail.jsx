@@ -17,11 +17,7 @@ const sendEmail = (to_name) => {
   // Enviar el correo electrónico
   emailjs.send(serviceId, templateId, templateParams).then(
     (response) => {
-      console.log(
-        'Correo electrónico enviado con éxito:',
-        response.status,
-        response.text
-      );
+      'Correo electrónico enviado con éxito:', response.status, response.text;
     },
     (error) => {
       console.error('Error al enviar el correo electrónico:', error);
