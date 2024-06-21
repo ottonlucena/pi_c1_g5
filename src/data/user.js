@@ -79,6 +79,10 @@ export const getUserById = async (id) => {
     if (!response.ok) {
       throw new Error('Error al obtener usuario por ID');
     }
+    console.log(
+      "esta es la data del fetch",
+      JSON.stringify(response, null, 2)
+    );
     const user = await response.json();
     return user;
   } catch (error) {
