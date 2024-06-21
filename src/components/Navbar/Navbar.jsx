@@ -1,6 +1,6 @@
+import { useState, useEffect } from 'react';
 import { Button } from '@fluentui/react-components';
 import { ImSearch } from 'react-icons/im';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { useAuth0 } from '@auth0/auth0-react'; // Comentado por ahora
 import styled from 'styled-components';
@@ -8,8 +8,8 @@ import SignUpModal from '../Modal/SignUpModal';
 import MenuAvatar from './MenuAvatar';
 import SearchDrawer from '../Search/SearchDrawer';
 import { useAuth } from '../AuthContext/AuthContext';
-import { useAtom } from "jotai";
-import { drawerOpenAtom } from "../../data/Store/drawerStore";
+import { useAtom } from 'jotai';
+import { drawerOpenAtom } from '../../data/Store/drawerStore';
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -75,8 +75,8 @@ const Navbar = ({ menuItems, logo }) => {
   const admin = true;
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [open, setOpen] = useAtom(drawerOpenAtom);
   const { isAuthenticated, user, login } = useAuth();
+  const [open, setOpen] = useAtom(drawerOpenAtom);
 
   const redirectToHome = () => {
     navigate('/');

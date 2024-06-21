@@ -3,6 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import DialogEvent from './DialogEvent';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { RiDeleteBin2Line } from 'react-icons/ri';
 import styles from './Scheduler.module.css';
 import 'moment/locale/es';
 
@@ -63,6 +64,19 @@ const Scheduler = () => {
     setIsDialogOpen(true);
   };
 
+  const handleDeleteEvent = (eventId) => {
+    setEvents(events.filter((event) => event.id !== eventId));
+  };
+
+  const EventComponent = ({ event }) => (
+    <div>
+      <span> {event.title} </span>
+      <button onClick={() => handleDeleteEvent(event.id)}>
+        <RiDeleteBin2Line />
+      </button>
+    </div>
+  );
+
   const getEventStyle = (event, index) => {
     const colors = ['#FF66B2', '#66CCFF', '#66FF66', '#CC66FF', '#ffccff'];
     const colorIndex = index % colors.length;
@@ -99,8 +113,15 @@ const Scheduler = () => {
       <Calendar
         localizer={localizer}
         events={events}
+        components={{
+          event: EventComponent,
+        }}
         startAccessor='start'
-        endAccessor='end'
+        endAccessor={(event) => {
+          const end = new Date(event.end);
+          end.setDate(end.getDate() + 1);
+          return end;
+        }}
         selectable
         onSelectSlot={handleSelectSlot}
         onSelectEvent={handleSelectEvent}

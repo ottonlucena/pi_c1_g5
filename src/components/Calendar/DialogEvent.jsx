@@ -59,6 +59,7 @@ const DialogEvent = ({
 
   const saveToJotai = (userEvents) => {
     setCalendarEvents([userEvents]);
+    console.log('Guardado en Jotai', JSON.stringify(userEvents, null, 2));
   };
 
   const generateEventsFromUserGames = () => {
