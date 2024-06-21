@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RandomProductsList from './components/Card/RandomProductsList';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar.jsx';
@@ -21,47 +21,61 @@ import Nosotros from './components/Nosotros/Nosotros.jsx';
 /* import AdminListPropd from './components/AdminListProd/AdminListProd.jsx'; */
 import RegistrarProducto from './components/PanelAdministrador/RegistrarProducto.jsx';
 import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx';
+import { useAtom } from 'jotai';
+import useFetchGamesIdName from './Utils/useFecthGamesIdName';
+import { suggestionsAtom } from './data/Store/gamesStore.js';
 
-const menuItems = [<Link to="/nosotros">Nosotros</Link>, 'Servicios', <Link to="/contacto">Contacto</Link>, 'Galería'];
+const menuItems = [
+  <Link to='/nosotros'>Nosotros</Link>,
+  'Servicios',
+  <Link to='/contacto'>Contacto</Link>,
+  'Galería',
+];
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
+  const { data } = useFetchGamesIdName();
+  const [, setSuggestions] = useAtom(suggestionsAtom);
+
+  useEffect(() => {
+    if (data) {
+      setSuggestions(data);
+    }
+  }, [data, setSuggestions]);
 
   return (
-    
-    
     <>
-    <AuthProvider>
-      <BrowserRouter>
-        <Navbar
-          menuItems={menuItems}
-          logo={LogoFestivall}
-          showModal={showModal}
-          setShowModal={setShowModal}
-        />
-
-        <Routes>
-          <Route
-            path='/'
-            element={
-              <div>
-                <RandomProductsList />
-                <FeaturedProducts />
-              </div>
-            }
+      <AuthProvider>
+        <BrowserRouter>
+          <Navbar
+            menuItems={menuItems}
+            logo={LogoFestivall}
+            showModal={showModal}
+            setShowModal={setShowModal}
           />
-          <Route path='/detalle/:id' element={<DetailProduct />} />
-          <Route path='/product/:id' element={<ProductCard />} />
-          <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
-          <Route path='/admin' element={<ListarProductos />} />
-          <Route path='/emailTest' element={<EmailForm />} />
-          <Route path="/contacto" element={<Contact />} />
-          <Route path="/nosotros" element={<Nosotros />} />
-          <Route path='/share' element={<ShareSocial />} />
-          <Route path='/favoritos' element={<FavoritesList />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+
+          <Routes>
+            <Route
+              path='/'
+              element={
+                <div>
+                  <RandomProductsList />
+                  <FeaturedProducts />
+                </div>
+              }
+            />
+            <Route path='/detalle/:id' element={<DetailProduct />} />
+            <Route path='/product/:id' element={<ProductCard />} />
+            <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
+            <Route path='/admin' element={<ListarProductos />} />
+            <Route path='/emailTest' element={<EmailForm />} />
+            <Route path='/contacto' element={<Contact />} />
+            <Route path='/nosotros' element={<Nosotros />} />
+            <Route path='/share' element={<ShareSocial />} />
+            <Route path='/favoritos' element={<FavoritesList />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
       </AuthProvider>
     </>
   );

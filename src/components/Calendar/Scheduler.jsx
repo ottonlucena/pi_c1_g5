@@ -39,14 +39,22 @@ const Scheduler = () => {
   };
 
   const handleDialogSubmit = (data) => {
-    if (selectedEvent) {
-      const updatedEvents = events.map((event) =>
-        event.id === selectedEvent.id ? { ...event, ...data } : event
-      );
-      setEvents(updatedEvents);
+    if (Array.isArray(data)) {
+      const newEvents = data.map((event) => ({
+        ...event,
+        id: Date.now() + Math.random(),
+      }));
+      setEvents([...events, ...newEvents]);
     } else {
-      setEvents([...events, { ...data, id: Date.now() }]);
+      const updatedEvents = selectedEvent
+        ? events.map((event) =>
+            event.id === selectedEvent.id ? { ...event, ...data } : event
+          )
+        : [...events, { ...data, id: Date.now() }];
+
+      setEvents(updatedEvents);
     }
+
     setIsDialogOpen(false);
   };
 

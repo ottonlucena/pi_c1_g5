@@ -25,7 +25,6 @@ import useAdminListProd from './useAdminListProd';
 import { eliminarProducto } from '../../data/juegos';
 import EditProductForm from './EditProductForm';
 
-
 const AdminListProd = () => {
   const [datos, setDatos] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
@@ -38,7 +37,7 @@ const AdminListProd = () => {
 
   useEffect(() => {
     if (isLoading) {
-      toast.info("Cargando...", { autoClose: false, toastId: "ToastyLoad" });
+      toast.info('Cargando...', { autoClose: false, toastId: 'ToastyLoad' });
     } else {
       toast.dismiss('ToastyLoad');
     }
@@ -59,7 +58,7 @@ const AdminListProd = () => {
   };
 
   const handleEditClick = (producto) => {
-    console.log('Editando producto:', producto);
+    'Editando producto:', producto;
     setProductoActual(producto);
     toggleEditModal();
   };
