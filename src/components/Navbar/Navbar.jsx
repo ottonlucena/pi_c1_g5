@@ -8,6 +8,8 @@ import SignUpModal from '../Modal/SignUpModal';
 import MenuAvatar from './MenuAvatar';
 import SearchDrawer from '../Search/SearchDrawer';
 import { useAuth } from '../AuthContext/AuthContext';
+import { useAtom } from "jotai";
+import { drawerOpenAtom } from "../../data/Store/drawerStore";
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -73,7 +75,7 @@ const Navbar = ({ menuItems, logo }) => {
   const admin = true;
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useAtom(drawerOpenAtom);
   const { isAuthenticated, user, login } = useAuth();
 
   const redirectToHome = () => {

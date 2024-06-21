@@ -114,6 +114,7 @@ const enviarValoracion = async (juegoId, valoracionData) => {
   return response.json();
 };
 
+
 const verificarDisponibilidad = async (datosReserva) => {
   const response = await fetch(
     'http://localhost:8080/api/reservas/disponibles',

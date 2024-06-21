@@ -4,13 +4,20 @@ import PaginationProductCard from './PaginationProductCard';
 import CategorySection from '../Categorias/CategorySection';
 import { Spinner } from '@fluentui/react-components';
 import { obtenerProductos } from '../../data/juegos';
+import { useAtom } from "jotai";
+import { availableGamesAtom } from "../../data/Store/availableStore";
 
 const RandomProductsList = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [ availableGames ] = useAtom(availableGamesAtom);
 
+  useEffect(() => {
+    console.log("muestro data en el store" , availableGames);
+  }, [availableGames]);
+  
   // Función para filtrar productos por categorías seleccionadas
   const filterProductsByCategories = (productos, categories) => {
     if (categories.length === 0) {
@@ -18,18 +25,19 @@ const RandomProductsList = () => {
     }
     return productos.filter((producto) =>
       categories.includes(producto.tipo.filtro)
-    );
-  };
+  );
+};
 
   // Cargar productos al inicio
   const loadProducts = async () => {
     try {
       setIsLoading(true);
       const productos = await obtenerProductos();
-      setAllProducts(productos);
-      setFilteredProducts(
+      console.log(availableGames.length);
+      setAllProducts(availableGames.length === 0 ? productos  : availableGames );
+      /* setFilteredProducts(
         filterProductsByCategories(productos, selectedCategories)
-      );
+      );  */
     } catch (error) {
       console.error('Error al cargar productos:', error);
     } finally {
@@ -40,7 +48,9 @@ const RandomProductsList = () => {
   // Cargar productos al montar el componente
   useEffect(() => {
     loadProducts();
-  }, []);
+  }, [availableGames]);
+
+  
 
   // Actualizar productos filtrados cuando cambian las categorías seleccionadas o los productos cargados
   useEffect(() => {
@@ -70,6 +80,7 @@ const RandomProductsList = () => {
       </div>
     );
   }
+
 
   // Renderizar la lista de productos filtrados después de cargar
   return (
