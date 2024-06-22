@@ -53,6 +53,9 @@ importers:
       axios:
         specifier: ^1.7.2
         version: 1.7.2
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
       emailjs-com:
         specifier: ^3.2.0
         version: 3.2.0
@@ -2472,6 +2475,9 @@ packages:
 
   date-arithmetic@4.1.0:
     resolution: {integrity: sha512-QWxYLR5P/6GStZcdem+V1xoto6DMadYWpMXU82ES3/RfR3Wdwr3D0+be7mgOJ+Ov0G9D5Dmb9T17sNLQYj9XOg==}
+
+  date-fns@3.6.0:
+    resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
 
   dayjs@1.11.11:
     resolution: {integrity: sha512-okzr3f11N6WuqYtZSvm+F776mB41wRZMhKP+hc34YdW+KmtYYK9iqvHSwo2k9FEH3fhGXvOPV6yz2IcSrfRUDg==}
@@ -7679,6 +7685,8 @@ snapshots:
       is-data-view: 1.0.1
 
   date-arithmetic@4.1.0: {}
+
+  date-fns@3.6.0: {}
 
   dayjs@1.11.11: {}
 
