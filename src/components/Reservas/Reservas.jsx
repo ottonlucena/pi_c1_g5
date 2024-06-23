@@ -1,4 +1,3 @@
-import React from 'react';
 import { format, isBefore, isAfter } from 'date-fns';
 import { useReservas } from './useReservas';
 import Styles from './Reservas.module.css';
@@ -42,22 +41,29 @@ const Reservas = () => {
                 <strong>Cantidad:</strong> {reservaJuego.cantidad}
               </p>
               <p className={Styles.juegoDetalles}>
-                <strong>Fecha de inicio:</strong> {format(new Date(reserva.fechaInicio), 'dd/MM/yyyy')}
+                <strong>Fecha de inicio:</strong>{' '}
+                {format(new Date(reserva.fechaInicio), 'dd/MM/yyyy')}
               </p>
               <p className={Styles.juegoDetalles}>
-                <strong>Fecha de fin:</strong> {format(new Date(reserva.fechaFin), 'dd/MM/yyyy')}
+                <strong>Fecha de fin:</strong>{' '}
+                {format(new Date(reserva.fechaFin), 'dd/MM/yyyy')}
               </p>
               <p className={Styles.juegoDetalles}>
-                <strong>Valor unitario: $</strong> {reservaJuego.juego.valorArriendo}
+                <strong>Valor unitario: $</strong>{' '}
+                {reservaJuego.juego.valorArriendo}
               </p>
               <p className={Styles.juegoDetalles}>
                 <strong>Valor de la reserva: $</strong> {reserva.total}
               </p>
               {esProximaReserva(reserva.fechaInicio) && (
-                <button className={Styles.botonConfirmada} disabled>Reserva confirmada</button>
+                <button className={Styles.botonConfirmada} disabled>
+                  Reserva confirmada
+                </button>
               )}
               {esReservaFinalizada(reserva.fechaInicio) && (
-                <button className={Styles.botonFinalizada} disabled>Reserva finalizada</button>
+                <button className={Styles.botonFinalizada} disabled>
+                  Reserva finalizada
+                </button>
               )}
             </div>
           </div>
