@@ -28,7 +28,7 @@ const Scheduler = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const currentUser = isAuthenticated
-    ? { userId: 1, name: 'John Doe', email: 'john.doe@example.com' }
+    ? { userId: 1, name: 'John Doe', email: 'johndoe@gmail.com' }
     : null;
   const { removeEvent, selectAndLogEvent } = useUpdateJotai();
 

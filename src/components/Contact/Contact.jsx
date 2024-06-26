@@ -48,7 +48,7 @@ const Contacto = () => {
 
         <div className={Styles.contenedor2}>
           <h2>Envíanos un mensaje</h2>
-          <form onSubmit={sendEmail}>
+          <form className={Styles.formContact} onSubmit={sendEmail}>
             <label>
               Nombre:
               <input

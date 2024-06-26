@@ -10,6 +10,8 @@ import SearchDrawer from '../Search/SearchDrawer';
 import { useAuth } from '../AuthContext/AuthContext';
 import { useAtom } from 'jotai';
 import { drawerOpenAtom } from '../../data/Store/drawerStore';
+import { Link } from "react-router-dom";
+import { BsHandbag } from "react-icons/bs";
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -127,6 +129,28 @@ const Navbar = ({ menuItems, logo }) => {
           >
             Buscar
           </Button>
+          <Link
+        to="/detalle-reservas"
+        style={{
+          textDecoration: "none",
+          color: "inherit",
+          position: "relative",
+        }}
+      >
+        <BsHandbag
+          style={{
+            fontSize: "20px",
+            color: "#795af6", // Color a ajustar según tus estilos
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            console.log(
+              "Icon clicked, redirecting to reservations detail page"
+            );
+            // Aquí podrías añadir más lógica si fuera necesario
+          }}
+        />
+      </Link>
           {isAuthenticated && <MenuAvatar user={user} />}
           {!isAuthenticated ? (
             <NavButton onClick={handleLogin}>LogIn</NavButton>
