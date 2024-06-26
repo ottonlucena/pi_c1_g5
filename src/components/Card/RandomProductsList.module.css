@@ -1,20 +1,24 @@
 .randomProductsList {
-    padding: 4rem;
-  }
-  
-  .productGrid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Espacio entre los elementos */
-    justify-content: center;
-  }
+  padding: 4rem;
+}
 
-  .spinnerContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Altura total de la vista */
-  }
+.productGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Espacio entre los elementos */
+  justify-content: center;
+}
 
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Altura total de la vista */
+}
 
-  
+.loadProductsButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto; /* Centrar horizontalmente */
+}

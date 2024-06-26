@@ -55,7 +55,7 @@ const DialogEvent = ({
     setIsDialogOpen(false);
   };
 
-  const [calendarEvents, setCalendarEvents] = useAtom(calendarEventsAtom);
+  const [ calendarEvents , setCalendarEvents] = useAtom(calendarEventsAtom);
 
   const saveToJotai = (userEvents) => {
     setCalendarEvents([userEvents]);

@@ -25,6 +25,7 @@ import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx
 import { useAtom } from 'jotai';
 import useFetchGamesIdName from './Utils/useFecthGamesIdName';
 import { suggestionsAtom } from './data/Store/gamesStore.js';
+import ReservationsDetail from './components/ReservationsDetail/ReservationsDetail.jsx';
 
 const menuItems = [
   <Link to='/nosotros'>Nosotros</Link>,
@@ -75,6 +76,7 @@ const App = () => {
             <Route path='/share' element={<ShareSocial />} />
             <Route path='/favoritos' element={<FavoritesList />} />
             <Route path='/reservas' element={<Reservas />} />
+            <Route path='/detalle-reservas' element={<ReservationsDetail/>} />
           </Routes>
           <Footer />
         </BrowserRouter>
