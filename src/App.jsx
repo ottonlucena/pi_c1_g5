@@ -24,7 +24,7 @@ import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx
 import { useAtom } from 'jotai';
 import useFetchGamesIdName from './Utils/useFecthGamesIdName';
 import { suggestionsAtom } from './data/Store/gamesStore.js';
-
+import WhatsAppButton from './components/btn-wsp/btn-wsp.jsx';
 const menuItems = [
   <Link to='/nosotros'>Nosotros</Link>,
   'Servicios',
@@ -75,6 +75,7 @@ const App = () => {
             <Route path='/favoritos' element={<FavoritesList />} />
           </Routes>
           <Footer />
+          <WhatsAppButton/>
         </BrowserRouter>
       </AuthProvider>
     </>
