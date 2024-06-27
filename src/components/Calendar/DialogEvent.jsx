@@ -44,6 +44,7 @@ const DialogEvent = ({
   const isDateDisabled = (date) => {
     return date < new Date(new Date().setHours(0, 0, 0, 0));
   };
+  
   const [userGames] = useAtom(userGamesAtom);
 
   React.useEffect(() => {
@@ -55,7 +56,7 @@ const DialogEvent = ({
     setIsDialogOpen(false);
   };
 
-  const [, setCalendarEvents] = useAtom(calendarEventsAtom);
+  const [ , setCalendarEvents] = useAtom(calendarEventsAtom);
 
   const saveToJotai = (userEvents) => {
     setCalendarEvents(userEvents);
