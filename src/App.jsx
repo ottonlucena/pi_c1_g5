@@ -25,7 +25,11 @@ import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx
 import { useAtom } from 'jotai';
 import useFetchGamesIdName from './Utils/useFecthGamesIdName';
 import { suggestionsAtom } from './data/Store/gamesStore.js';
+
+import WhatsAppButton from './components/btn-wsp/btn-wsp.jsx';
+
 import ReservationsDetail from './components/ReservationsDetail/ReservationsDetail.jsx';
+
 
 const menuItems = [
   <Link to='/nosotros'>Nosotros</Link>,
@@ -79,6 +83,7 @@ const App = () => {
             <Route path='/detalle-reservas' element={<ReservationsDetail/>} />
           </Routes>
           <Footer />
+          <WhatsAppButton/>
         </BrowserRouter>
       </AuthProvider>
     </>
