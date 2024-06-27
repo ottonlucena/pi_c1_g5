@@ -4,7 +4,7 @@
     align-items: center;
     padding: 20px;
   
-    height: 100%;
+    height:max-content;
     font-family: 'Segoe UI';
 }
 
