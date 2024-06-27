@@ -19,6 +19,10 @@ import { DatePicker } from '@fluentui/react-datepicker-compat';
 import useSearchSuggestion from './useSearchSuggestion';
 import { TbEyeSearch } from 'react-icons/tb';
 import { MdOutlineAutoDelete } from 'react-icons/md';
+import useVerificarDisponibilidad from './useVerificarDisponibilidad';
+import { useSetAtom, useAtom } from 'jotai';
+import { availableGamesAtom } from '../../data/Store/availableStore';
+import { drawerOpenAtom } from '../../data/Store/drawerStore';
 
 const localizedStrings = {
   days: [
@@ -155,6 +159,12 @@ const useStyles = makeStyles({
 
 const SearchSuggestion = () => {
   const customStyles = useStyles();
+  const [availableGames, setAvailableGames] = useAtom(availableGamesAtom);
+  const {
+    mutate: verificarDisponibilidad,
+    data,
+    isSuccess,
+  } = useVerificarDisponibilidad();
   const [searchTerm, setSearchTerm] = useState('');
   const { suggestions, isLoading } = useSearchSuggestion();
   const Today = new Date();
@@ -171,6 +181,7 @@ const SearchSuggestion = () => {
   const finishDateRef = useRef(null);
   const toasterId = useId('toaster');
   const { dispatchToast } = useToastController(toasterId);
+  const setOpen = useSetAtom(drawerOpenAtom);
 
   const showErrorToast = useCallback(() => {
     dispatchToast(
@@ -224,6 +235,42 @@ const SearchSuggestion = () => {
     initialDateRef.current?.focus();
   }, []);
 
+  const handleSearch = useCallback(() => {
+    const sendToPost = {
+      nombreJuego: searchTerm,
+      fechaInicio: formatDateAMD(initialDate),
+      fechaFin: formatDateAMD(finishDate),
+    };
+    verificarDisponibilidad(sendToPost);
+  }, [initialDate, finishDate, searchTerm, verificarDisponibilidad]);
+
+  useEffect(() => {
+    if (data) {
+      setAvailableGames(data); // Actualiza el estado con los datos de disponibilidad
+      console.log('Disponibilidad:', data);
+    }
+    if (isSuccess) {
+      setOpen(false);
+    }
+  }, [data, setAvailableGames]);
+
+  /*  const handleSearch = useCallback(async () => {
+    const sendToPost = {
+      nombreJuego: searchTerm,
+      fechaInicio: formatDateAMD(initialDate),
+      fechaFin: formatDateAMD(finishDate),
+    };
+
+    try {
+      const result = await verificarDisponibilidad(sendToPost);
+      console.log("Resultados de disponibilidad:", result);
+      setAvailableGames(result);
+    } catch (error) {
+      console.error("Error al verificar la disponibilidad:", error);
+    }
+  }, [initialDate, finishDate, searchTerm]);
+ */
+
   const formatDateAMD = (fechaStr) => {
     const fecha = new Date(fechaStr);
 
@@ -233,7 +280,7 @@ const SearchSuggestion = () => {
     const mes = String(fecha.getMonth() + 1).padStart(2, '0');
     const dia = String(fecha.getDate()).padStart(2, '0');
 
-    return `${año}/${mes}/${dia}`;
+    return `${año}-${mes}-${dia}`;
   };
 
   const dateNote = useCallback(
@@ -242,22 +289,6 @@ const SearchSuggestion = () => {
     },
     [Today]
   );
-
-  const handleSearch = useCallback(() => {
-    const sendToPost = {
-      searchCriteria: searchTerm,
-      dateInitial: dateNote(formatDateAMD(initialDate)),
-      dateFinish: /Invalid|NaN/.test(
-        dateNote(formatDateAMD(finishDate).toString())
-      )
-        ? ''
-        : dateNote(formatDateAMD(finishDate)),
-    };
-    console.log(
-      'lo que se necesita enviar a el endpoint sendToPost',
-      sendToPost
-    );
-  }, [initialDate, finishDate, searchTerm, dateNote]);
 
   const isDateDisabled = (date) => {
     return date < minDate;

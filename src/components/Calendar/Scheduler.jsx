@@ -3,8 +3,10 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import DialogEvent from './DialogEvent';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { RiDeleteBin2Line } from 'react-icons/ri';
 import styles from './Scheduler.module.css';
 import 'moment/locale/es';
+import useUpdateJotai from './useUpdateJotai';
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
@@ -26,8 +28,9 @@ const Scheduler = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const currentUser = isAuthenticated
-    ? { userId: 1, name: 'John Doe', email: 'john.doe@example.com' }
+    ? { userId: 1, name: 'John Doe', email: 'johndoe@gmail.com' }
     : null;
+  const { removeEvent, selectAndLogEvent } = useUpdateJotai();
 
   const handleSelectSlot = ({ start, end }) => {
     const isDisabled = isPastDate(start);
@@ -62,6 +65,21 @@ const Scheduler = () => {
     setSelectedEvent(event);
     setIsDialogOpen(true);
   };
+
+  const handleDeleteEvent = (gameId) => {
+    console.log('que valor pasar = ', gameId);
+    removeEvent(gameId);
+    setEvents(events.filter((event) => event.gameid !== gameId));
+  };
+
+  const EventComponent = ({ event }) => (
+    <div>
+      <span>{event.title} </span>
+      <button onClick={() => handleDeleteEvent(event.gameid)}>
+        <RiDeleteBin2Line />
+      </button>
+    </div>
+  );
 
   const getEventStyle = (event, index) => {
     const colors = ['#FF66B2', '#66CCFF', '#66FF66', '#CC66FF', '#ffccff'];
@@ -99,8 +117,15 @@ const Scheduler = () => {
       <Calendar
         localizer={localizer}
         events={events}
+        components={{
+          event: EventComponent,
+        }}
         startAccessor='start'
-        endAccessor='end'
+        endAccessor={(event) => {
+          const end = new Date(event.end);
+          end.setDate(end.getDate() + 1);
+          return end;
+        }}
         selectable
         onSelectSlot={handleSelectSlot}
         onSelectEvent={handleSelectEvent}

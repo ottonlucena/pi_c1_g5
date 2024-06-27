@@ -30,7 +30,7 @@ const agregarProducto = async (nuevoProducto) => {
   }
 
   const data = await response.json();
-  console.log('Producto agregado:', data);
+  'Producto agregado:', data;
   return data;
 };
 
@@ -48,7 +48,7 @@ const actualizarProducto = async (nuevoProducto) => {
   }
 
   const data = await response.json();
-  console.log('Producto actualizado:', data);
+  'Producto actualizado:', data;
   return data;
 };
 
@@ -69,7 +69,7 @@ const eliminarProducto = async (id) => {
     throw new Error(`Error al eliminar el producto con id ${id}`);
   }
 
-  console.log(`Producto con id ${id} eliminado.`);
+  `Producto con id ${id} eliminado.`;
   return id;
 };
 
@@ -114,14 +114,18 @@ const enviarValoracion = async (juegoId, valoracionData) => {
   return response.json();
 };
 
+
 const verificarDisponibilidad = async (datosReserva) => {
-  const response = await fetch('http://localhost:8080/api/reservas/disponibles', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(datosReserva),
-  });
+  const response = await fetch(
+    'http://localhost:8080/api/reservas/disponibles',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(datosReserva),
+    }
+  );
 
   if (!response.ok) {
     throw new Error('Error al verificar la disponibilidad');
@@ -129,6 +133,31 @@ const verificarDisponibilidad = async (datosReserva) => {
 
   return response.json();
 };
+
+export const postReservation = async (reservationData) => {
+  try {
+    console.log('Data enviada al servidor:', reservationData);
+    const response = await fetch("http://localhost:8080/api/reservas", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reservationData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error en la solicitud");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error al realizar la reserva:", error);
+    throw error;
+  }
+};
+
+
 
 
 export {

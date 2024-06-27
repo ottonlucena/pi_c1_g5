@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "../Modal/SignUpModal.module.css";
 import { TbEyeClosed } from "react-icons/tb";
 import { RxEyeOpen } from "react-icons/rx";
-import sendEmail from "../SendEmail/SendEmail";
+import { createUser } from "../../data/user" 
 
 const SignUpModal = ({ showModal, setShowModal }) => {
   const [formData, setFormData] = useState({
@@ -13,6 +13,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
     email: "",
     direccion: "",
     password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -32,12 +33,18 @@ const SignUpModal = ({ showModal, setShowModal }) => {
       alert("Las contraseñas no coinciden");
       return;
     }
-    setShowSuccessMessage(true);
-    setTimeout(() => {
-      setShowSuccessMessage(false);
-      setShowModal(false);
-      window.location.reload();
-    }, 2000);
+
+    try {
+      await createUser(formData);
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        setShowModal(false);
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      setError('Error al registrar el usuario');
+    }
   };
 
   const toggleShowPassword = () => {
@@ -54,7 +61,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
             </span>
             <h2 className={styles.titulo}>Crear una cuenta</h2>
             <form className={styles.inputContainer} onSubmit={handleSubmit}>
-              <label htmlFor="firstName">Nombre:</label>
+              <label htmlFor="nombre">Nombre:</label>
               <input
                 className={styles.input}
                 type="text"
@@ -65,13 +72,23 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                 required
               />
 
-              <label htmlFor="lastName">Apellidos:</label>
+              <label htmlFor="apellido">Apellidos:</label>
               <input
                 className={styles.input}
                 type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.lastName}
+                id="apellido"
+                name="apellido"
+                value={formData.apellido}
+                onChange={handleChange}
+                required
+              />
+              <label htmlFor="apellido">Rut:</label>
+              <input
+                className={styles.input}
+                type="text"
+                id="rut"
+                name="rut"
+                value={formData.rut}
                 onChange={handleChange}
                 required
               />
@@ -83,6 +100,28 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                 id="email"
                 name="email"
                 value={formData.email}
+                onChange={handleChange}
+                required
+              />
+
+              <label htmlFor="telefono">Teléfono:</label>
+              <input
+                className={styles.input}
+                type="text"
+                id="telefono"
+                name="telefono"
+                value={formData.telefono}
+                onChange={handleChange}
+                required
+              />
+
+              <label htmlFor="direccion">Dirección:</label>
+              <input
+                className={styles.input}
+                type="text"
+                id="direccion"
+                name="direccion"
+                value={formData.direccion}
                 onChange={handleChange}
                 required
               />
@@ -105,6 +144,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                   {showPassword ? <TbEyeClosed /> : <RxEyeOpen />}
                 </span>
               </div>
+
               <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
               <input
                 className={styles.input}
@@ -115,6 +155,7 @@ const SignUpModal = ({ showModal, setShowModal }) => {
                 onChange={handleChange}
                 required
               />
+
               <button className={styles.submit} type="submit">
                 Registrarse
               </button>

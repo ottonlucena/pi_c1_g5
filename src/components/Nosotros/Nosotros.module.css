@@ -11,14 +11,13 @@
     flex-direction: column;
     background-color: rgb(247, 247, 247);
     width: 90%; 
-    max-width: 1200px;
-    background-color: rgb(255, 255, 255);
-    border-radius: 10px;
+    max-width: 1200px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+     border-radius: 10px;
     gap: 40px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
     padding: 20px;
-}
+    }
 
 .info h1{
     font-family: 'Segoe UI';

@@ -35,7 +35,7 @@ const useStyles = makeStyles({
 
 const ComboGames = (props) => {
   const [suggestions] = useAtom(suggestionsAtom);
-  const [setUserGames] = useAtom(userGamesAtom);
+  const [, setUserGames] = useAtom(userGamesAtom);
   const comboId = useId('combo-multi');
   const selectedListId = `${comboId}-selection`;
   const selectedListRef = React.useRef(null);

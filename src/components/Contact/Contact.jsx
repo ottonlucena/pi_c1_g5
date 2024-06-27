@@ -13,7 +13,7 @@ const Contacto = () => {
         'ZAPktphb4_mUEdgNy'
       )
       .then((response) => {
-        console.log('Email enviado:', response);
+        'Email enviado:', response;
         alert('¡Tu mensaje se ha enviado correctamente!');
       })
       .catch((error) => {
@@ -48,7 +48,7 @@ const Contacto = () => {
 
         <div className={Styles.contenedor2}>
           <h2>Envíanos un mensaje</h2>
-          <form onSubmit={sendEmail}>
+          <form className={Styles.formContact} onSubmit={sendEmail}>
             <label>
               Nombre:
               <input

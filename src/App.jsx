@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import Contact from './components/Contact/Contact.jsx';
 import Nosotros from './components/Nosotros/Nosotros.jsx';
+import Reservas from './components/Reservas/Reservas.jsx';
 // import { MdAdminPanelSettings } from 'react-icons/md'; // Agregar la importación aquí
 
 /* import AdminListPropd from './components/AdminListProd/AdminListProd.jsx'; */
@@ -24,7 +25,12 @@ import ListarProductos from './components/PanelAdministrador/ListarProductos.jsx
 import { useAtom } from 'jotai';
 import useFetchGamesIdName from './Utils/useFecthGamesIdName';
 import { suggestionsAtom } from './data/Store/gamesStore.js';
+
 import WhatsAppButton from './components/btn-wsp/btn-wsp.jsx';
+
+import ReservationsDetail from './components/ReservationsDetail/ReservationsDetail.jsx';
+
+
 const menuItems = [
   <Link to='/nosotros'>Nosotros</Link>,
   'Servicios',
@@ -53,7 +59,6 @@ const App = () => {
             showModal={showModal}
             setShowModal={setShowModal}
           />
-
           <Routes>
             <Route
               path='/'
@@ -64,6 +69,7 @@ const App = () => {
                 </div>
               }
             />
+
             <Route path='/detalle/:id' element={<DetailProduct />} />
             <Route path='/product/:id' element={<ProductCard />} />
             <Route path='/RegistrarProducto' element={<RegistrarProducto />} />
@@ -73,6 +79,8 @@ const App = () => {
             <Route path='/nosotros' element={<Nosotros />} />
             <Route path='/share' element={<ShareSocial />} />
             <Route path='/favoritos' element={<FavoritesList />} />
+            <Route path='/reservas' element={<Reservas />} />
+            <Route path='/detalle-reservas' element={<ReservationsDetail/>} />
           </Routes>
           <Footer />
           <WhatsAppButton/>

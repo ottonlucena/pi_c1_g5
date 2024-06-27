@@ -1,37 +1,37 @@
-import { useState, useEffect } from "react";
-import styles from "./RegistrarProducto.module.css";
-import { agregarProducto } from "../../data/juegos";
-import { LeerCategorias } from "../../data/dataService";
+import { useState, useEffect } from 'react';
+import styles from './RegistrarProducto.module.css';
+import { agregarProducto } from '../../data/juegos';
+import { LeerCategorias } from '../../data/dataService';
 import {
   crearCaracteristica,
   obtenerCaracteristicas,
-} from "../../data/caracteristicas";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { Button } from "@fluentui/react-components";
+} from '../../data/caracteristicas';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Button } from '@fluentui/react-components';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const SubmitButton = styled(Button)`
   margin-top: 15px;
 `;
 
 const RegistrarProducto = () => {
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [largo, setLargo] = useState("");
-  const [ancho, setAncho] = useState("");
-  const [altura, setAltura] = useState("");
-  const [capacidad, setCapacidad] = useState("");
-  const [valorArriendo, setValorArriendo] = useState("");
-  const [cantidad, setCantidad] = useState("");
-  const [img_url, setImgUrl] = useState("");
-  const [categoria, setCategoria] = useState("");
+  const [nombre, setNombre] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [largo, setLargo] = useState('');
+  const [ancho, setAncho] = useState('');
+  const [altura, setAltura] = useState('');
+  const [capacidad, setCapacidad] = useState('');
+  const [valorArriendo, setValorArriendo] = useState('');
+  const [cantidad, setCantidad] = useState('');
+  const [img_url, setImgUrl] = useState('');
+  const [categoria, setCategoria] = useState('');
   const [categorias, setCategorias] = useState([]);
   const [caracteristicas, setCaracteristicas] = useState([]);
   const [selectedCaracteristicas, setSelectedCaracteristicas] = useState([]);
-  const [error, setError] = useState("");
-  const [nuevaCaracteristica, setNuevaCaracteristica] = useState("");
+  const [error, setError] = useState('');
+  const [nuevaCaracteristica, setNuevaCaracteristica] = useState('');
 
   useEffect(() => {
     const fetchCategorias = async () => {
@@ -39,7 +39,7 @@ const RegistrarProducto = () => {
         const categoriasData = await LeerCategorias();
         setCategorias(categoriasData);
       } catch (error) {
-        console.error("Error al leer las categorías", error);
+        console.error('Error al leer las categorías', error);
       }
     };
     const fetchCaracteristicas = async () => {
@@ -47,7 +47,7 @@ const RegistrarProducto = () => {
         const caracteristicasData = await obtenerCaracteristicas();
         setCaracteristicas(caracteristicasData);
       } catch (error) {
-        console.error("Error al obtener características", error);
+        console.error('Error al obtener características', error);
       }
     };
 
@@ -70,7 +70,7 @@ const RegistrarProducto = () => {
       !categoria ||
       selectedCaracteristicas.length === 0
     ) {
-      setError("Por favor complete todos los campos.");
+      setError('Por favor complete todos los campos.');
       return;
     }
 
@@ -78,7 +78,7 @@ const RegistrarProducto = () => {
       (cat) => cat.id.toString() === categoria
     );
     if (!categoriaSeleccionada) {
-      setError("Categoría seleccionada no es válida.");
+      setError('Categoría seleccionada no es válida.');
       return;
     }
 
@@ -107,24 +107,24 @@ const RegistrarProducto = () => {
     };
 
     try {
-      console.log("Nuevo Producto", JSON.stringify(nuevoProducto, null, 2));
+      'Nuevo Producto', JSON.stringify(nuevoProducto, null, 2);
       await agregarProducto(nuevoProducto);
-      toast.success("Producto registrado exitosamente!");
-      setNombre("");
-      setDescripcion("");
-      setLargo("");
-      setAncho("");
-      setAltura("");
-      setCapacidad("");
-      setValorArriendo("");
-      setCantidad("");
-      setImgUrl("");
-      setCategoria("");
+      toast.success('Producto registrado exitosamente!');
+      setNombre('');
+      setDescripcion('');
+      setLargo('');
+      setAncho('');
+      setAltura('');
+      setCapacidad('');
+      setValorArriendo('');
+      setCantidad('');
+      setImgUrl('');
+      setCategoria('');
       setSelectedCaracteristicas([]);
-      setError("");
+      setError('');
     } catch (error) {
-      setError("Error al registrar el producto. Inténtelo de nuevo.");
-      console.error("Error al registrar el producto:", error);
+      setError('Error al registrar el producto. Inténtelo de nuevo.');
+      console.error('Error al registrar el producto:', error);
     }
   };
 
@@ -147,7 +147,7 @@ const RegistrarProducto = () => {
 
   const handleCrearCaracteristica = async () => {
     if (!nuevaCaracteristica) {
-      setError("Ingrese un nombre para la nueva característica.");
+      setError('Ingrese un nombre para la nueva característica.');
       return;
     }
 
@@ -156,16 +156,16 @@ const RegistrarProducto = () => {
         nuevaCaracteristica
       );
       setCaracteristicas([...caracteristicas, caracteristicaCreada]);
-      setNuevaCaracteristica("");
+      setNuevaCaracteristica('');
     } catch (error) {
-      setError("Error al crear la característica. Inténtelo de nuevo.");
-      console.error("Error al crear la característica:", error);
+      setError('Error al crear la característica. Inténtelo de nuevo.');
+      console.error('Error al crear la característica:', error);
     }
   };
 
   return (
     <div className={styles.containerPrincipal}>
-      <ToastContainer position="top-center" />
+      <ToastContainer position='top-center' />
       <div className={styles.formContainer}>
         <h2 className={styles.titleForm}>Agregar Juego</h2>
         {error && <p className={styles.error}>{error}</p>}
@@ -173,12 +173,12 @@ const RegistrarProducto = () => {
           <div className={styles.formSection}>
             <div className={styles.generalInfo}>
               <div className={styles.inputContainer}>
-                <label htmlFor="nombre" className={styles.label}>
+                <label htmlFor='nombre' className={styles.label}>
                   Nombre:
                 </label>
                 <input
-                  type="text"
-                  id="nombre"
+                  type='text'
+                  id='nombre'
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
                   className={`${styles.input} ${styles.textInput}`}
@@ -186,11 +186,11 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="descripcion" className={styles.label}>
+                <label htmlFor='descripcion' className={styles.label}>
                   Descripción:
                 </label>
                 <textarea
-                  id="descripcion"
+                  id='descripcion'
                   value={descripcion}
                   onChange={(e) => setDescripcion(e.target.value)}
                   className={`${styles.input} ${styles.textAreaInput}`}
@@ -198,12 +198,12 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="largo" className={styles.label}>
+                <label htmlFor='largo' className={styles.label}>
                   Largo (metros):
                 </label>
                 <input
-                  type="number"
-                  id="largo"
+                  type='number'
+                  id='largo'
                   value={largo}
                   onChange={(e) =>
                     handleChangeNumericInput(setLargo, e.target.value)
@@ -213,12 +213,12 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="ancho" className={styles.label}>
+                <label htmlFor='ancho' className={styles.label}>
                   Ancho (metros):
                 </label>
                 <input
-                  type="number"
-                  id="ancho"
+                  type='number'
+                  id='ancho'
                   value={ancho}
                   onChange={(e) =>
                     handleChangeNumericInput(setAncho, e.target.value)
@@ -228,12 +228,12 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="altura" className={styles.label}>
+                <label htmlFor='altura' className={styles.label}>
                   Altura (metros):
                 </label>
                 <input
-                  type="number"
-                  id="altura"
+                  type='number'
+                  id='altura'
                   value={altura}
                   onChange={(e) =>
                     handleChangeNumericInput(setAltura, e.target.value)
@@ -243,17 +243,17 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="categoria" className={styles.label}>
+                <label htmlFor='categoria' className={styles.label}>
                   Categoría:
                 </label>
                 <select
-                  id="categoria"
+                  id='categoria'
                   value={categoria}
                   onChange={(e) => setCategoria(e.target.value)}
                   className={`${styles.input} ${styles.selectInput}`}
                   required
                 >
-                  <option value="">Seleccione una categoría</option>
+                  <option value=''>Seleccione una categoría</option>
                   {categorias.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.title}
@@ -262,12 +262,12 @@ const RegistrarProducto = () => {
                 </select>
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="capacidad" className={styles.label}>
+                <label htmlFor='capacidad' className={styles.label}>
                   Capacidad:
                 </label>
                 <input
-                  type="number"
-                  id="capacidad"
+                  type='number'
+                  id='capacidad'
                   value={capacidad}
                   onChange={(e) =>
                     handleChangeNumericInput(setCapacidad, e.target.value)
@@ -277,12 +277,12 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="valorArriendo" className={styles.label}>
+                <label htmlFor='valorArriendo' className={styles.label}>
                   Valor Arriendo:
                 </label>
                 <input
-                  type="number"
-                  id="valorArriendo"
+                  type='number'
+                  id='valorArriendo'
                   value={valorArriendo}
                   onChange={(e) =>
                     handleChangeNumericInput(setValorArriendo, e.target.value)
@@ -292,12 +292,12 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="cantidad" className={styles.label}>
+                <label htmlFor='cantidad' className={styles.label}>
                   Cantidad:
                 </label>
                 <input
-                  type="number"
-                  id="cantidad"
+                  type='number'
+                  id='cantidad'
                   value={cantidad}
                   onChange={(e) =>
                     handleChangeNumericInput(setCantidad, e.target.value)
@@ -307,12 +307,12 @@ const RegistrarProducto = () => {
                 />
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="img_url" className={styles.label}>
+                <label htmlFor='img_url' className={styles.label}>
                   Imagen:
                 </label>
                 <input
-                  type="file"
-                  id="img_url"
+                  type='file'
+                  id='img_url'
                   onChange={handleImageChange}
                   className={`${styles.input} ${styles.fileInput}`}
                   required
@@ -321,11 +321,11 @@ const RegistrarProducto = () => {
                   <div className={styles.imagePreviewContainer}>
                     <img
                       src={img_url}
-                      alt="Preview"
+                      alt='Preview'
                       className={styles.imagePreview}
                     />
                     <button
-                      type="button"
+                      type='button'
                       onClick={handleRemoveImage}
                       className={styles.removeImageButton}
                     >
@@ -335,19 +335,19 @@ const RegistrarProducto = () => {
                 )}
               </div>
               <div className={styles.inputContainer}>
-                <label htmlFor="nuevaCaracteristica" className={styles.label}>
+                <label htmlFor='nuevaCaracteristica' className={styles.label}>
                   Nueva Característica:
                 </label>
                 <input
-                  type="text"
-                  id="nuevaCaracteristica"
+                  type='text'
+                  id='nuevaCaracteristica'
                   value={nuevaCaracteristica}
                   onChange={(e) => setNuevaCaracteristica(e.target.value)}
                   className={`${styles.input} ${styles.textInput}`}
                 />
                 <SubmitButton
-                  appearance="primary"
-                  type="button"
+                  appearance='primary'
+                  type='button'
                   onClick={handleCrearCaracteristica}
                   className={styles.addButton}
                 >
@@ -364,7 +364,7 @@ const RegistrarProducto = () => {
               >
                 <div className={styles.checkboxContainer}>
                   <input
-                    type="checkbox"
+                    type='checkbox'
                     id={`caracteristica-${caracteristica.id}`}
                     checked={selectedCaracteristicas.includes(
                       caracteristica.id
@@ -395,8 +395,8 @@ const RegistrarProducto = () => {
           </div>
 
           <SubmitButton
-            appearance="primary"
-            type="submit"
+            appearance='primary'
+            type='submit'
             className={styles.submitButton}
           >
             Registrar Producto

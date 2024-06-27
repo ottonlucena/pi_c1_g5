@@ -44,6 +44,7 @@ const DialogEvent = ({
   const isDateDisabled = (date) => {
     return date < new Date(new Date().setHours(0, 0, 0, 0));
   };
+  
   const [userGames] = useAtom(userGamesAtom);
 
   React.useEffect(() => {
@@ -55,24 +56,25 @@ const DialogEvent = ({
     setIsDialogOpen(false);
   };
 
-  const [calendarEvents, setCalendarEvents] = useAtom(calendarEventsAtom);
+  const [ , setCalendarEvents] = useAtom(calendarEventsAtom);
 
   const saveToJotai = (userEvents) => {
-    setCalendarEvents([userEvents]);
+    setCalendarEvents(userEvents);
+    console.log('Guardado en Jotai', JSON.stringify(userEvents, null, 2));
   };
 
   const generateEventsFromUserGames = () => {
     const events = [];
 
     userGames.forEach((game) => {
-      const eventId = isNewEvent ? Date.now() : eventToEdit.id;
+      const eventid = isNewEvent ? Date.now() : eventToEdit.id;
       const newEvent = isNewEvent
         ? {
             title: game.optionValue,
             start,
             end,
             gameid: game.optionText,
-            eventid: eventId,
+            eventid: eventid,
           }
         : {
             ...eventToEdit,
@@ -94,9 +96,9 @@ const DialogEvent = ({
     const updatedEvents = [];
 
     userGames.forEach((game) => {
-      const eventId = isNewEvent ? Date.now() : eventToEdit.id;
+      const eventid = isNewEvent ? Date.now() : eventToEdit.id;
       const event = {
-        eventid: eventId,
+        eventid: eventid,
         title: game.optionValue,
         start: start,
         end: end,
@@ -109,12 +111,13 @@ const DialogEvent = ({
       userId: currentUser.userId,
       name: currentUser.name,
       email: currentUser.email,
+      quantity: userGames.length,
       events: updatedEvents.map((event) => ({
-        eventId: event.eventid,
+        eventid: event.eventid,
         title: event.title,
         start: event.start,
         end: event.end,
-        gameId: event.gameid,
+        gameid: event.gameid,
       })),
     };
 

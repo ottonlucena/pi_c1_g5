@@ -1,6 +1,5 @@
 const API_URL = 'http://localhost:8080/api/usuarios';
 
-// Obtener todos los usuarios
 export const getUsers = async () => {
   try {
     const response = await fetch(API_URL);
@@ -15,7 +14,6 @@ export const getUsers = async () => {
   }
 };
 
-// Crear un nuevo usuario
 export const createUser = async (userData) => {
   try {
     const response = await fetch(API_URL, {
@@ -25,9 +23,11 @@ export const createUser = async (userData) => {
       },
       body: JSON.stringify(userData),
     });
+
     if (!response.ok) {
       throw new Error('Error al crear usuario');
     }
+
     const newUser = await response.json();
     return newUser;
   } catch (error) {
@@ -36,7 +36,6 @@ export const createUser = async (userData) => {
   }
 };
 
-// Actualizar un usuario existente
 export const updateUser = async (userId) => {
   try {
     const response = await fetch(API_URL, {
@@ -57,7 +56,6 @@ export const updateUser = async (userId) => {
   }
 };
 
-// Eliminar un usuario
 export const deleteUser = async (userId) => {
   try {
     const response = await fetch(`${API_URL}/${userId}`, {
@@ -72,16 +70,30 @@ export const deleteUser = async (userId) => {
   }
 };
 
+export const getUserById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}`); // Corregido para usar `${API_URL}/${id}`
+    if (!response.ok) {
+      throw new Error('Error al obtener usuario por ID');
+    }
+    const user = await response.json();
+    return user;
+  } catch (error) {
+    console.error('Error al obtener usuario por ID:', error);
+    throw error;
+  }
+};
+
 export const getUserIdByEmail = async (email) => {
   try {
     const response = await fetch(`${API_URL}?email=${email}`);
     if (!response.ok) {
-      throw new Error('Error al obtener el ID del usuario');
+      throw new Error('Error al obtener el ID del usuario por email');
     }
     const user = await response.json();
     return user.id;
   } catch (error) {
-    console.error('Error al obtener el ID del usuario:', error);
+    console.error('Error al obtener el ID del usuario por email:', error);
     throw error;
   }
 };

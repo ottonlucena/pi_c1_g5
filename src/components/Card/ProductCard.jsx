@@ -149,7 +149,7 @@ const ProductCard = ({ product }) => {
 
   const toggleFavorite = () => {
     if (!isAuthenticated) {
-      console.log('Redireccionar al inicio de sesión...');
+      ('Redireccionar al inicio de sesión...');
       return;
     }
 
