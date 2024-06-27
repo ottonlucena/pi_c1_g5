@@ -24,7 +24,7 @@ import { useAtom } from "jotai";
 import { calendarEventsAtom } from "../../data/Store/eventStore";
 import { useId } from "react";
 import { Link } from "react-router-dom";
-import { postReservation } from "../../data/juegos"; // Importa la función postReservation
+import { postReservation } from "../../data/juegos";
 
 const useStyles = makeStyles({
   root: {
@@ -99,7 +99,6 @@ const useStyles = makeStyles({
       fontSize: "12px",
     },
   },
-
   messageRe: {
     "@media (max-width: 600px)": {
       width: "50%",
@@ -111,8 +110,8 @@ const useStyles = makeStyles({
 const formatDateAMD = (fechaStr) => {
   const fecha = new Date(fechaStr);
   const año = fecha.getFullYear();
-  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-  const dia = String(fecha.getDate()).padStart(2, '0');
+  const mes = String(fecha.getMonth() + 1).padStart(2, "0");
+  const dia = String(fecha.getDate()).padStart(2, "0");
   return `${año}-${mes}-${dia}`;
 };
 
@@ -133,8 +132,8 @@ const ReservationsDetail = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (calendarEvents && calendarEvents.length > 0) {
-        setUser(calendarEvents[0]);
+      if (calendarEvents && calendarEvents.events && calendarEvents.events.length > 0) {
+        setUser(calendarEvents);
         setLoading(false);
       } else {
         setLoading(false);
@@ -152,13 +151,13 @@ const ReservationsDetail = () => {
 
     const reservationData = {
       nombre: user.name,
-      apellido: "castro",
+      apellido: "Castro",
       email: user.email,
-      reservasDTO: user.events.map(event => ({
+      reservasDTO: user.events.map((event) => ({
         tituloJuego: event.title,
         fechaInicio: formatDateAMD(event.start),
         fechaFin: formatDateAMD(event.end),
-        cantidad: 1,
+        cantidad: event.quantity || 1,
       })),
     };
 
@@ -199,8 +198,18 @@ const ReservationsDetail = () => {
     );
   }
 
-  if (!user) {
-    return <div className={styles.loadingContainer}>No se encontraron eventos para mostrar.</div>;
+  if (!user || !user.events || user.events.length === 0) {
+    return (
+      <div className={styles.loadingContainer}>
+        <MessageBar intent="warning" className={styles.messageBar}>
+          <MessageBarBody>
+            <MessageBarTitle className={styles.messageRe}>
+              No se encontraron eventos para mostrar.
+            </MessageBarTitle>
+          </MessageBarBody>
+        </MessageBar>
+      </div>
+    );
   }
 
   const totalEvents = calculateTotalEvents(user.events);
@@ -252,7 +261,7 @@ const ReservationsDetail = () => {
               <span>{totalEvents}</span>
             </div>
             <div className={styles.buttonContainer}>
-              <Link to={`/detalle/${user.events[0].gameId}`}>
+              <Link to={`/detalle/${user.events[0].gameid}`}>
                 <Button appearance="primary">Agregar más juegos</Button>
               </Link>
               <Button appearance="primary" onClick={handleSubmit}>
@@ -293,3 +302,6 @@ const ReservationsDetail = () => {
 };
 
 export default ReservationsDetail;
+
+
+
