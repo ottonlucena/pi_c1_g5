@@ -32,11 +32,11 @@ import ReservationsDetail from './components/ReservationsDetail/ReservationsDeta
 
 
 const menuItems = [
-  /*<Link to='/nosotros'>Nosotros</Link>,
-  'Servicios',
+  <Link to='/nosotros'>Nosotros</Link>,
+  //'Servicios',
   <Link to='/contacto'>Contacto</Link>,
-  'Galería',
-*/];
+  //'Galería',
+];
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
