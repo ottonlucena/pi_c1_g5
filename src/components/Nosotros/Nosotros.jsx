@@ -6,32 +6,32 @@ const teamMembers = [
     {
         name: 'Elizabeth Castro',
         role: 'Scrum Master',
-        image: '../../../public/assets/Elizabeth.jpg'
+        image: '/assets/Elizabeth.jpg'
     },
     {
         name: 'Lenin Uzcategui',
         role: 'Team Leader',
-        image: '../../../public/assets/Lenin.jpg'
+        image: '/assets/Lenin.jpg'
     },
     {
         name: 'Juan Manuel Herrero',
         role: 'Desarrollador-Senior',
-        image: '../../../public/assets/juanma.jpg'
+        image: '/assets/juanma.jpg'
     },
     {
         name: 'Otton Lucena',
         role: 'Database Expert',
-        image: '../../../public/assets/Otton.jpg'
+        image: '/assets/Otton.jpg'
     },
     {
         name: 'Jorge Alfaro',
         role: 'Back-end /Infra',
-        image: '../../../public/assets/jorge.jpg'
+        image: '/assets/jorge.jpg'
     },
     {
         name: 'Emiliano Nakayama',
         role: 'Tester',
-        image: '../../../public/assets/emi.jpg'
+        image: '/assets/emi.jpg'
     }
 ];
 
