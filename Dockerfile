@@ -11,8 +11,8 @@ COPY package.json .
 # Instala pnpm
 RUN npm install -g pnpm
 
-# Instala las dependencias usando el archivo de bloqueo y habilitando la caché correctamente
-RUN --mount=type=cache,id=pnpm-cache,target=/root/.pnpm-store pnpm install --frozen-lockfile
+# Instala las dependencias usando el archivo de bloqueo
+RUN pnpm install --frozen-lockfile
 
 # Copia el resto de los archivos del proyecto
 COPY . .
