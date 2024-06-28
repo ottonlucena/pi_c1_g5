@@ -8,8 +8,8 @@ WORKDIR /app
 COPY pnpm-lock.yaml .
 COPY package.json .
 
-# Instala las dependencias usando el archivo de bloqueo y habilitando la caché
-RUN --mount=type=cache,target=/root/.local/share/pnpm/store/v3 pnpm install --frozen-lockfile
+# Instala las dependencias usando el archivo de bloqueo y habilitando la caché correctamente
+RUN --mount=type=cache,id=pnpm-cache,target=/root/.local/share/pnpm/store/v3 pnpm install --frozen-lockfile
 
 # Copia el resto de los archivos del proyecto
 COPY . .
