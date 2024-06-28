@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api/caracteristicas';
+const API_URL = 'https://sunny-exploration-production.up.railway.app/api/caracteristicas';
 
 // Función para obtener todas las características
 export const obtenerCaracteristicas = async () => {

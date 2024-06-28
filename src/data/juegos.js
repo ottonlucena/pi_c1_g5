@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api/juegos';
+const API_URL = 'https://sunny-exploration-production.up.railway.app/api/juegos';
 
 // Obtener todos los juegos
 const obtenerProductos = async () => {
@@ -75,7 +75,7 @@ const eliminarProducto = async (id) => {
 
 const fetchSuggestions = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/juegos/suggestion');
+    const response = await fetch('https://sunny-exploration-production.up.railway.app/api/juegos/suggestion');
     const data = await response.json();
     if (!data || data.length === 0) {
       return [];
@@ -89,7 +89,7 @@ const fetchSuggestions = async () => {
 
 const getValoraciones = async (juegoId) => {
   const response = await fetch(
-    `http://localhost:8080/api/valoracion/filter/${juegoId}`
+    `https://sunny-exploration-production.up.railway.app/api/valoracion/filter/${juegoId}`
   );
   if (!response.ok) {
     throw new Error('Error al obtener valoraciones');
@@ -99,7 +99,7 @@ const getValoraciones = async (juegoId) => {
 
 const enviarValoracion = async (juegoId, valoracionData) => {
   const response = await fetch(
-    `http://localhost:8080/api/valoracion/${juegoId}`,
+    `https://sunny-exploration-production.up.railway.app/api/valoracion/${juegoId}`,
     {
       method: 'POST',
       headers: {
@@ -117,7 +117,7 @@ const enviarValoracion = async (juegoId, valoracionData) => {
 
 const verificarDisponibilidad = async (datosReserva) => {
   const response = await fetch(
-    'http://localhost:8080/api/reservas/disponibles',
+    'https://sunny-exploration-production.up.railway.app/api/reservas/disponibles',
     {
       method: 'POST',
       headers: {
@@ -137,7 +137,7 @@ const verificarDisponibilidad = async (datosReserva) => {
 export const postReservation = async (reservationData) => {
   try {
     console.log('Data enviada al servidor:', reservationData);
-    const response = await fetch("http://localhost:8080/api/reservas", {
+    const response = await fetch("https://sunny-exploration-production.up.railway.app/api/reservas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -15,7 +15,7 @@ const FavoritesList = () => {
     // Fetch all products once and store them
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/juegos");
+        const response = await fetch("https://sunny-exploration-production.up.railway.app/api/juegos");
         if (!response.ok) {
           throw new Error("No hay conexión");
         }
