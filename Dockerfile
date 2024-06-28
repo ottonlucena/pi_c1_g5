@@ -8,10 +8,10 @@ WORKDIR /app
 COPY . .
 
 # Compila la aplicación
-RUN pnpm run build
+RUN pnpm build
 
 # Configura el servidor para servir la aplicación
-RUN npm install -g serve
+RUN pnpm add -g serve
 CMD ["serve", "-s", "build"]
 
 # Expone el puerto
