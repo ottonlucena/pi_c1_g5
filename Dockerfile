@@ -23,8 +23,8 @@ RUN pnpm run build
 # Instala el servidor 'serve' globalmente
 RUN npm install -g serve
 
-# Configura el servidor para servir la aplicación
-CMD ["serve", "-s", "build"]
+# Configura el servidor para servir la aplicación y manejar las rutas de una SPA
+CMD ["serve", "-s", "build", "-l", "3000", "--single"]
 
 # Expone el puerto
 EXPOSE 3000
