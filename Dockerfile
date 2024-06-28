@@ -7,9 +7,6 @@ WORKDIR /app
 # Copia los archivos de tu proyecto
 COPY . .
 
-# Instala las dependencias
-RUN pnpm install --frozen-lockfile
-
 # Compila la aplicación
 RUN pnpm run build
 
