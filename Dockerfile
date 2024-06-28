@@ -20,14 +20,14 @@ COPY . .
 # Compila la aplicación
 RUN pnpm run build
 
-# Verifica que el directorio build existe
-RUN ls -la build
+# Verifica que el directorio dist existe
+RUN ls -la dist
 
 # Instala el servidor 'serve' globalmente
 RUN npm install -g serve
 
-# Configura el servidor para servir la aplicación y manejar las rutas de una SPA
-CMD ["serve", "-s", "build", "-l", "3000", "--single"]
+# Configura el servidor para servir la aplicación desde la carpeta dist y manejar las rutas de una SPA
+CMD ["serve", "-s", "dist", "-l", "3000"]
 
 # Expone el puerto
 EXPOSE 3000
