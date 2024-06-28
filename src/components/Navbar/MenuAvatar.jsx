@@ -10,6 +10,7 @@ import { getObjetWorlds } from "../../Utils/utils";
 import { useAuth } from "../AuthContext/AuthContext";
 import { Link } from "react-router-dom";
 
+
 const menuShow = keyframes`
   from {
     opacity: 0;
@@ -80,7 +81,11 @@ const MenuAvatar = (users) => {
           >
             Favoritos
           </Link>
-        </MenuItem>
+        
+        </MenuItem> 
+         <MenuItem>
+      <Link to='/reservas' style={{ textDecoration: 'none', color: 'inherit' }}>Mis reservas</Link>
+      </MenuItem>
         <MenuDivider />
         <MenuItem onClick={() => logout()}>LogOut</MenuItem>
       </Menu>
