@@ -18,9 +18,10 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Compila la aplicación
-RUN pnpm build
-RUN ls -la build
+RUN pnpm run build
 
+# Verifica que el directorio build existe
+RUN ls -la build
 
 # Instala el servidor 'serve' globalmente
 RUN npm install -g serve
