@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { format, isBefore, isAfter, compareDesc } from 'date-fns';
 import { useReservas } from './useReservas';
@@ -82,18 +83,23 @@ const Reservas = () => {
                 <strong>Cantidad:</strong> {reservaJuego.cantidad}
               </p>
               <p className={Styles.juegoDetalles}>
-                <strong>Fecha de inicio:</strong> {format(new Date(reserva.fechaInicio), 'dd/MM/yyyy')}
+                <strong>Fecha de inicio:</strong>{' '}
+                {format(new Date(reserva.fechaInicio), 'dd/MM/yyyy')}
               </p>
               <p className={Styles.juegoDetalles}>
-                <strong>Fecha de fin:</strong> {format(new Date(reserva.fechaFin), 'dd/MM/yyyy')}
+                <strong>Fecha de fin:</strong>{' '}
+                {format(new Date(reserva.fechaFin), 'dd/MM/yyyy')}
               </p>
               <p className={Styles.juegoDetalles}>
-                <strong>Valor unitario: $</strong> {reservaJuego.juego.valorArriendo}
+                <strong>Valor unitario: $</strong>{' '}
+                {reservaJuego.juego.valorArriendo}
               </p>
               <p className={Styles.juegoDetalles}>
                 <strong>Valor de la reserva: $</strong> {reserva.total}
               </p>
+
               <button className={Styles.botonFinalizada} disabled>Reserva finalizada</button>
+
             </div>
           </div>
         ))

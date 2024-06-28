@@ -134,6 +134,32 @@ const verificarDisponibilidad = async (datosReserva) => {
   return response.json();
 };
 
+export const postReservation = async (reservationData) => {
+  try {
+    console.log('Data enviada al servidor:', reservationData);
+    const response = await fetch("http://localhost:8080/api/reservas", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reservationData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error en la solicitud");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error al realizar la reserva:", error);
+    throw error;
+  }
+};
+
+
+
+
 export {
   obtenerProductos,
   agregarProducto,

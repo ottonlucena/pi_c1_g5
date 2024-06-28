@@ -6,6 +6,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import styles from './Scheduler.module.css';
 import 'moment/locale/es';
+import useUpdateJotai from './useUpdateJotai';
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
@@ -27,8 +28,9 @@ const Scheduler = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const currentUser = isAuthenticated
-    ? { userId: 1, name: 'John Doe', email: 'john.doe@example.com' }
+    ? { userId: 1, name: 'John Doe', email: 'johndoe@gmail.com' }
     : null;
+  const { removeEvent, selectAndLogEvent } = useUpdateJotai();
 
   const handleSelectSlot = ({ start, end }) => {
     const isDisabled = isPastDate(start);
@@ -64,14 +66,16 @@ const Scheduler = () => {
     setIsDialogOpen(true);
   };
 
-  const handleDeleteEvent = (eventId) => {
-    setEvents(events.filter((event) => event.id !== eventId));
+  const handleDeleteEvent = (gameId) => {
+    console.log('que valor pasar = ', gameId);
+    removeEvent(gameId);
+    setEvents(events.filter((event) => event.gameid !== gameId));
   };
 
   const EventComponent = ({ event }) => (
     <div>
-      <span> {event.title} </span>
-      <button onClick={() => handleDeleteEvent(event.id)}>
+      <span>{event.title} </span>
+      <button onClick={() => handleDeleteEvent(event.gameid)}>
         <RiDeleteBin2Line />
       </button>
     </div>
