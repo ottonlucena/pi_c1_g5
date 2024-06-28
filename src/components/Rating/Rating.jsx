@@ -20,7 +20,7 @@ const Rating = ({ promedioValoracion, user, hasReservation }) => {
       try {
         `Fetching data for promedioValoracion: ${promedioValoracion}`;
 
-        const response = await axios.get(`http://localhost:8080/api/juegos`);
+        const response = await axios.get(`https://sunny-exploration-production.up.railway.app/api/juegos`);
         const productData = response.data;
 
         if (productData.length > 0) {

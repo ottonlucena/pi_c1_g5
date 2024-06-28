@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api/usuarios';
+const API_URL = 'https://sunny-exploration-production.up.railway.app/api/usuarios';
 
 export const getUsers = async () => {
   try {

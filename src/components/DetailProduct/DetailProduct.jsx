@@ -51,7 +51,7 @@ const DetailProduct = () => {
 
   useEffect(() => {
     if (isPoliticasOpen) {
-      fetch(`http://localhost:8080/api/politicas/juego/${id}`)
+      fetch(`https://sunny-exploration-production.up.railway.app/api/politicas/juego/${id}`)
         .then((response) => response.json())
         .then((data) => setPoliticas(data))
         .catch((error) => {
@@ -75,7 +75,6 @@ const DetailProduct = () => {
 
   return (
     <div className={styles.detailContainer}>
-      <Scheduler />
       <div className={styles.productHeader}>
         <h1 className={styles.productTitle}>{product?.nombre}</h1>
         <Link to='/' className={styles.goBack}>
@@ -97,6 +96,7 @@ const DetailProduct = () => {
           />
         </div>
       </div>
+      <Scheduler />
       <div className={styles.contCarac}>
         <div className={styles.productCharacteristics}>
           {product?.caracteristicas.map((caracteristica, index) => (
@@ -107,9 +107,9 @@ const DetailProduct = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        <Politicas>
+        </div>       
+      </div>
+      <Politicas>
           {politicas.length > 0 ? (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               {politicas.map((politica, index) => (
@@ -125,8 +125,6 @@ const DetailProduct = () => {
             'Cargando políticas...'
           )}
         </Politicas>
-      </div>
-
       <Modal>
         <GalleryImgs />
       </Modal>

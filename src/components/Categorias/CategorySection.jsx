@@ -42,7 +42,7 @@ const CategorySection = ({ onCategoryClick }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/category');
+        const response = await fetch('https://sunny-exploration-production.up.railway.app/api/category');
         if (!response.ok) {
           throw new Error(
             `Error en la respuesta del servidor: ${response.statusText}`

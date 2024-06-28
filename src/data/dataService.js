@@ -1,5 +1,5 @@
 // dataService.js
-const API_URL = "http://localhost:8080/api/category";
+const API_URL = "https://sunny-exploration-production.up.railway.app/api/category";
 
 export const  LeerCategorias = async () =>  {
   try {
