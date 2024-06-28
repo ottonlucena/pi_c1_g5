@@ -21,7 +21,7 @@ const teamMembers = [
     {
         name: 'Otton Lucena',
         role: 'Database Expert',
-        image: '/assets/Otton.jpg'
+        image: '/assets/otton.jpg'
     },
     {
         name: 'Jorge Alfaro',
