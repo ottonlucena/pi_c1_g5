@@ -8,6 +8,15 @@
     font-family: 'Segoe UI';
 }
 
+.loading{
+    display: flex;
+    height:max-content;  
+    font-family: 'Segoe UI';
+    height: 900px;
+    justify-content: center;
+    margin-top: 150px;
+    font-size: 20px;
+}
 .granContenedor h2 {
     font-size: 28px;
     font-family: 'Segoe UI';
