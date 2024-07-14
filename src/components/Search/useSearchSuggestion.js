@@ -1,16 +1,16 @@
-import { useQuery } from 'react-query';
-import { fetchSuggestions } from '../../data/juegos';
+import { useQuery } from "react-query";
+import { fetchSuggestions } from "../../data/juegos";
 
 const useSearchSuggestion = () => {
   const { data: suggestions, isLoading } = useQuery(
-    'suggestions',
+    "suggestions",
     fetchSuggestions,
     {
       refetchOnWindowFocus: false,
     }
   );
 
-  const suggestionTexts = suggestions
+  const suggestionTexts = Array.isArray(suggestions)
     ? suggestions.map((suggestion) => suggestion.nombre)
     : [];
 
