@@ -33,9 +33,9 @@ import ReservationsDetail from './components/ReservationsDetail/ReservationsDeta
 
 const menuItems = [
   <Link to='/nosotros'>Nosotros</Link>,
-  'Servicios',
+  //'Servicios',
   <Link to='/contacto'>Contacto</Link>,
-  'Galería',
+  //'Galería',
 ];
 
 const App = () => {

@@ -95,7 +95,7 @@ const Navbar = ({ menuItems, logo }) => {
   const handleLogin = () => {
     const simulatedUser = {
       name: 'John Doe',
-      picture: '../public/assets/ninos.jpg',
+      picture: '/assets/ninos.jpg',
     };
     login(simulatedUser);
   };
