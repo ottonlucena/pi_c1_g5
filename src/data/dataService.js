@@ -1,19 +1,20 @@
-// dataService.js
-const API_URL = "https://sunny-exploration-production.up.railway.app/api/category";
+import { getURLApiBase } from "./util";
 
-export const  LeerCategorias = async () =>  {
+const API_URL = getURLApiBase().toString().concat("category");
+
+export const LeerCategorias = async () => {
   try {
     const response = await fetch(API_URL);
     if (!response.ok) {
       throw new Error("error", response.statusText);
     }
-    const data = await response.json()
-    return data
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error("error", error);
     throw error;
   }
-}
+};
 
 export const agregarCategoria = async (nuevaCategoria) => {
   try {
@@ -34,7 +35,6 @@ export const agregarCategoria = async (nuevaCategoria) => {
   }
 };
 
-
 export const eliminarCategoriaPorNombre = async (title) => {
   try {
     const response = await fetch(`${API_URL}/${title}`, {
@@ -48,7 +48,6 @@ export const eliminarCategoriaPorNombre = async (title) => {
     throw error;
   }
 };
-
 
 export const actualizarCategoria = async (title, categoriaActualizada) => {
   try {
@@ -68,8 +67,3 @@ export const actualizarCategoria = async (title, categoriaActualizada) => {
     throw error;
   }
 };
-
-
-
-
-

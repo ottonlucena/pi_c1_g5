@@ -1,5 +1,6 @@
-const API_URL =
-  "https://sunny-exploration-production.up.railway.app/api/caracteristicas";
+import { getURLApiBase } from "./util";
+
+const API_URL = getURLApiBase().toString().concat("caracteristicas");
 
 // Función para obtener todas las características
 export const obtenerCaracteristicas = async () => {

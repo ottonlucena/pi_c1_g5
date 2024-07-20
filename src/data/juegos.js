@@ -1,16 +1,16 @@
-const API_URL = 'https://sunny-exploration-production.up.railway.app/api/juegos';
-
+import { getURLApiBase } from "./util";
+const API_URL = getURLApiBase().toString().concat("juegos");
 // Obtener todos los juegos
 const obtenerProductos = async () => {
   try {
     const response = await fetch(API_URL);
     if (!response.ok) {
-      throw new Error('error', response.statusText);
+      throw new Error("error", response.statusText);
     }
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('error', error);
+    console.error("error", error);
     throw error;
   }
 };
@@ -18,37 +18,37 @@ const obtenerProductos = async () => {
 // Agregar un nuevo juego
 const agregarProducto = async (nuevoProducto) => {
   const response = await fetch(API_URL, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(nuevoProducto),
   });
 
   if (!response.ok) {
-    throw new Error('Error al agregar el producto');
+    throw new Error("Error al agregar el producto");
   }
 
   const data = await response.json();
-  'Producto agregado:', data;
+  "Producto agregado:", data;
   return data;
 };
 
 const actualizarProducto = async (nuevoProducto) => {
   const response = await fetch(API_URL, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(nuevoProducto),
   });
 
   if (!response.ok) {
-    throw new Error('Error al actualizar el producto');
+    throw new Error("Error al actualizar el producto");
   }
 
   const data = await response.json();
-  'Producto actualizado:', data;
+  "Producto actualizado:", data;
   return data;
 };
 
@@ -62,7 +62,7 @@ const obtenerProductoPorId = async (id) => {
 // Eliminar un juego
 const eliminarProducto = async (id) => {
   const response = await fetch(`${API_URL}/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
   });
 
   if (!response.ok) {
@@ -75,60 +75,59 @@ const eliminarProducto = async (id) => {
 
 const fetchSuggestions = async () => {
   try {
-    const response = await fetch('https://sunny-exploration-production.up.railway.app/api/juegos/suggestion');
+    const response = await fetch(API_URL + "/suggestion");
     const data = await response.json();
     if (!data || data.length === 0) {
       return [];
     }
     return data;
   } catch (error) {
-    console.error('Error fetching suggestions:', error);
+    console.error("Error fetching suggestions:", error);
     return [];
   }
 };
 
 const getValoraciones = async (juegoId) => {
   const response = await fetch(
-    `https://sunny-exploration-production.up.railway.app/api/valoracion/filter/${juegoId}`
+    `${getURLApiBase().toString().concat("/valoracion/filter/")}${juegoId}`
   );
   if (!response.ok) {
-    throw new Error('Error al obtener valoraciones');
+    throw new Error("Error al obtener valoraciones");
   }
   return response.json();
 };
 
 const enviarValoracion = async (juegoId, valoracionData) => {
   const response = await fetch(
-    `https://sunny-exploration-production.up.railway.app/api/valoracion/${juegoId}`,
+    `${getURLApiBase().toString().concat("/valoracion/")}${juegoId}`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(valoracionData),
     }
   );
   if (!response.ok) {
-    throw new Error('Error al enviar la valoración');
+    throw new Error("Error al enviar la valoración");
   }
   return response.json();
 };
 
-
 const verificarDisponibilidad = async (datosReserva) => {
   const response = await fetch(
-    'https://sunny-exploration-production.up.railway.app/api/reservas/disponibles',
+    `${getURLApiBase().toString().concat("reservas/disponibles")}`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(datosReserva),
     }
   );
 
   if (!response.ok) {
-    throw new Error('Error al verificar la disponibilidad');
+    throw new Error("Error al verificar la disponibilidad");
   }
 
   return response.json();
@@ -136,14 +135,17 @@ const verificarDisponibilidad = async (datosReserva) => {
 
 export const postReservation = async (reservationData) => {
   try {
-    console.log('Data enviada al servidor:', reservationData);
-    const response = await fetch("https://sunny-exploration-production.up.railway.app/api/reservas", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reservationData),
-    });
+    console.log("Data enviada al servidor:", reservationData);
+    const response = await fetch(
+      `${getURLApiBase().toString().concat("reservas")}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reservationData),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Error en la solicitud");
@@ -156,9 +158,6 @@ export const postReservation = async (reservationData) => {
     throw error;
   }
 };
-
-
-
 
 export {
   obtenerProductos,
